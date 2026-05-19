@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 420 520" role="img" aria-label="Defined muscle goal">
+  <rect width="420" height="520" fill="#1f1f1f"/>
+  <radialGradient id="glow" cx="50%" cy="45%" r="50%">
+    <stop stop-color="#ff4b12" stop-opacity=".28"/>
+    <stop offset="1" stop-color="#ff4b12" stop-opacity="0"/>
+  </radialGradient>
+  <rect width="420" height="520" fill="url(#glow)"/>
+  <g transform="translate(0 8)" fill="#e8a17a">
+    <circle cx="210" cy="72" r="34"/>
+    <path d="M176 45c15-24 54-22 68 0-20-8-43-9-68 0z" fill="#753322"/>
+    <path d="M145 125c38-34 92-34 130 0l24 119c7 34-20 62-56 62h-66c-36 0-63-28-56-62z"/>
+    <path d="M146 132c-23 8-39 36-51 82l-14 54c-6 25 8 45 32 51l25 7 14-36-22-7 25-96z"/>
+    <path d="M274 132c23 8 39 36 51 82l14 54c6 25-8 45-32 51l-25 7-14-36 22-7-25-96z"/>
+  </g>
+  <path d="M152 295h116l21 78h-58l-21-46-21 46h-58z" fill="#334b59"/>
+  <path d="M145 373h57l-10 105h-51zM218 373h57l10 105h-51z" fill="#d89a74"/>
+  <g stroke="#7a2f20" stroke-width="7" stroke-linecap="round" opacity=".55">
+    <path d="M159 150c31 19 71 19 102 0"/>
+    <path d="M157 195h106"/>
+    <path d="M178 222h64"/>
+    <path d="M178 250h64"/>
+  </g>
+  <path d="M141 478h55v22h-70c0-12 6-18 15-22zM224 478h55c9 4 15 10 15 22h-70z" fill="#151d22"/>
+</svg>

@@ -1,0 +1,20 @@
+# Maven / Java
+target/
+**/target/
+*.log
+
+# Node / Next.js
+aura-fitness-web/node_modules/
+.next/
+
+# IDE
+.idea/
+.vscode/
+
+# Local database files
+AuraFitness/backend/data/*.mv.db
+AuraFitness/backend/data/*.trace.db
+AuraFitness/backend/.m2/
+AuraFitness/backend/.env
+aura-fitness-web/.env.local
+aura-fitness-web/.env.production

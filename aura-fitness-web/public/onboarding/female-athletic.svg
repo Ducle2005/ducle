@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 420 520" role="img" aria-label="Athletic female fitness model">
+  <defs>
+    <linearGradient id="bg" x1="0" x2="0" y1="0" y2="1">
+      <stop stop-color="#242424"/>
+      <stop offset="1" stop-color="#111"/>
+    </linearGradient>
+    <linearGradient id="skin" x1="0" x2="1">
+      <stop stop-color="#f2bea0"/>
+      <stop offset="1" stop-color="#c78160"/>
+    </linearGradient>
+  </defs>
+  <rect width="420" height="520" fill="url(#bg)"/>
+  <ellipse cx="210" cy="250" rx="126" ry="185" fill="#4dc7ef" opacity=".1"/>
+  <g transform="translate(0 10)">
+    <circle cx="210" cy="76" r="33" fill="url(#skin)"/>
+    <path d="M166 84c8-55 80-62 92-4 4 20-5 51-13 75-18-11-48-11-70 0-9-27-14-50-9-71z" fill="#9f5b43"/>
+    <path d="M174 135c24-24 48-24 72 0l20 110c4 24-14 44-39 44h-34c-25 0-43-20-39-44z" fill="url(#skin)"/>
+    <path d="M181 152h58l15 65h-88z" fill="#75c7df"/>
+    <path d="M175 142l-54 107c-10 20-3 40 17 50l18 9 14-31-17-9 40-93z" fill="url(#skin)"/>
+    <path d="M245 142l54 107c10 20 3 40-17 50l-18 9-14-31 17-9-40-93z" fill="url(#skin)"/>
+    <path d="M162 280h96l20 92h-50l-18-60-18 60h-50z" fill="#344b59"/>
+    <path d="M151 372h48l-12 108h-46zM221 372h48l10 108h-46z" fill="#d89b78"/>
+    <path d="M140 480h51v22h-65c0-12 5-18 14-22zM229 480h51c9 4 14 10 14 22h-65z" fill="#151d22"/>
+  </g>
+</svg>

@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 420 520" role="img" aria-label="Lean male fitness model">
+  <defs>
+    <linearGradient id="bg" x1="0" x2="0" y1="0" y2="1">
+      <stop stop-color="#242424"/>
+      <stop offset="1" stop-color="#111"/>
+    </linearGradient>
+    <linearGradient id="skin" x1="0" x2="1">
+      <stop stop-color="#f0b18b"/>
+      <stop offset="1" stop-color="#c67852"/>
+    </linearGradient>
+  </defs>
+  <rect width="420" height="520" fill="url(#bg)"/>
+  <ellipse cx="212" cy="245" rx="118" ry="180" fill="#ff4b12" opacity=".08"/>
+  <g transform="translate(0 12)">
+    <circle cx="210" cy="76" r="34" fill="url(#skin)"/>
+    <path d="M183 45c12-24 56-23 65 5-16-11-42-11-65-5z" fill="#6f3424"/>
+    <path d="M178 123c18-24 47-25 64 0l20 116c3 20-12 38-32 38h-40c-20 0-35-18-32-38z" fill="url(#skin)"/>
+    <path d="M179 130l-48 118c-8 20 0 38 18 46l18 8 12-29-16-8 36-103z" fill="url(#skin)"/>
+    <path d="M241 130l48 118c8 20 0 38-18 46l-18 8-12-29 16-8-36-103z" fill="url(#skin)"/>
+    <path d="M175 270h70l18 102h-43l-10-65-10 65h-43z" fill="#365061"/>
+    <path d="M170 372h39l-6 108h-44zM211 372h39l11 108h-44z" fill="#d99a78"/>
+    <path d="M187 143c17 13 31 13 46 0M186 194h48M195 226h30" stroke="#742f22" stroke-width="5" stroke-linecap="round" opacity=".45"/>
+    <path d="M157 479h49v22h-62c0-12 5-18 13-22zM217 479h49c8 4 13 10 13 22h-62z" fill="#161d22"/>
+  </g>
+</svg>

@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 420 520" role="img" aria-label="Heavy male fitness model">
+  <defs>
+    <linearGradient id="bg" x1="0" x2="0" y1="0" y2="1">
+      <stop stop-color="#242424"/>
+      <stop offset="1" stop-color="#111"/>
+    </linearGradient>
+    <linearGradient id="skin" x1="0" x2="1">
+      <stop stop-color="#f0b18b"/>
+      <stop offset="1" stop-color="#c9815d"/>
+    </linearGradient>
+  </defs>
+  <rect width="420" height="520" fill="url(#bg)"/>
+  <ellipse cx="210" cy="260" rx="150" ry="190" fill="#36a6db" opacity=".08"/>
+  <g transform="translate(0 8)">
+    <circle cx="210" cy="76" r="36" fill="url(#skin)"/>
+    <path d="M178 50c15-24 56-23 68 2-21-7-43-9-68-2z" fill="#773727"/>
+    <path d="M136 135c40-31 108-31 148 0l26 114c10 45-25 81-73 81h-54c-48 0-83-36-73-81z" fill="url(#skin)"/>
+    <path d="M139 144l-43 114c-9 25 3 48 27 57l20 8 16-35-18-8 34-105z" fill="url(#skin)"/>
+    <path d="M281 144l43 114c9 25-3 48-27 57l-20 8-16-35 18-8-34-105z" fill="url(#skin)"/>
+    <path d="M133 314h154l12 68h-67l-22-35-22 35h-67z" fill="#344b59"/>
+    <path d="M126 382h68l-7 98h-55zM226 382h68l7 98h-55z" fill="#d99a76"/>
+    <path d="M154 177c34 18 78 18 112 0M151 244c40 18 78 18 118 0" stroke="#7a3628" stroke-width="8" stroke-linecap="round" opacity=".35"/>
+    <path d="M129 480h61v22h-76c0-12 6-18 15-22zM230 480h61c9 4 15 10 15 22h-76z" fill="#151d22"/>
+  </g>
+</svg>

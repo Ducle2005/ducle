@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 520 380" role="img" aria-label="Adult fitness couple">
+  <rect width="520" height="380" fill="#202020"/>
+  <ellipse cx="260" cy="210" rx="190" ry="135" fill="#36a6db" opacity=".1"/>
+  <g transform="translate(78 30)">
+    <circle cx="110" cy="50" r="32" fill="#e6a17c"/>
+    <path d="M82 26c13-22 52-21 64 1-18-8-41-8-64-1z" fill="#693126"/>
+    <path d="M65 105c28-24 62-24 90 0l22 105c6 30-18 55-50 55H93c-32 0-56-25-50-55z" fill="#e6a17c"/>
+    <path d="M56 260h108l15 60h-52l-17-35-17 35H41z" fill="#344b59"/>
+    <path d="M80 139c24 14 37 14 60 0M77 184h66" stroke="#713126" stroke-width="5" stroke-linecap="round" opacity=".38"/>
+  </g>
+  <g transform="translate(265 38)">
+    <circle cx="105" cy="50" r="30" fill="#efb395"/>
+    <path d="M65 62c8-52 75-53 84 0-8 18-11 43-11 70-23-12-42-12-65 0 0-27-1-52-8-70z" fill="#a35a42"/>
+    <path d="M72 108c22-22 44-22 66 0l18 96c4 22-13 40-36 40H90c-23 0-40-18-36-40z" fill="#efb395"/>
+    <path d="M78 123h54l14 58H64z" fill="#80cde5"/>
+    <path d="M62 239h86l16 80h-44l-15-52-15 52H46z" fill="#334b59"/>
+  </g>
+</svg>

@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 960" role="img" aria-label="Body scan demo">
+  <rect width="720" height="960" fill="#111827"/>
+  <radialGradient id="scan" cx="50%" cy="45%" r="48%">
+    <stop stop-color="#22d3ee" stop-opacity=".22"/>
+    <stop offset="1" stop-color="#22d3ee" stop-opacity="0"/>
+  </radialGradient>
+  <rect width="720" height="960" fill="url(#scan)"/>
+  <g transform="translate(150 70)">
+    <circle cx="210" cy="90" r="58" fill="#e8a17a"/>
+    <path d="M160 45c27-45 96-43 117 4-39-15-78-16-117-4z" fill="#773322"/>
+    <path d="M100 180c65-60 155-60 220 0l42 230c11 61-37 111-101 111H159c-64 0-112-50-101-111z" fill="#e8a17a"/>
+    <path d="M102 190c-43 20-69 74-88 153L0 405c-10 44 15 80 57 90l42 10 24-62-37-11 40-168z" fill="#e8a17a"/>
+    <path d="M318 190c43 20 69 74 88 153l14 62c10 44-15 80-57 90l-42 10-24-62 37-11-40-168z" fill="#e8a17a"/>
+    <path d="M98 498h224l42 156H252l-42-92-42 92H56z" fill="#334b59"/>
+    <path d="M56 654h112L148 870H48zM252 654h112l20 216H284z" fill="#d89a74"/>
+    <g stroke="#7a2f20" stroke-width="13" stroke-linecap="round" opacity=".5">
+      <path d="M112 220c61 38 135 38 196 0"/>
+      <path d="M110 306h200"/>
+      <path d="M145 360h130"/>
+      <path d="M150 414h120"/>
+    </g>
+  </g>
+  <path d="M70 490h580" stroke="#38bdf8" stroke-width="8" opacity=".8"/>
+  <path d="M70 490h580" stroke="#e0f2fe" stroke-width="28" opacity=".2"/>
+</svg>

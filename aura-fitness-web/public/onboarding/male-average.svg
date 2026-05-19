@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 420 520" role="img" aria-label="Average male fitness model">
+  <defs>
+    <linearGradient id="bg" x1="0" x2="0" y1="0" y2="1">
+      <stop stop-color="#252525"/>
+      <stop offset="1" stop-color="#111"/>
+    </linearGradient>
+    <linearGradient id="skin" x1="0" x2="1">
+      <stop stop-color="#f2b48e"/>
+      <stop offset="1" stop-color="#c9825e"/>
+    </linearGradient>
+  </defs>
+  <rect width="420" height="520" fill="url(#bg)"/>
+  <ellipse cx="210" cy="255" rx="135" ry="180" fill="#36a6db" opacity=".1"/>
+  <g transform="translate(0 10)">
+    <circle cx="210" cy="76" r="35" fill="url(#skin)"/>
+    <path d="M178 48c14-24 55-22 67 3-20-8-43-10-67-3z" fill="#7a3728"/>
+    <path d="M169 128c24-25 58-25 82 0l25 118c5 27-16 51-45 51h-42c-29 0-50-24-45-51z" fill="url(#skin)"/>
+    <path d="M169 135l-55 120c-9 21 0 42 20 51l20 9 14-31-18-9 40-108z" fill="url(#skin)"/>
+    <path d="M251 135l55 120c9 21 0 42-20 51l-20 9-14-31 18-9-40-108z" fill="url(#skin)"/>
+    <path d="M160 286h100l20 88h-52l-18-53-18 53h-52z" fill="#344b59"/>
+    <path d="M153 374h51l-10 105h-49zM216 374h51l8 105h-49z" fill="#d79975"/>
+    <path d="M178 150c22 15 43 15 64 0M175 203h70M185 237h50" stroke="#703122" stroke-width="6" stroke-linecap="round" opacity=".42"/>
+    <path d="M143 479h55v22h-69c0-12 5-18 14-22zM222 479h55c9 4 14 10 14 22h-69z" fill="#151d22"/>
+  </g>
+</svg>

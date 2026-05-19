@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 420 520" role="img" aria-label="Muscular male fitness model">
+  <defs>
+    <linearGradient id="bg" x1="0" x2="0" y1="0" y2="1">
+      <stop stop-color="#242424"/>
+      <stop offset="1" stop-color="#111"/>
+    </linearGradient>
+    <linearGradient id="skin" x1="0" x2="1">
+      <stop stop-color="#f5b58d"/>
+      <stop offset="1" stop-color="#c87952"/>
+    </linearGradient>
+  </defs>
+  <rect width="420" height="520" fill="url(#bg)"/>
+  <ellipse cx="210" cy="248" rx="150" ry="190" fill="#ff4b12" opacity=".12"/>
+  <g transform="translate(0 5)">
+    <circle cx="210" cy="72" r="35" fill="url(#skin)"/>
+    <path d="M179 43c12-25 58-25 68 3-18-9-43-10-68-3z" fill="#753322"/>
+    <path d="M145 125c39-35 91-35 130 0l25 121c7 34-20 64-56 64h-68c-36 0-63-30-56-64z" fill="url(#skin)"/>
+    <path d="M148 130c-24 10-40 40-50 83l-13 55c-6 25 8 45 32 51l25 7 14-36-22-7 25-96z" fill="url(#skin)"/>
+    <path d="M272 130c24 10 40 40 50 83l13 55c6 25-8 45-32 51l-25 7-14-36 22-7-25-96z" fill="url(#skin)"/>
+    <path d="M151 296h118l20 80h-58l-21-48-21 48h-58z" fill="#334b5b"/>
+    <path d="M145 376h57l-10 103h-51zM218 376h57l10 103h-51z" fill="#d89a74"/>
+    <path d="M161 147c31 21 67 21 98 0M155 195h110M173 225h74M178 256h64" stroke="#6e2c1f" stroke-width="7" stroke-linecap="round" opacity=".5"/>
+    <path d="M141 479h55v22h-70c0-12 6-18 15-22zM224 479h55c9 4 15 10 15 22h-70z" fill="#151d22"/>
+  </g>
+</svg>

@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 520 380" role="img" aria-label="Young fitness couple">
+  <rect width="520" height="380" fill="#202020"/>
+  <ellipse cx="260" cy="210" rx="190" ry="135" fill="#ff4b12" opacity=".1"/>
+  <g transform="translate(80 20)">
+    <use href="#male"/>
+  </g>
+  <g transform="translate(260 28) scale(.92)">
+    <circle cx="105" cy="50" r="30" fill="#efb395"/>
+    <path d="M65 62c8-52 75-53 84 0-8 18-11 43-11 70-23-12-42-12-65 0 0-27-1-52-8-70z" fill="#99523d"/>
+    <path d="M72 108c22-22 44-22 66 0l18 96c4 22-13 40-36 40H90c-23 0-40-18-36-40z" fill="#efb395"/>
+    <path d="M78 123h54l14 58H64z" fill="#80cde5"/>
+    <path d="M62 239h86l16 80h-44l-15-52-15 52H46z" fill="#334b59"/>
+  </g>
+  <defs>
+    <g id="male">
+      <circle cx="105" cy="50" r="31" fill="#eda882"/>
+      <path d="M77 26c12-22 51-21 62 1-18-8-40-8-62-1z" fill="#743224"/>
+      <path d="M68 104c24-24 50-24 74 0l22 103c5 26-15 48-42 48H88c-27 0-47-22-42-48z" fill="#eda882"/>
+      <path d="M56 250h98l16 70h-49l-16-42-16 42H40z" fill="#344b59"/>
+      <path d="M79 132c21 14 33 14 52 0M78 176h55" stroke="#723022" stroke-width="5" stroke-linecap="round" opacity=".4"/>
+    </g>
+  </defs>
+</svg>
