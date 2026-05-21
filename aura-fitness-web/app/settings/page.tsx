@@ -291,16 +291,16 @@ export default function SettingsPage() {
   return (
     <div className="flex min-h-screen overflow-hidden bg-background text-foreground">
       <Sidebar />
-      <main className="custom-scrollbar ml-20 h-screen flex-1 overflow-y-auto px-8 py-8 lg:px-12">
-        <header className="mb-12">
-          <h1 className="text-3xl font-black uppercase tracking-tight">Cài đặt hệ thống</h1>
-          <p className="mt-1 font-medium italic text-muted-foreground">Trung tâm kiểm soát trải nghiệm của bạn</p>
+      <main className="mobile-scroll-page">
+        <header className="mb-7 sm:mb-10 lg:mb-12">
+          <h1 className="text-2xl font-black uppercase tracking-tight sm:text-3xl">Cài đặt hệ thống</h1>
+          <p className="mt-1 text-sm font-medium italic text-muted-foreground sm:text-base">Trung tâm kiểm soát trải nghiệm của bạn</p>
         </header>
 
-        <div className="flex flex-col lg:flex-row gap-8">
+        <div className="flex flex-col gap-5 lg:flex-row lg:gap-8">
           {/* Vertical Tabs */}
-          <div className="w-full lg:w-64 flex-shrink-0">
-            <nav className="flex flex-col gap-2">
+          <div className="w-full flex-shrink-0 lg:w-64">
+            <nav className="custom-scrollbar -mx-1 flex gap-2 overflow-x-auto px-1 pb-1 lg:mx-0 lg:flex-col lg:overflow-visible lg:px-0 lg:pb-0">
               <TabButton active={activeTab === "personal"} onClick={() => setActiveTab("personal")} icon={User} label="Hồ sơ cá nhân" />
               <TabButton active={activeTab === "goals"} onClick={() => setActiveTab("goals")} icon={Target} label="Mục tiêu tập luyện" />
               <TabButton active={activeTab === "reminders"} onClick={() => setActiveTab("reminders")} icon={Bell} label="Nhắc lịch" />
@@ -310,9 +310,9 @@ export default function SettingsPage() {
           </div>
 
           {/* Tab Content */}
-          <div className="flex-1 glass-card p-8 min-h-[500px]">
+          <div className="glass-card min-h-[500px] flex-1 sm:p-8">
             {activeTab === "personal" && (
-              <form onSubmit={handleSaveProfile} className="space-y-8 animate-in fade-in slide-in-from-bottom-4">
+              <form onSubmit={handleSaveProfile} className="space-y-6 animate-in fade-in slide-in-from-bottom-4 sm:space-y-8">
                 <div className="flex flex-col items-center justify-center mb-8 border-b border-white/10 pb-8">
                   <AvatarUpload 
                     currentAvatarUrl={profile.avatarUrl} 
@@ -323,7 +323,7 @@ export default function SettingsPage() {
                   <p className="text-sm text-muted-foreground">{user.email}</p>
                 </div>
 
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div className="grid grid-cols-1 gap-4 sm:gap-6 md:grid-cols-2">
                   <InputField label="Họ và tên" value={name} onChange={(v) => setName(v)} />
                   <div className="space-y-2">
                     <label className="text-xs font-black uppercase tracking-widest text-muted-foreground">Giới tính</label>
@@ -343,7 +343,7 @@ export default function SettingsPage() {
                 </div>
 
                 {bmi && (
-                  <div className="mt-8 rounded-2xl border border-primary/20 bg-primary/5 p-6 flex justify-between items-center">
+                  <div className="mt-6 flex items-center justify-between rounded-2xl border border-primary/20 bg-primary/5 p-4 sm:mt-8 sm:p-6">
                     <div>
                       <h4 className="text-xs font-black uppercase tracking-widest text-primary mb-1">Chỉ số BMI</h4>
                       <div className="flex items-baseline gap-2">
@@ -361,8 +361,8 @@ export default function SettingsPage() {
             )}
 
             {activeTab === "goals" && (
-              <form onSubmit={handleSaveProfile} className="space-y-8 animate-in fade-in slide-in-from-bottom-4">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <form onSubmit={handleSaveProfile} className="space-y-6 animate-in fade-in slide-in-from-bottom-4 sm:space-y-8">
+                <div className="grid grid-cols-1 gap-4 sm:gap-6 md:grid-cols-2">
                   <div className="space-y-2">
                     <label className="text-xs font-black uppercase tracking-widest text-muted-foreground">Mục tiêu chính</label>
                     <select 
@@ -407,7 +407,7 @@ export default function SettingsPage() {
             )}
 
             {activeTab === "reminders" && (
-              <form onSubmit={handleSaveProfile} className="space-y-8 animate-in fade-in slide-in-from-bottom-4">
+              <form onSubmit={handleSaveProfile} className="space-y-6 animate-in fade-in slide-in-from-bottom-4 sm:space-y-8">
                 {reminderError && (
                   <div className="rounded-xl border border-rose-500/30 bg-rose-500/10 px-4 py-3 text-sm font-semibold text-rose-400">
                     {reminderError}
@@ -500,8 +500,8 @@ export default function SettingsPage() {
             )}
 
             {activeTab === "preferences" && (
-              <form onSubmit={handleSaveProfile} className="space-y-8 animate-in fade-in slide-in-from-bottom-4">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <form onSubmit={handleSaveProfile} className="space-y-6 animate-in fade-in slide-in-from-bottom-4 sm:space-y-8">
+                <div className="grid grid-cols-1 gap-4 sm:gap-6 md:grid-cols-2">
                   <div className="space-y-2">
                     <label className="text-xs font-black uppercase tracking-widest text-muted-foreground">Giao diện (Theme)</label>
                     <select 
@@ -540,7 +540,7 @@ export default function SettingsPage() {
             )}
 
             {activeTab === "security" && (
-              <div className="space-y-8 animate-in fade-in slide-in-from-bottom-4">
+              <div className="space-y-6 animate-in fade-in slide-in-from-bottom-4 sm:space-y-8">
                 <form onSubmit={handleChangePassword} className="space-y-6 max-w-md">
                   <h3 className="text-xl font-bold border-b border-white/10 pb-4">Đổi mật khẩu</h3>
                   
@@ -573,11 +573,11 @@ function TabButton({ active, onClick, icon: Icon, label }: { active: boolean, on
   return (
     <button
       onClick={onClick}
-      className={`flex items-center gap-3 px-4 py-3 rounded-xl transition-all w-full text-left
+      className={`flex shrink-0 items-center gap-3 rounded-xl px-4 py-3 text-left transition-all lg:w-full
         ${active ? 'bg-primary text-primary-foreground font-bold shadow-lg shadow-primary/20' : 'hover:bg-white/5 text-muted-foreground'}`}
     >
       <Icon size={18} />
-      <span>{label}</span>
+      <span className="whitespace-nowrap text-sm font-bold lg:text-base">{label}</span>
     </button>
   );
 }
@@ -602,11 +602,11 @@ function InputField({ label, type = "text", value, onChange, min, max, required,
 
 function SaveButton({ isSaving, text = "Lưu thay đổi" }: { isSaving: boolean, text?: string }) {
   return (
-    <div className="pt-4 border-t border-white/10 flex justify-end">
+    <div className="flex justify-end border-t border-white/10 pt-4">
       <button 
         type="submit" 
         disabled={isSaving}
-        className="flex items-center gap-2 bg-primary text-primary-foreground px-8 py-3 rounded-xl font-bold hover:bg-primary/90 transition-all disabled:opacity-50"
+        className="flex w-full items-center justify-center gap-2 rounded-xl bg-primary px-6 py-3 font-bold text-primary-foreground transition-all hover:bg-primary/90 disabled:opacity-50 sm:w-auto sm:px-8"
       >
         {isSaving ? <Loader2 className="w-4 h-4 animate-spin" /> : <Save className="w-4 h-4" />}
         {text}

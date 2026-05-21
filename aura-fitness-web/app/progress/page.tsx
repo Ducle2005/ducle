@@ -112,13 +112,13 @@ export default function ProgressPage() {
   return (
     <div className="flex min-h-screen overflow-hidden bg-background text-foreground">
       <Sidebar />
-      <main className="custom-scrollbar ml-20 h-screen flex-1 overflow-y-auto px-8 py-8 lg:px-12">
-        <header className="mb-10 flex flex-wrap items-center justify-between gap-4">
+      <main className="mobile-scroll-page">
+        <header className="mb-7 flex flex-col gap-4 sm:mb-10 lg:flex-row lg:items-center lg:justify-between">
           <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }}>
-            <h1 className="text-3xl font-black uppercase tracking-tight">Phân tích hiệu suất</h1>
-            <p className="mt-1 font-medium italic text-muted-foreground">Số liệu không nói dối. Sự bền bỉ của bạn, được trực quan hóa.</p>
+            <h1 className="text-2xl font-black uppercase tracking-tight sm:text-3xl">Phân tích hiệu suất</h1>
+            <p className="mt-1 text-sm font-medium italic text-muted-foreground sm:text-base">Số liệu không nói dối. Sự bền bỉ của bạn, được trực quan hóa.</p>
           </motion.div>
-          <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} className="flex items-center gap-4">
+          <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} className="flex items-center gap-3 sm:gap-4">
             <div className={`glass flex items-center gap-2 rounded-2xl border-primary/30 px-4 py-2 ${isPositiveGrowth ? "bg-emerald-500/5" : "bg-rose-500/5"}`}>
               <div className={`flex h-8 w-8 items-center justify-center rounded-lg ${isPositiveGrowth ? "bg-emerald-500 text-background" : "bg-rose-500 text-background"}`}>
                 {isPositiveGrowth ? <TrendingUp size={18} /> : <TrendingDown size={18} />}
@@ -133,16 +133,16 @@ export default function ProgressPage() {
         </header>
 
         {/* ───── Summary Cards ───── */}
-        <div className="mb-10 grid grid-cols-2 gap-4 md:grid-cols-4">
+        <div className="mb-7 grid grid-cols-2 gap-3 sm:mb-10 sm:gap-4 md:grid-cols-4">
           <SummaryCard icon={Scale} label="Cân nặng" value={latestWeight > 0 ? `${latestWeight.toFixed(1)}` : "—"} unit="kg" color="text-blue-400" bgColor="bg-blue-500/10" delay={0} />
           <SummaryCard icon={Flame} label="Buổi tập" value={`${totalSessions}`} unit="sessions" color="text-orange-400" bgColor="bg-orange-500/10" delay={0.1} />
           <SummaryCard icon={Dumbbell} label="Tổng khối lượng" value={totalVolume > 1000 ? `${(totalVolume / 1000).toFixed(1)}k` : `${totalVolume.toFixed(0)}`} unit="kg" color="text-emerald-400" bgColor="bg-emerald-500/10" delay={0.2} />
           <SummaryCard icon={Zap} label="Tỉ lệ mỡ" value={profile?.bodyFat != null ? `${profile.bodyFat.toFixed(1)}` : "—"} unit="%" color="text-amber-400" bgColor="bg-amber-500/10" delay={0.3} />
         </div>
 
-        <div className="grid grid-cols-1 gap-8 lg:grid-cols-12">
+        <div className="grid grid-cols-1 gap-5 sm:gap-8 lg:grid-cols-12">
           {/* ───── Main Charts Column ───── */}
-          <div className="space-y-8 lg:col-span-8">
+          <div className="space-y-5 sm:space-y-8 lg:col-span-8">
 
             {/* Volume Chart */}
             <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="glass-card p-6 md:p-8">
@@ -155,7 +155,7 @@ export default function ProgressPage() {
                   <span className="text-[10px] font-black uppercase tracking-widest text-muted-foreground">Khối lượng (kg)</span>
                 </div>
               </div>
-              <div className="h-[320px] w-full">
+              <div className="h-[250px] w-full sm:h-[320px]">
                 {volumeChartData.length > 0 ? (
                   <ResponsiveContainer width="100%" height="100%">
                     <AreaChart data={volumeChartData}>
@@ -189,7 +189,7 @@ export default function ProgressPage() {
                   <span className="text-[10px] font-black uppercase tracking-widest text-muted-foreground">Cân nặng (kg)</span>
                 </div>
               </div>
-              <div className="h-[280px] w-full">
+              <div className="h-[240px] w-full sm:h-[280px]">
                 {weightChartData.length > 1 ? (
                   <ResponsiveContainer width="100%" height="100%">
                     <LineChart data={weightChartData}>
@@ -213,14 +213,14 @@ export default function ProgressPage() {
             </motion.div>
 
             {/* Metric Cards */}
-            <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
+            <div className="grid grid-cols-1 gap-4 sm:gap-6 md:grid-cols-2">
               <MetricCard label="Thay đổi cân nặng 7 ngày" value={weightData?.change7d != null ? (weightData.change7d).toFixed(1) : "—"} unit="kg" change={weightData?.change7d ?? 0} icon={Activity} changeLabel="so với 7 ngày trước" delay={0.3} />
               <MetricCard label="Thay đổi cân nặng 30 ngày" value={weightData?.change30d != null ? (weightData.change30d).toFixed(1) : "—"} unit="kg" change={weightData?.change30d ?? 0} icon={Target} color="text-amber-400" changeLabel="so với 30 ngày trước" delay={0.4} />
             </div>
           </div>
 
           {/* ───── Sidebar Panel ───── */}
-          <div className="space-y-6 lg:col-span-4">
+          <div className="space-y-5 sm:space-y-6 lg:col-span-4">
 
             {/* Weekly Comparison Bar Chart */}
             <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} className="glass-card p-6">

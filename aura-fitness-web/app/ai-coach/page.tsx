@@ -105,28 +105,28 @@ export default function AICoachPage() {
   return (
     <div className="flex min-h-screen overflow-hidden bg-background text-foreground">
       <Sidebar />
-      <main className="ml-20 flex h-screen w-full items-center justify-center p-8">
+      <main className="flex min-h-screen w-full items-center justify-center px-3 py-5 pb-28 sm:px-5 lg:ml-20 lg:h-screen lg:p-8">
         
         {/* IPHONE 14 PRO MAX MOCKUP CONTAINER */}
         <motion.div 
           initial={{ y: 50, opacity: 0, scale: 0.95 }}
           animate={{ y: 0, opacity: 1, scale: 1 }}
           transition={springConfig}
-          className="relative flex h-[850px] w-[400px] flex-col overflow-hidden rounded-[3.5rem] border-[12px] border-slate-900 bg-background shadow-[0_0_50px_-12px_rgba(0,0,0,0.8)] ring-4 ring-slate-800/50"
+          className="relative flex h-[calc(100vh-8rem)] min-h-[540px] w-full max-w-[400px] flex-col overflow-hidden rounded-[2rem] border-[7px] border-slate-900 bg-background shadow-[0_0_50px_-12px_rgba(0,0,0,0.8)] ring-4 ring-slate-800/50 sm:h-[850px] sm:min-h-[620px] sm:rounded-[3.5rem] sm:border-[12px]"
         >
           {/* Hardware Buttons */}
-          <div className="absolute -left-[14px] top-[120px] h-8 w-1 rounded-l-md bg-slate-900"></div> {/* Mute switch */}
-          <div className="absolute -left-[14px] top-[170px] h-14 w-1 rounded-l-md bg-slate-900"></div> {/* Vol Up */}
-          <div className="absolute -left-[14px] top-[240px] h-14 w-1 rounded-l-md bg-slate-900"></div> {/* Vol Down */}
-          <div className="absolute -right-[14px] top-[200px] h-20 w-1 rounded-r-md bg-slate-900"></div> {/* Power */}
+          <div className="absolute -left-[9px] top-[120px] h-8 w-1 rounded-l-md bg-slate-900 sm:-left-[14px]"></div> {/* Mute switch */}
+          <div className="absolute -left-[9px] top-[170px] h-14 w-1 rounded-l-md bg-slate-900 sm:-left-[14px]"></div> {/* Vol Up */}
+          <div className="absolute -left-[9px] top-[240px] h-14 w-1 rounded-l-md bg-slate-900 sm:-left-[14px]"></div> {/* Vol Down */}
+          <div className="absolute -right-[9px] top-[200px] h-20 w-1 rounded-r-md bg-slate-900 sm:-right-[14px]"></div> {/* Power */}
 
           {/* DYNAMIC ISLAND & STATUS BAR */}
-          <div className="absolute top-0 z-50 flex w-full items-center justify-between px-7 pt-4 text-[13px] font-bold tracking-wider text-white">
+          <div className="absolute top-0 z-50 flex w-full items-center justify-between px-5 pt-4 text-[12px] font-bold tracking-wider text-white sm:px-7 sm:text-[13px]">
             <span className="mt-0.5">9:41</span>
             {/* Dynamic Island Pill */}
             <motion.div 
-              initial={{ width: "120px", height: "35px" }}
-              animate={isTyping ? { width: "170px", height: "35px" } : { width: "120px", height: "35px" }}
+              initial={{ width: "112px", height: "34px" }}
+              animate={isTyping ? { width: "160px", height: "34px" } : { width: "112px", height: "34px" }}
               transition={{ type: "spring", stiffness: 400, damping: 25 }}
               className="absolute left-1/2 top-3 flex -translate-x-1/2 items-center justify-between overflow-hidden rounded-full bg-black px-2 shadow-[0_0_10px_rgba(0,0,0,0.5)]"
             >
@@ -156,7 +156,7 @@ export default function AICoachPage() {
           </div>
 
           {/* APP HEADER */}
-          <div className="z-40 flex items-center justify-between border-b border-white/5 bg-background/80 px-6 pb-4 pt-16 backdrop-blur-2xl">
+          <div className="z-40 flex items-center justify-between border-b border-white/5 bg-background/80 px-4 pb-4 pt-16 backdrop-blur-2xl sm:px-6">
             <div className="flex items-center gap-3">
               <div className="relative">
                 <motion.div 
@@ -190,7 +190,7 @@ export default function AICoachPage() {
           </div>
 
           {/* CHAT MESSAGES */}
-          <div ref={scrollRef} className="custom-scrollbar flex-1 overflow-y-auto overflow-x-hidden bg-slate-950/40 p-5 space-y-6 pb-8">
+          <div ref={scrollRef} className="custom-scrollbar flex-1 space-y-5 overflow-y-auto overflow-x-hidden bg-slate-950/40 p-4 pb-7 sm:space-y-6 sm:p-5 sm:pb-8">
              <AnimatePresence initial={false}>
                {messages.map((m) => (
                  <motion.div 
