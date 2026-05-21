@@ -161,7 +161,7 @@ export default function ExercisesPage() {
     <div className="flex min-h-screen bg-background text-foreground">
       <Sidebar />
 
-      <main className="relative flex-1 overflow-hidden px-4 py-6 pb-24 sm:px-8 lg:ml-20 lg:px-12 lg:py-8 lg:pb-10">
+      <main className="relative flex-1 overflow-x-hidden px-4 py-6 pb-24 sm:px-8 lg:ml-20 lg:px-12 lg:py-8 lg:pb-10">
         <div className="pointer-events-none absolute inset-x-0 top-0 h-80 bg-[radial-gradient(circle_at_24%_0%,rgba(249,115,22,0.22),transparent_36%),radial-gradient(circle_at_78%_12%,rgba(251,146,60,0.13),transparent_32%)]" />
 
         <div className="relative mx-auto max-w-7xl">

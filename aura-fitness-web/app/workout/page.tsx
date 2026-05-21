@@ -203,7 +203,7 @@ export default function WorkoutPage() {
     <div className="flex min-h-screen bg-[#050713] text-foreground">
       <Sidebar />
 
-      <main className="relative flex-1 overflow-hidden px-4 py-6 pb-24 lg:ml-20 lg:px-12 lg:py-8 lg:pb-8">
+      <main className="relative flex-1 overflow-x-hidden px-4 py-6 pb-24 lg:ml-20 lg:px-12 lg:py-8 lg:pb-8">
         <div className="pointer-events-none absolute -right-40 -top-44 h-96 w-96 rounded-full bg-orange-500/10 blur-[110px]" />
         <div className="pointer-events-none absolute left-1/4 top-32 h-72 w-72 rounded-full bg-amber-500/5 blur-[100px]" />
         <div className="pointer-events-none absolute bottom-20 right-1/4 h-80 w-80 rounded-full bg-orange-900/10 blur-[120px]" />

@@ -105,23 +105,23 @@ export default function AICoachPage() {
   return (
     <div className="flex min-h-screen overflow-hidden bg-background text-foreground">
       <Sidebar />
-      <main className="flex min-h-screen w-full items-center justify-center px-3 py-5 pb-28 sm:px-5 lg:ml-20 lg:h-screen lg:p-8">
+      <main className="flex min-h-screen w-full items-stretch justify-center pb-20 lg:ml-20 lg:h-screen lg:items-center lg:p-8">
         
         {/* IPHONE 14 PRO MAX MOCKUP CONTAINER */}
         <motion.div 
-          initial={{ y: 50, opacity: 0, scale: 0.95 }}
-          animate={{ y: 0, opacity: 1, scale: 1 }}
+          initial={false}
+          animate={{ opacity: 1 }}
           transition={springConfig}
-          className="relative flex h-[calc(100vh-8rem)] min-h-[540px] w-full max-w-[400px] flex-col overflow-hidden rounded-[2rem] border-[7px] border-slate-900 bg-background shadow-[0_0_50px_-12px_rgba(0,0,0,0.8)] ring-4 ring-slate-800/50 sm:h-[850px] sm:min-h-[620px] sm:rounded-[3.5rem] sm:border-[12px]"
+          className="relative flex min-h-[calc(100vh-5rem)] w-full flex-col overflow-hidden bg-background shadow-none lg:h-[850px] lg:min-h-[620px] lg:max-w-[400px] lg:rounded-[3.5rem] lg:border-[12px] lg:border-slate-900 lg:shadow-[0_0_50px_-12px_rgba(0,0,0,0.8)] lg:ring-4 lg:ring-slate-800/50"
         >
           {/* Hardware Buttons */}
-          <div className="absolute -left-[9px] top-[120px] h-8 w-1 rounded-l-md bg-slate-900 sm:-left-[14px]"></div> {/* Mute switch */}
-          <div className="absolute -left-[9px] top-[170px] h-14 w-1 rounded-l-md bg-slate-900 sm:-left-[14px]"></div> {/* Vol Up */}
-          <div className="absolute -left-[9px] top-[240px] h-14 w-1 rounded-l-md bg-slate-900 sm:-left-[14px]"></div> {/* Vol Down */}
-          <div className="absolute -right-[9px] top-[200px] h-20 w-1 rounded-r-md bg-slate-900 sm:-right-[14px]"></div> {/* Power */}
+          <div className="absolute -left-[14px] top-[120px] hidden h-8 w-1 rounded-l-md bg-slate-900 lg:block"></div> {/* Mute switch */}
+          <div className="absolute -left-[14px] top-[170px] hidden h-14 w-1 rounded-l-md bg-slate-900 lg:block"></div> {/* Vol Up */}
+          <div className="absolute -left-[14px] top-[240px] hidden h-14 w-1 rounded-l-md bg-slate-900 lg:block"></div> {/* Vol Down */}
+          <div className="absolute -right-[14px] top-[200px] hidden h-20 w-1 rounded-r-md bg-slate-900 lg:block"></div> {/* Power */}
 
           {/* DYNAMIC ISLAND & STATUS BAR */}
-          <div className="absolute top-0 z-50 flex w-full items-center justify-between px-5 pt-4 text-[12px] font-bold tracking-wider text-white sm:px-7 sm:text-[13px]">
+          <div className="absolute top-0 z-50 hidden w-full items-center justify-between px-7 pt-4 text-[13px] font-bold tracking-wider text-white lg:flex">
             <span className="mt-0.5">9:41</span>
             {/* Dynamic Island Pill */}
             <motion.div 
@@ -156,12 +156,12 @@ export default function AICoachPage() {
           </div>
 
           {/* APP HEADER */}
-          <div className="z-40 flex items-center justify-between border-b border-white/5 bg-background/80 px-4 pb-4 pt-16 backdrop-blur-2xl sm:px-6">
+          <div className="z-40 flex items-center justify-between border-b border-white/5 bg-background/95 px-4 py-4 lg:bg-background/80 lg:px-6 lg:pb-4 lg:pt-16 lg:backdrop-blur-2xl">
             <div className="flex items-center gap-3">
               <div className="relative">
                 <motion.div 
-                  whileHover={{ scale: 1.05 }}
-                  className="flex h-11 w-11 items-center justify-center rounded-full bg-gradient-to-br from-primary/30 to-primary/10 text-primary shadow-lg ring-1 ring-primary/20"
+                  whileHover={{ scale: 1.03 }}
+                  className="flex h-10 w-10 items-center justify-center rounded-full bg-primary/15 text-primary ring-1 ring-primary/20 lg:h-11 lg:w-11 lg:bg-gradient-to-br lg:from-primary/30 lg:to-primary/10 lg:shadow-lg"
                 >
                   <Cpu size={22} />
                 </motion.div>
@@ -190,14 +190,11 @@ export default function AICoachPage() {
           </div>
 
           {/* CHAT MESSAGES */}
-          <div ref={scrollRef} className="custom-scrollbar flex-1 space-y-5 overflow-y-auto overflow-x-hidden bg-slate-950/40 p-4 pb-7 sm:space-y-6 sm:p-5 sm:pb-8">
-             <AnimatePresence initial={false}>
+          <div ref={scrollRef} className="custom-scrollbar flex-1 space-y-4 overflow-y-auto overflow-x-hidden bg-slate-950/30 p-4 pb-5 lg:space-y-6 lg:bg-slate-950/40 lg:p-5 lg:pb-8">
+             <>
                {messages.map((m) => (
-                 <motion.div 
+                 <div 
                    key={m.id}
-                   initial={{ opacity: 0, y: 20, scale: 0.95 }}
-                   animate={{ opacity: 1, y: 0, scale: 1 }}
-                   transition={springConfig}
                    className={`flex w-full ${m.sender === "user" ? "justify-end" : "justify-start"}`}
                  >
                     <div className={`flex max-w-[85%] items-end gap-2.5 ${m.sender === "user" ? "flex-row-reverse" : "flex-row"}`}>
@@ -207,10 +204,10 @@ export default function AICoachPage() {
                       </div>
                       
                       {/* Bubble */}
-                      <div className={`relative rounded-[1.25rem] px-4 py-3 shadow-sm ${
+                      <div className={`relative rounded-[1.25rem] px-4 py-3 ${
                           m.sender === "user" 
                             ? "rounded-br-sm bg-primary text-background" 
-                            : "rounded-bl-sm bg-slate-800/90 text-foreground ring-1 ring-white/5 backdrop-blur-md"
+                            : "rounded-bl-sm bg-slate-800/90 text-foreground ring-1 ring-white/5"
                         }`}>
                         <p className="text-[15px] font-medium leading-relaxed whitespace-pre-wrap">{m.text}</p>
                         <div className={`mt-1.5 text-[10px] font-bold ${m.sender === "user" ? "text-background/60" : "text-muted-foreground"}`}>
@@ -218,41 +215,31 @@ export default function AICoachPage() {
                         </div>
                       </div>
                     </div>
-                 </motion.div>
+                 </div>
                ))}
                {isTyping && (
-                 <motion.div 
-                   initial={{ opacity: 0, y: 20, scale: 0.95 }}
-                   animate={{ opacity: 1, y: 0, scale: 1 }}
-                   exit={{ opacity: 0, scale: 0.95, transition: { duration: 0.2 } }}
-                   transition={springConfig}
-                   className="flex w-full justify-start"
-                 >
+                 <div className="flex w-full justify-start">
                     <div className="flex items-end gap-2.5">
                       <div className="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-primary to-emerald-500 text-background shadow-md">
                         <Sparkles size={16} />
                       </div>
-                      <div className="rounded-[1.25rem] rounded-bl-sm bg-slate-800/90 px-4 py-3.5 ring-1 ring-white/5 backdrop-blur-md">
+                      <div className="rounded-[1.25rem] rounded-bl-sm bg-slate-800/90 px-4 py-3.5 ring-1 ring-white/5">
                         <div className="flex gap-1.5 py-1">
-                          <motion.div className="h-1.5 w-1.5 rounded-full bg-primary/60" animate={{ y: [0, -5, 0] }} transition={{ repeat: Infinity, duration: 0.6, delay: 0 }} />
-                          <motion.div className="h-1.5 w-1.5 rounded-full bg-primary/80" animate={{ y: [0, -5, 0] }} transition={{ repeat: Infinity, duration: 0.6, delay: 0.15 }} />
-                          <motion.div className="h-1.5 w-1.5 rounded-full bg-primary" animate={{ y: [0, -5, 0] }} transition={{ repeat: Infinity, duration: 0.6, delay: 0.3 }} />
+                          <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-primary/60" />
+                          <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-primary/80 [animation-delay:120ms]" />
+                          <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-primary [animation-delay:240ms]" />
                         </div>
                       </div>
                     </div>
-                 </motion.div>
+                 </div>
                )}
-             </AnimatePresence>
+              </>
           </div>
 
           {/* INPUT AREA */}
-          <div className="z-40 border-t border-white/5 bg-background/80 px-4 pb-8 pt-3 backdrop-blur-2xl">
+          <div className="z-40 border-t border-white/5 bg-background/95 px-4 pb-4 pt-3 lg:bg-background/80 lg:pb-8 lg:backdrop-blur-2xl">
             {selectedImage && (
-              <motion.div 
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                className="mb-3 relative inline-block"
-              >
+              <div className="relative mb-3 inline-block">
                 <Image
                   src={selectedImage}
                   alt="Preview"
@@ -267,27 +254,23 @@ export default function AICoachPage() {
                 >
                   ✕
                 </button>
-              </motion.div>
+              </div>
             )}
             
             {/* Suggestions */}
             {!selectedImage && messages.length < 3 && (
-              <motion.div 
-                initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.5 }}
-                className="mb-3 flex gap-2 overflow-x-auto pb-1 custom-scrollbar"
-              >
+              <div className="custom-scrollbar mb-3 flex gap-2 overflow-x-auto pb-1">
                 {['Hôm nay ăn gì?', 'Tạo lịch tập', 'Phân tích form'].map((suggestion, i) => (
-                  <motion.button 
-                    whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}
+                  <button 
                     key={i} 
                     type="button"
                     onClick={() => setInput(suggestion)}
-                    className="flex-shrink-0 rounded-full border border-white/5 bg-slate-800/50 px-3.5 py-1.5 text-[12px] font-bold text-slate-300 transition-colors hover:border-primary/30 hover:text-primary"
+                    className="min-h-9 flex-shrink-0 rounded-full border border-white/5 bg-slate-800/70 px-3.5 py-1.5 text-[12px] font-bold text-slate-300 transition-colors hover:border-primary/30 hover:text-primary"
                   >
                     {suggestion}
-                  </motion.button>
+                  </button>
                 ))}
-              </motion.div>
+              </div>
             )}
 
             <form onSubmit={handleSend} className="relative flex items-end gap-2.5">
@@ -298,8 +281,7 @@ export default function AICoachPage() {
                 ref={fileInputRef} 
                 onChange={handleImageSelect}
               />
-              <motion.button 
-                whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.9 }}
+              <button 
                 type="button"
                 onClick={() => fileInputRef.current?.click()}
                 className={`flex h-[42px] w-[42px] flex-shrink-0 items-center justify-center rounded-full transition-all ${
@@ -309,7 +291,7 @@ export default function AICoachPage() {
                 }`}
               >
                 <Sparkles size={20} className={isPremium ? "animate-pulse" : ""} />
-              </motion.button>
+              </button>
 
               <div className="relative flex-1">
                 <input 
@@ -319,25 +301,20 @@ export default function AICoachPage() {
                   placeholder={isPremium ? "Hỏi Aura..." : "Nhập tin nhắn..."}
                   className="h-[42px] w-full rounded-full border border-white/5 bg-slate-900/80 pl-4 pr-11 text-[14px] font-medium text-white placeholder-slate-500 focus:border-primary/50 focus:bg-slate-900 focus:outline-none focus:ring-1 focus:ring-primary/50 transition-all"
                 />
-                <AnimatePresence>
-                  {(input.trim() || selectedImage) && !isTyping && (
-                    <motion.button 
-                      initial={{ scale: 0, opacity: 0 }}
-                      animate={{ scale: 1, opacity: 1 }}
-                      exit={{ scale: 0, opacity: 0 }}
-                      type="submit" 
-                      className="absolute right-1 top-1 flex h-[34px] w-[34px] items-center justify-center rounded-full bg-primary text-background shadow-md transition-transform hover:scale-105 active:scale-95"
-                    >
-                      <Send size={16} className="ml-0.5" />
-                    </motion.button>
-                  )}
-                </AnimatePresence>
+                {(input.trim() || selectedImage) && !isTyping && (
+                  <button 
+                    type="submit" 
+                    className="absolute right-1 top-1 flex h-[34px] w-[34px] items-center justify-center rounded-full bg-primary text-background shadow-md transition-transform hover:scale-105 active:scale-95"
+                  >
+                    <Send size={16} className="ml-0.5" />
+                  </button>
+                )}
               </div>
             </form>
           </div>
 
           {/* HOME INDICATOR */}
-          <div className="absolute bottom-2 left-1/2 z-50 h-1 w-32 -translate-x-1/2 rounded-full bg-white/40"></div>
+          <div className="absolute bottom-2 left-1/2 z-50 hidden h-1 w-32 -translate-x-1/2 rounded-full bg-white/40 lg:block"></div>
         </motion.div>
         
         {/* Right side info area */}

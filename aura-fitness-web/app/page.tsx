@@ -94,7 +94,7 @@ export default function Home() {
   }, [aiAdvice]);
 
   const todayExercises = useMemo(
-    () => todaysPlan?.workoutExercises?.slice(0, 2) ?? [],
+    () => todaysPlan?.workoutExercises ?? [],
     [todaysPlan]
   );
 
@@ -275,7 +275,7 @@ export default function Home() {
                       {todaysPlan?.scheduledDay ? getDayLabel(todaysPlan.scheduledDay) : t("leg_day")}
                     </span>
                   </div>
-                  <div className="space-y-4">
+                  <div className="max-h-[22rem] space-y-4 overflow-y-auto pr-1">
                     {todayExercises.length > 0 ? (
                       todayExercises.map((entry) => (
                         <div

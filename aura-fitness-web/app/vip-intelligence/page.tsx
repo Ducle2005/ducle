@@ -144,7 +144,7 @@ export default function VIPIntelligence() {
       <>
         <div className="flex min-h-screen bg-slate-950">
           <Sidebar />
-          <div className="flex-1 px-6 py-10 lg:ml-20 lg:px-12">
+          <div className="flex-1 px-6 py-10 pb-24 lg:ml-20 lg:px-12 lg:pb-10">
             <div className="mx-auto flex min-h-[calc(100vh-5rem)] max-w-6xl items-center">
               <div className="grid w-full grid-cols-1 gap-8 lg:grid-cols-[1.05fr_0.95fr] lg:items-center">
                 <div>
@@ -211,7 +211,7 @@ export default function VIPIntelligence() {
   return (
     <div className="flex min-h-screen bg-slate-950 text-white">
       <Sidebar />
-      <main className="flex-1 p-8 lg:p-12 overflow-y-auto">
+      <main className="flex-1 overflow-y-auto px-4 py-6 pb-24 sm:p-8 sm:pb-24 lg:p-12 lg:pb-12">
         <AnimatePresence>
           {upgradeNotice && (
             <motion.div
