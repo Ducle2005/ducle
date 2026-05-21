@@ -43,11 +43,26 @@ NEXT_PUBLIC_API_BASE_URL=https://your-backend-domain.example.com/api
 
 After changing this value, redeploy the frontend. `NEXT_PUBLIC_*` values are bundled at build time.
 
+## Vercel Frontend Settings
+
+The Next.js frontend is inside `aura-fitness-web`, not the repository root.
+
+Recommended Vercel project settings:
+
+```text
+Framework Preset: Next.js
+Root Directory: aura-fitness-web
+Install Command: npm ci
+Build Command: npm run build
+```
+
+If the Root Directory is left as the repository root, Vercel cannot find the `package.json` that contains the `next` dependency and will fail with "No Next.js version detected".
+
 ## Deploy Order
 
 1. Push the repository to GitHub.
 2. Create a PostgreSQL database on your backend platform.
-3. Deploy `AuraFitness/backend`.
+3. Deploy the backend service.
 4. Copy the backend public URL.
 5. Add that URL to the frontend as `NEXT_PUBLIC_API_BASE_URL`.
 6. Add the frontend public URL to backend `APP_CORS_ALLOWED_ORIGINS`.

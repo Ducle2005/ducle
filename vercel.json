@@ -1,0 +1,7 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "framework": "nextjs",
+  "installCommand": "cd aura-fitness-web && npm ci",
+  "buildCommand": "cd aura-fitness-web && npm run build",
+  "outputDirectory": "aura-fitness-web/.next"
+}
