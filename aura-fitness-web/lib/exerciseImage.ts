@@ -3,7 +3,7 @@ import { getYouTubeVideoId } from "./video";
 import { getFullImageUrl } from "./api";
 
 function isCustomExerciseImage(url: string) {
-  return url.startsWith("/") || url.includes("/uploads/") || url.startsWith("data:");
+  return url.startsWith("/") || url.startsWith("uploads/") || url.includes("/uploads/") || url.startsWith("data:");
 }
 
 function isExerciseImage(url: string) {
@@ -18,6 +18,18 @@ function escapeSvgText(value: string) {
     .replace(/</g, "&lt;")
     .replace(/>/g, "&gt;")
     .replace(/"/g, "&quot;");
+}
+
+function normalizeRemoteImageUrl(url: string) {
+  if (
+    url.startsWith("http://") &&
+    !url.includes("localhost") &&
+    !url.includes("127.0.0.1")
+  ) {
+    return url.replace(/^http:\/\//, "https://");
+  }
+
+  return url;
 }
 
 export function getExerciseFallbackImageSrc(exercise: Pick<Exercise, "name" | "muscleGroup" | "equipment">): string {
@@ -74,7 +86,11 @@ export function getExerciseImageSrc(exercise: Exercise): string {
       return getFullImageUrl(raw);
     }
 
-    return raw;
+    if (raw.startsWith("uploads/")) {
+      return getFullImageUrl(`/${raw}`);
+    }
+
+    return normalizeRemoteImageUrl(raw);
   }
 
   // Prefer the thumbnail of the actual tutorial video when no valid exercise image exists.

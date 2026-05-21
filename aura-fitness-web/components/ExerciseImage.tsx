@@ -1,6 +1,5 @@
 "use client";
 
-import Image from "next/image";
 import { useEffect, useState } from "react";
 import type { Exercise } from "@/lib/types";
 import { getExerciseFallbackImageSrc, getExerciseImageSrc } from "@/lib/exerciseImage";
@@ -27,16 +26,20 @@ export function ExerciseImage({
     setSrc(getExerciseImageSrc(exercise));
   }, [exercise]);
 
+  const handleError = () => {
+    setSrc((currentSrc) => (currentSrc === fallbackSrc ? currentSrc : fallbackSrc));
+  };
+
   return (
-    <Image
+    <img
       src={src}
       alt={alt || exercise.name}
-      fill
       sizes={sizes}
-      priority={priority}
-      unoptimized
-      className={className}
-      onError={() => setSrc(fallbackSrc)}
+      loading={priority ? "eager" : "lazy"}
+      decoding="async"
+      referrerPolicy="no-referrer"
+      className={`absolute inset-0 h-full w-full ${className || ""}`.trim()}
+      onError={handleError}
     />
   );
 }
