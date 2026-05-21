@@ -51,12 +51,12 @@ export function Sidebar() {
   const primaryMobileNavItems = [
     { icon: Home, label: "Home", href: "/" },
     { icon: Dumbbell, label: "Train", href: "/workout" },
+    { icon: BookOpen, label: "Bài tập", href: "/exercises" },
     { icon: Utensils, label: "Food", href: "/nutrition" },
-    { icon: Activity, label: "Stats", href: "/progress" },
   ];
 
   const secondaryMobileNavItems = [
-    { icon: BookOpen, label: "Exercises", href: "/exercises" },
+    { icon: Activity, label: "Tiến độ", href: "/progress" },
     { icon: MessageCircle, label: "AI Coach", href: "/ai-coach" },
     { icon: BrainCircuit, label: "VIP", href: "/vip-intelligence" },
     { icon: Settings, label: "Settings", href: "/settings" },
