@@ -1,6 +1,8 @@
 package com.gymmanagement.config;
 
 import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -13,12 +15,19 @@ import org.springframework.web.filter.CorsFilter;
 public class CorsConfig {
 
 	@Value("${app.cors.allowed-origin:http://localhost:3000}")
-	private String allowedOrigin;
+	private String allowedOrigins;
 
 	@Bean
 	public CorsFilter corsFilter() {
 		CorsConfiguration config = new CorsConfiguration();
-		config.setAllowedOrigins(Arrays.asList(allowedOrigin));
+		List<String> originPatterns = Arrays.stream(allowedOrigins.split(","))
+				.map(String::trim)
+				.filter(origin -> !origin.isEmpty())
+				.collect(Collectors.toList());
+		originPatterns.add("http://localhost:3000");
+		originPatterns.add("http://localhost:3001");
+		originPatterns.add("https://*.vercel.app");
+		config.setAllowedOriginPatterns(originPatterns);
 		config.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
 		config.setAllowedHeaders(Arrays.asList("Content-Type", "Authorization"));
 		config.setExposedHeaders(Arrays.asList("Authorization"));

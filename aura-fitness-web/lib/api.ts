@@ -1,8 +1,21 @@
-const DEFAULT_API_BASE_URL = "http://localhost:8082/api";
+const LOCAL_API_BASE_URL = "http://localhost:8081/api";
+const PRODUCTION_API_BASE_URL = "https://ducle-backend.onrender.com/api";
+
+function getDefaultApiBaseUrl() {
+  if (typeof window !== "undefined") {
+    const host = window.location.hostname;
+    if (host === "localhost" || host === "127.0.0.1") {
+      return LOCAL_API_BASE_URL;
+    }
+  }
+
+  return PRODUCTION_API_BASE_URL;
+}
+
 const configuredBaseUrl =
   process.env.NEXT_PUBLIC_API_BASE_URL && process.env.NEXT_PUBLIC_API_BASE_URL.trim().length > 0
     ? process.env.NEXT_PUBLIC_API_BASE_URL.trim()
-    : DEFAULT_API_BASE_URL;
+    : getDefaultApiBaseUrl();
 
 export const API_BASE_URL = configuredBaseUrl.replace(/\/+$/, "");
 // Robustly derive BASE_URL (the host without /api)
