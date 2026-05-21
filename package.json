@@ -1,0 +1,12 @@
+{
+  "name": "ducle-deploy-root",
+  "private": true,
+  "scripts": {
+    "build": "npm --prefix aura-fitness-web run build"
+  },
+  "dependencies": {
+    "next": "16.2.1",
+    "react": "19.2.4",
+    "react-dom": "19.2.4"
+  }
+}
