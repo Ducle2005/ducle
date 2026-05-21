@@ -39,6 +39,7 @@ import { apiFetch } from "@/lib/api";
 import { getErrorMessage } from "@/lib/errors";
 import { completeOnboardingPlan } from "@/lib/onboardingPlan";
 import type { JwtAuthResponse } from "@/lib/types";
+import { HelpCenter } from "./HelpCenter";
 
 type OnboardingStep =
   | "gender"
@@ -230,12 +231,14 @@ function Header({
   currentStep,
   totalSteps,
   onBack,
+  onHelp,
 }: {
   step: OnboardingStep;
   progressWidth: string;
   currentStep: number;
   totalSteps: number;
   onBack: () => void;
+  onHelp: () => void;
 }) {
   return (
     <>
@@ -251,7 +254,7 @@ function Header({
         </button>
         <MiniLogo />
         <div className="absolute right-5 top-1/2 hidden -translate-y-1/2 items-center gap-8 text-sm font-black sm:flex">
-          <button className="flex items-center gap-1.5 text-white/90 transition hover:text-[#ff4b12]">
+          <button type="button" onClick={onHelp} className="flex items-center gap-1.5 text-white/90 transition hover:text-[#ff4b12]">
             <HelpCircle size={16} />
             Trợ giúp
           </button>
@@ -405,6 +408,7 @@ export function AuthPage() {
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const [isHelpOpen, setIsHelpOpen] = useState(false);
 
   const { login } = useAuth();
 
@@ -578,6 +582,7 @@ export function AuthPage() {
           currentStep={currentStepIndex + 1}
           totalSteps={steps.length}
           onBack={goBack}
+          onHelp={() => setIsHelpOpen(true)}
         />
       )}
 
@@ -1175,6 +1180,7 @@ export function AuthPage() {
           )}
         </AnimatePresence>
       </main>
+      <HelpCenter isOpen={isHelpOpen} onClose={() => setIsHelpOpen(false)} />
     </div>
   );
 }

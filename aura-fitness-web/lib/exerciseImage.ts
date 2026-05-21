@@ -1,5 +1,6 @@
 import type { Exercise } from "./types";
 import { getYouTubeVideoId } from "./video";
+import { getFullImageUrl } from "./api";
 
 function isCustomExerciseImage(url: string) {
   return url.startsWith("/") || url.includes("/uploads/") || url.startsWith("data:");
@@ -67,6 +68,12 @@ export function getExerciseImageSrc(exercise: Exercise): string {
   // Keep real exercise imagery from backend uploads or external catalog URLs.
   // Onboarding illustrations are intentionally ignored here because they crop badly in exercise cards.
   if (raw && raw.length > 0 && isExerciseImage(raw)) {
+    // If the image is a backend-relative path (e.g. /uploads/...),
+    // convert it to an absolute URL so Next/Image will fetch it directly from the backend.
+    if (raw.startsWith("/")) {
+      return getFullImageUrl(raw);
+    }
+
     return raw;
   }
 

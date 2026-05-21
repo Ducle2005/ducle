@@ -12,13 +12,15 @@ import {
   Dumbbell,
   BookOpen,
   Crown,
-  BrainCircuit
+  BrainCircuit,
+  HelpCircle
 } from "lucide-react";
 import { useLanguage } from "@/context/LanguageContext";
 import { useAuth } from "@/context/AuthContext";
 import { clsx, type ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
 import { UpgradeModal } from "./UpgradeModal";
+import { HelpCenter } from "./HelpCenter";
 
 function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -32,6 +34,7 @@ export function Sidebar() {
   const { user, logout } = useAuth();
   const pathname = usePathname();
   const [isUpgradeOpen, setIsUpgradeOpen] = useState(false);
+  const [isHelpOpen, setIsHelpOpen] = useState(false);
   const isPremium = user?.roles?.includes("ROLE_PREMIUM");
 
   const navItems = [
@@ -115,6 +118,16 @@ export function Sidebar() {
           >
             <Settings size={22} />
           </Link>
+          <button
+            type="button"
+            onClick={() => setIsHelpOpen(true)}
+            className="group relative flex h-12 w-12 items-center justify-center rounded-xl text-muted-foreground transition-all hover:bg-orange-400/10 hover:text-orange-200"
+          >
+            <HelpCircle size={22} />
+            <div className="absolute left-16 z-50 rounded-lg bg-slate-900 px-3 py-1.5 text-xs font-semibold text-white opacity-0 transition-opacity group-hover:opacity-100 shadow-xl border border-border whitespace-nowrap pointer-events-none">
+              Trợ giúp
+            </div>
+          </button>
           <button 
             onClick={logout}
             className="flex h-12 w-12 items-center justify-center rounded-xl text-orange-300 transition-all hover:bg-orange-400/10"
@@ -125,6 +138,7 @@ export function Sidebar() {
       </aside>
 
       <UpgradeModal isOpen={isUpgradeOpen} onClose={() => setIsUpgradeOpen(false)} />
+      <HelpCenter isOpen={isHelpOpen} onClose={() => setIsHelpOpen(false)} />
 
       {/* Mobile Bottom Navigation */}
       <nav className="fixed bottom-0 left-0 right-0 z-50 flex items-center gap-0.5 overflow-x-auto border-t border-orange-200/10 bg-[#070a15]/95 px-2 py-2 shadow-2xl shadow-black/40 backdrop-blur-xl mobile-nav-safe lg:hidden">

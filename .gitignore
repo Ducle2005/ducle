@@ -18,3 +18,13 @@ AuraFitness/backend/.m2/
 AuraFitness/backend/.env
 aura-fitness-web/.env.local
 aura-fitness-web/.env.production
+jdk21/
+node_modules/
+dist/
+build/
+target/
+.env
+.env.*
+.vscode/
+.idea/
+*.log

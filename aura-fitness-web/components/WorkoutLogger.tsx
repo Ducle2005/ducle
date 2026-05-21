@@ -309,7 +309,7 @@ export function WorkoutLogger({ isOpen, onClose, onComplete, planId }: WorkoutLo
       await workoutApi.saveSessionSets(session.id, buildPayload());
       setSaveState("saved");
     } catch (error) {
-      console.error("Autosave failed:", error);
+      console.error("Autosave failed:", getErrorMessage(error, "Tự động lưu thất bại"), error);
       setSaveState("error");
     }
   }, [buildPayload, session, showSummary]);

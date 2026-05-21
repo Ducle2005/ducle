@@ -49,8 +49,32 @@ export async function apiFetch<T>(endpoint: string, options: RequestInit = {}) {
       localStorage.removeItem("auth-token");
       window.dispatchEvent(new CustomEvent("auth:unauthorized"));
     }
-    const errorData = await response.json().catch(() => ({}));
-    throw new Error(errorData.message || `API error: ${response.status}`);
+
+    const contentType = response.headers.get("content-type") || "";
+    let parsedBody: any = null;
+    let bodyMessage = "";
+
+    if (contentType.includes("application/json")) {
+      parsedBody = await response.json().catch(() => null);
+      if (parsedBody && typeof parsedBody === "object") {
+        bodyMessage = parsedBody.message || parsedBody.error || JSON.stringify(parsedBody);
+      } else if (typeof parsedBody === "string") {
+        bodyMessage = parsedBody;
+      }
+    } else {
+      bodyMessage = await response.text().catch(() => "");
+    }
+
+    const statusText = response.statusText ? ` ${response.statusText}` : "";
+    const message = (bodyMessage && String(bodyMessage).trim()) || `API error: ${response.status}${statusText}`;
+
+    const error = new Error(message);
+    // Attach extra metadata for callers/tests if needed
+    (error as any).status = response.status;
+    (error as any).statusText = response.statusText;
+    (error as any).body = parsedBody ?? bodyMessage;
+
+    throw error;
   }
 
   // Handle case where response might be empty or plain text (like register success)
