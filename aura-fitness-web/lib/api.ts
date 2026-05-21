@@ -1,4 +1,4 @@
-const LOCAL_API_BASE_URL = "http://localhost:8081/api";
+const LOCAL_API_BASE_URL = "http://localhost:8082/api";
 const PRODUCTION_API_BASE_URL = "https://ducle-backend.onrender.com/api";
 
 function getDefaultApiBaseUrl() {
@@ -17,9 +17,26 @@ const configuredBaseUrl =
     ? process.env.NEXT_PUBLIC_API_BASE_URL.trim()
     : getDefaultApiBaseUrl();
 
-export const API_BASE_URL = configuredBaseUrl.replace(/\/+$/, "");
+function normalizeApiBaseUrl(url: string) {
+  const withoutTrailingSlash = url.replace(/\/+$/, "");
+  return withoutTrailingSlash.endsWith("/api") ? withoutTrailingSlash : `${withoutTrailingSlash}/api`;
+}
+
+export const API_BASE_URL = normalizeApiBaseUrl(configuredBaseUrl);
 // Robustly derive BASE_URL (the host without /api)
 export const BASE_URL = API_BASE_URL.replace(/\/api$/, "").replace(/\/+$/, "");
+
+type ApiErrorBody = {
+  message?: unknown;
+  error?: unknown;
+  [key: string]: unknown;
+};
+
+type ApiError = Error & {
+  status: number;
+  statusText: string;
+  body: unknown;
+};
 
 /**
  * Ensures an image URL is absolute, prepending the backend BASE_URL if necessary.
@@ -64,13 +81,15 @@ export async function apiFetch<T>(endpoint: string, options: RequestInit = {}) {
     }
 
     const contentType = response.headers.get("content-type") || "";
-    let parsedBody: any = null;
+    let parsedBody: unknown = null;
     let bodyMessage = "";
 
     if (contentType.includes("application/json")) {
       parsedBody = await response.json().catch(() => null);
       if (parsedBody && typeof parsedBody === "object") {
-        bodyMessage = parsedBody.message || parsedBody.error || JSON.stringify(parsedBody);
+        const errorBody = parsedBody as ApiErrorBody;
+        const serverMessage = errorBody.message ?? errorBody.error;
+        bodyMessage = typeof serverMessage === "string" ? serverMessage : JSON.stringify(serverMessage ?? errorBody);
       } else if (typeof parsedBody === "string") {
         bodyMessage = parsedBody;
       }
@@ -81,11 +100,11 @@ export async function apiFetch<T>(endpoint: string, options: RequestInit = {}) {
     const statusText = response.statusText ? ` ${response.statusText}` : "";
     const message = (bodyMessage && String(bodyMessage).trim()) || `API error: ${response.status}${statusText}`;
 
-    const error = new Error(message);
+    const error = new Error(message) as ApiError;
     // Attach extra metadata for callers/tests if needed
-    (error as any).status = response.status;
-    (error as any).statusText = response.statusText;
-    (error as any).body = parsedBody ?? bodyMessage;
+    error.status = response.status;
+    error.statusText = response.statusText;
+    error.body = parsedBody ?? bodyMessage;
 
     throw error;
   }
