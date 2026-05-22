@@ -24,11 +24,11 @@ interface CreatePlanModalProps {
 
 const DAY_OPTIONS = ["", "MONDAY", "TUESDAY", "WEDNESDAY", "THURSDAY", "FRIDAY", "SATURDAY", "SUNDAY"];
 const GOAL_OPTIONS = [
-  { value: "", label: "Tuy chon" },
-  { value: "HYPERTROPHY", label: "Tang co" },
-  { value: "STRENGTH", label: "Tang suc manh" },
-  { value: "ENDURANCE", label: "Suc ben" },
-  { value: "DELOAD", label: "Deload/phuc hoi" },
+  { value: "", label: "Tùy chọn" },
+  { value: "HYPERTROPHY", label: "Tăng cơ" },
+  { value: "STRENGTH", label: "Tăng sức mạnh" },
+  { value: "ENDURANCE", label: "Sức bền" },
+  { value: "DELOAD", label: "Giảm tải / phục hồi" },
 ];
 
 function createDraft(exercise: Exercise, sortOrder: number): WorkoutPlanExerciseDraft {
@@ -69,7 +69,7 @@ export function CreatePlanModal({ isOpen, onClose, onCreated, initialPlan }: Cre
       .then((response) => setCatalog(response.content))
       .catch((error: unknown) => {
         console.error("Failed to load exercise catalog:", error);
-        setError(getErrorMessage(error, "Khong the tai danh sach bai tap luc nay."));
+        setError(getErrorMessage(error, "Không thể tải danh sách bài tập lúc này."));
       })
       .finally(() => setIsLoading(false));
   }, [isOpen]);
@@ -159,11 +159,11 @@ export function CreatePlanModal({ isOpen, onClose, onCreated, initialPlan }: Cre
 
   const handleSubmit = async () => {
     if (!name.trim()) {
-      setError("Vui long dat ten cho giao an.");
+      setError("Vui lòng đặt tên cho giáo án.");
       return;
     }
     if (selectedExercises.length === 0) {
-      setError("Hay them it nhat mot bai tap de tao giao an.");
+      setError("Hãy thêm ít nhất một bài tập để tạo giáo án.");
       return;
     }
 
@@ -197,7 +197,7 @@ export function CreatePlanModal({ isOpen, onClose, onCreated, initialPlan }: Cre
       onClose();
     } catch (error: unknown) {
       console.error("Failed to save workout plan:", error);
-      setError(getErrorMessage(error, "Khong the luu giao an tap luyen."));
+      setError(getErrorMessage(error, "Không thể lưu giáo án tập luyện."));
     } finally {
       setIsSaving(false);
     }
@@ -226,10 +226,10 @@ export function CreatePlanModal({ isOpen, onClose, onCreated, initialPlan }: Cre
             <div className="mb-6 flex items-start justify-between gap-4">
               <div>
                 <h2 className="text-2xl font-black uppercase tracking-tight">
-                  {isEditing ? "Chinh sua giao an" : "Tao giao an tap luyen"}
+                  {isEditing ? "Chỉnh sửa giáo án" : "Tạo giáo án tập luyện"}
                 </h2>
                 <p className="mt-1 text-sm text-muted-foreground">
-                  Thiet lap program, thu tu bai, tempo, rest time va ghi chu ky thuat.
+                  Thiết lập chương trình, thứ tự bài, nhịp nâng, thời gian nghỉ và ghi chú kỹ thuật.
                 </p>
               </div>
               <button onClick={onClose} className="rounded-xl p-3 text-muted-foreground transition-all hover:bg-white/5">
@@ -238,9 +238,9 @@ export function CreatePlanModal({ isOpen, onClose, onCreated, initialPlan }: Cre
             </div>
 
             <div className="mb-5 grid grid-cols-1 gap-4 md:grid-cols-2">
-              <TextField label="Ten giao an" value={name} onChange={setName} placeholder="Upper Push - Strength" />
+              <TextField label="Tên giáo án" value={name} onChange={setName} placeholder="Đẩy thân trên - Sức mạnh" />
               <label className="space-y-2">
-                <span className="text-xs font-black uppercase tracking-widest text-muted-foreground">Ngay tap</span>
+                <span className="text-xs font-black uppercase tracking-widest text-muted-foreground">Ngày tập</span>
                 <select
                   value={scheduledDay}
                   onChange={(event) => setScheduledDay(event.target.value)}
@@ -257,7 +257,7 @@ export function CreatePlanModal({ isOpen, onClose, onCreated, initialPlan }: Cre
 
             <div className="mb-5 grid grid-cols-1 gap-4 md:grid-cols-2">
               <label className="space-y-2">
-                <span className="text-xs font-black uppercase tracking-widest text-muted-foreground">Muc tieu</span>
+                <span className="text-xs font-black uppercase tracking-widest text-muted-foreground">Mục tiêu</span>
                 <select
                   value={goal}
                   onChange={(event) => setGoal(event.target.value)}
@@ -271,20 +271,20 @@ export function CreatePlanModal({ isOpen, onClose, onCreated, initialPlan }: Cre
                 </select>
               </label>
               <MetricInput
-                label="Tuan program"
+                label="Tuần chương trình"
                 value={programWeek}
                 onChange={(value) => setProgramWeek(value === 0 ? "" : value)}
               />
             </div>
 
             <label className="mb-5 block space-y-2">
-              <span className="text-xs font-black uppercase tracking-widest text-muted-foreground">Mo ta</span>
+              <span className="text-xs font-black uppercase tracking-widest text-muted-foreground">Mô tả</span>
               <textarea
                 value={description}
                 onChange={(event) => setDescription(event.target.value)}
                 rows={3}
                 className="w-full rounded-xl border border-white/10 bg-white/5 px-4 py-3 text-sm outline-none transition-all focus:border-primary/40"
-                placeholder="Muc tieu, phase, deload hoac ghi chu rieng cho buoi nay."
+                placeholder="Mục tiêu, giai đoạn, giảm tải hoặc ghi chú riêng cho buổi này."
               />
             </label>
 
@@ -294,7 +294,7 @@ export function CreatePlanModal({ isOpen, onClose, onCreated, initialPlan }: Cre
                 value={search}
                 onChange={(event) => setSearch(event.target.value)}
                 className="w-full rounded-xl border border-white/10 bg-white/5 py-3 pl-10 pr-4 text-sm outline-none transition-all focus:border-primary/40"
-                placeholder="Tim bai tap de them"
+                placeholder="Tìm bài tập để thêm"
               />
             </div>
 
@@ -305,7 +305,7 @@ export function CreatePlanModal({ isOpen, onClose, onCreated, initialPlan }: Cre
                 ))
               ) : filteredCatalog.length === 0 ? (
                 <div className="rounded-2xl border border-dashed border-white/10 p-6 text-sm text-muted-foreground md:col-span-2">
-                  Khong co bai tap phu hop voi bo loc nay.
+                  Không có bài tập phù hợp với bộ lọc này.
                 </div>
               ) : (
                 filteredCatalog.map((exercise) => (
@@ -340,11 +340,11 @@ export function CreatePlanModal({ isOpen, onClose, onCreated, initialPlan }: Cre
           <section className="flex min-h-0 flex-col p-6 lg:p-8">
             <div className="mb-5 flex items-center justify-between">
               <div>
-                <h3 className="text-xl font-black uppercase tracking-tight">Program builder</h3>
-                <p className="mt-1 text-sm text-muted-foreground">Dung nut len/xuong de sap xep bai tap.</p>
+                <h3 className="text-xl font-black uppercase tracking-tight">Trình tạo giáo án</h3>
+                <p className="mt-1 text-sm text-muted-foreground">Dùng nút lên/xuống để sắp xếp bài tập.</p>
               </div>
               <div className="rounded-2xl border border-primary/20 bg-primary/5 px-4 py-3 text-right">
-                <div className="text-[10px] font-black uppercase tracking-widest text-primary">Bai tap</div>
+                <div className="text-[10px] font-black uppercase tracking-widest text-primary">Bài tập</div>
                 <div className="text-2xl font-black">{selectedExercises.length}</div>
               </div>
             </div>
@@ -358,15 +358,15 @@ export function CreatePlanModal({ isOpen, onClose, onCreated, initialPlan }: Cre
             <div className="min-h-0 flex-1 space-y-4 overflow-y-auto pr-1">
               {selectedExercises.length === 0 ? (
                 <div className="rounded-3xl border border-dashed border-white/10 bg-white/5 p-8 text-center">
-                  <h4 className="text-lg font-black">Chua chon bai tap</h4>
-                  <p className="mt-2 text-sm text-muted-foreground">Them bai tu danh muc de bat dau tao buoi tap.</p>
+                  <h4 className="text-lg font-black">Chưa chọn bài tập</h4>
+                  <p className="mt-2 text-sm text-muted-foreground">Thêm bài từ danh mục để bắt đầu tạo buổi tập.</p>
                 </div>
               ) : (
                 selectedExercises.map((entry, index) => (
                   <div key={entry.exercise.id} className="rounded-3xl border border-white/10 bg-white/5 p-5">
                     <div className="mb-4 flex items-start justify-between gap-4">
                       <div>
-                        <div className="text-[10px] font-black uppercase tracking-widest text-primary">Vi tri {index + 1}</div>
+                        <div className="text-[10px] font-black uppercase tracking-widest text-primary">Vị trí {index + 1}</div>
                         <h4 className="text-lg font-black">{entry.exercise.name}</h4>
                         <p className="mt-1 text-xs text-muted-foreground">
                           {getMuscleGroupLabel(entry.exercise.muscleGroup)} - {getDifficultyLabel(entry.exercise.difficulty)}
@@ -389,10 +389,10 @@ export function CreatePlanModal({ isOpen, onClose, onCreated, initialPlan }: Cre
                     </div>
 
                     <div className="grid grid-cols-3 gap-3">
-                      <MetricInput label="Hiep" value={entry.targetSets} onChange={(value) => updateExercise(entry.exercise.id, { targetSets: value })} />
-                      <MetricInput label="Reps" value={entry.targetReps} onChange={(value) => updateExercise(entry.exercise.id, { targetReps: value })} />
+                      <MetricInput label="Hiệp" value={entry.targetSets} onChange={(value) => updateExercise(entry.exercise.id, { targetSets: value })} />
+                      <MetricInput label="Lần" value={entry.targetReps} onChange={(value) => updateExercise(entry.exercise.id, { targetReps: value })} />
                       <MetricInput
-                        label="Ta"
+                        label="Tạ"
                         value={entry.targetWeight ?? ""}
                         step="0.5"
                         onChange={(value) => updateExercise(entry.exercise.id, { targetWeight: value === 0 ? null : value })}
@@ -401,18 +401,18 @@ export function CreatePlanModal({ isOpen, onClose, onCreated, initialPlan }: Cre
 
                     <div className="mt-3 grid grid-cols-3 gap-3">
                       <MetricInput label="Nghi" value={entry.restSeconds ?? ""} onChange={(value) => updateExercise(entry.exercise.id, { restSeconds: value })} />
-                      <TextField label="Tempo" value={entry.tempo || ""} onChange={(value) => updateExercise(entry.exercise.id, { tempo: value })} placeholder="3-1-1" compact />
-                      <TextField label="Superset" value={entry.supersetGroup || ""} onChange={(value) => updateExercise(entry.exercise.id, { supersetGroup: value })} placeholder="A1" compact />
+                      <TextField label="Nhịp nâng" value={entry.tempo || ""} onChange={(value) => updateExercise(entry.exercise.id, { tempo: value })} placeholder="3-1-1" compact />
+                      <TextField label="Nhóm ghép" value={entry.supersetGroup || ""} onChange={(value) => updateExercise(entry.exercise.id, { supersetGroup: value })} placeholder="A1" compact />
                     </div>
 
                     <label className="mt-3 block space-y-2">
-                      <span className="text-[10px] font-black uppercase tracking-widest text-muted-foreground">Ghi chu</span>
+                      <span className="text-[10px] font-black uppercase tracking-widest text-muted-foreground">Ghi chú</span>
                       <textarea
                         value={entry.notes || ""}
                         onChange={(event) => updateExercise(entry.exercise.id, { notes: event.target.value })}
                         rows={2}
                         className="w-full rounded-xl border border-white/10 bg-slate-950 px-3 py-3 text-sm outline-none transition-all focus:border-primary/40"
-                        placeholder="Cue ky thuat, bien do, thay the bai, muc do nang..."
+                        placeholder="Gợi ý kỹ thuật, biên độ, bài thay thế, mức độ nặng..."
                       />
                     </label>
                   </div>
@@ -425,14 +425,14 @@ export function CreatePlanModal({ isOpen, onClose, onCreated, initialPlan }: Cre
                 onClick={onClose}
                 className="flex-1 rounded-2xl border border-white/10 px-4 py-4 text-sm font-black uppercase tracking-widest text-muted-foreground transition-all hover:border-primary/30 hover:text-primary"
               >
-                Huy
+                Hủy
               </button>
               <button
                 onClick={handleSubmit}
                 disabled={isSaving}
                 className="flex-1 rounded-2xl bg-primary px-4 py-4 text-sm font-black uppercase tracking-widest text-background shadow-lg shadow-primary/20 transition-all hover:scale-[1.01] disabled:opacity-60"
               >
-                {isSaving ? "Dang luu..." : isEditing ? "Luu thay doi" : "Tao giao an"}
+                {isSaving ? "Đang lưu..." : isEditing ? "Lưu thay đổi" : "Tạo giáo án"}
               </button>
             </div>
           </section>

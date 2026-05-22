@@ -96,7 +96,7 @@ export function AvatarUpload({ currentAvatarUrl, onUploadSuccess, token }: Avata
         className="hidden"
       />
       
-      <p className="text-sm text-slate-400">JPG, GIF or PNG. Max size of 800K</p>
+      <p className="text-sm text-slate-400">Hỗ trợ JPG, GIF hoặc PNG. Dung lượng tối đa 800KB</p>
     </div>
   );
 }

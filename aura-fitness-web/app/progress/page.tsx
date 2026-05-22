@@ -260,7 +260,7 @@ export default function ProgressPage() {
                 <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-primary/20 text-primary">
                   <ArrowUpRight size={20} />
                 </div>
-                <span className="text-xs font-black uppercase tracking-widest text-primary">Mẹo từ AI Coach</span>
+                <span className="text-xs font-black uppercase tracking-widest text-primary">Mẹo từ huấn luyện AI</span>
               </div>
               <p className="text-sm italic leading-relaxed text-muted-foreground">{coachTip}</p>
             </motion.div>

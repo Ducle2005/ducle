@@ -247,7 +247,7 @@ export default function Home() {
                       onClick={() => router.push("/ai-coach")}
                       className="rounded-full px-4 py-2 text-xs font-bold transition-all hover:bg-primary hover:text-background glass"
                     >
-                      Mở AI Coach
+                      Mở huấn luyện AI
                     </button>
                     <button
                       onClick={() => router.push("/nutrition")}

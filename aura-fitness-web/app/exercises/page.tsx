@@ -218,7 +218,7 @@ export default function ExercisesPage() {
                 <div className="relative flex h-full flex-col justify-between">
                   <div className="flex items-center justify-between">
                     <span className="rounded-full border border-primary/25 bg-primary/10 px-3 py-1 text-[10px] font-black uppercase tracking-[0.24em] text-primary">
-                      Coach view
+                      Chế độ huấn luyện
                     </span>
                     <Sparkles className="text-primary" size={20} />
                   </div>

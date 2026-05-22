@@ -54,8 +54,8 @@ export function WorkoutInsights({ history, plans }: WorkoutInsightsProps) {
     <section className="rounded-3xl border border-orange-200/10 bg-gradient-to-br from-white/[0.055] via-white/[0.028] to-orange-500/[0.025] p-5 shadow-2xl shadow-black/20 ring-1 ring-white/[0.025] lg:p-6">
       <div className="mb-5 flex items-center justify-between">
         <div>
-          <h2 className="text-lg font-black uppercase tracking-tight text-orange-50 lg:text-xl">Phan tich tap luyen</h2>
-          <p className="mt-1 text-xs text-orange-100/52">Tong hop nhanh nhu mot dashboard coach.</p>
+          <h2 className="text-lg font-black uppercase tracking-tight text-orange-50 lg:text-xl">Phân tích tập luyện</h2>
+          <p className="mt-1 text-xs text-orange-100/52">Tổng hợp nhanh như bảng điều khiển huấn luyện.</p>
         </div>
         <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-orange-400/10 text-orange-300 ring-1 ring-orange-400/20">
           <BarChart3 size={22} />
@@ -71,11 +71,11 @@ export function WorkoutInsights({ history, plans }: WorkoutInsightsProps) {
         />
         <InsightCard
           icon={Activity}
-          label="Volume 7 ngay"
+          label="Khối lượng 7 ngày"
           value={`${(insights.weeklyVolume / 1000).toFixed(1)}k kg`}
           detail={insights.volumeDelta == null ? "Can them lich su de so sanh" : `${insights.volumeDelta >= 0 ? "+" : ""}${insights.volumeDelta.toFixed(0)}% so voi buoi truoc`}
         />
-        <InsightCard icon={Gauge} label="Hoi phuc" value="Coach hint" detail={insights.recoveryHint} />
+        <InsightCard icon={Gauge} label="Phục hồi" value="Gợi ý huấn luyện" detail={insights.recoveryHint} />
       </div>
 
       {insights.muscleBalance.length > 0 && (

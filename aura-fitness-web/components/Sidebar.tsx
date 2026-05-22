@@ -45,21 +45,21 @@ export function Sidebar() {
     { icon: Utensils, label: t("nutrition"), href: "/nutrition" },
     { icon: Activity, label: t("progress"), href: "/progress" },
     { icon: MessageCircle, label: t("ai_coach_nav"), href: "/ai-coach" },
-    { icon: BrainCircuit, label: "VIP Intelligence", href: "/vip-intelligence" },
+    { icon: BrainCircuit, label: "Trí tuệ VIP", href: "/vip-intelligence" },
   ];
 
   const primaryMobileNavItems = [
-    { icon: Home, label: "Home", href: "/" },
-    { icon: Dumbbell, label: "Train", href: "/workout" },
+    { icon: Home, label: "Tổng quan", href: "/" },
+    { icon: Dumbbell, label: "Tập luyện", href: "/workout" },
     { icon: BookOpen, label: "Bài tập", href: "/exercises" },
-    { icon: Utensils, label: "Food", href: "/nutrition" },
+    { icon: Utensils, label: "Ăn uống", href: "/nutrition" },
   ];
 
   const secondaryMobileNavItems = [
     { icon: Activity, label: "Tiến độ", href: "/progress" },
-    { icon: MessageCircle, label: "AI Coach", href: "/ai-coach" },
+    { icon: MessageCircle, label: "Huấn luyện AI", href: "/ai-coach" },
     { icon: BrainCircuit, label: "VIP", href: "/vip-intelligence" },
-    { icon: Settings, label: "Settings", href: "/settings" },
+    { icon: Settings, label: "Cài đặt", href: "/settings" },
   ];
 
   const isSecondaryActive = secondaryMobileNavItems.some((item) => pathname === item.href);
@@ -119,7 +119,7 @@ export function Sidebar() {
             >
               <Crown size={22} className="animate-pulse" />
               <div className="pointer-events-none absolute left-16 z-50 whitespace-nowrap rounded-lg border border-amber-500/20 bg-slate-900 px-3 py-1.5 text-xs font-black uppercase text-amber-500 opacity-0 shadow-xl transition-opacity group-hover:opacity-100">
-                Upgrade VIP
+                Nâng cấp VIP
               </div>
             </button>
           )}
@@ -136,7 +136,7 @@ export function Sidebar() {
           >
             <HelpCircle size={22} />
             <div className="pointer-events-none absolute left-16 z-50 whitespace-nowrap rounded-lg border border-border bg-slate-900 px-3 py-1.5 text-xs font-semibold text-white opacity-0 shadow-xl transition-opacity group-hover:opacity-100">
-              Help
+              Trợ giúp
             </div>
           </button>
           <button
@@ -156,15 +156,15 @@ export function Sidebar() {
         <>
           <button
             type="button"
-            aria-label="Close menu"
+            aria-label="Đóng menu"
             onClick={closeMobileMenu}
-            className="fixed inset-0 z-40 bg-black/45 lg:hidden"
+            className="fixed inset-0 z-40 bg-black/60 backdrop-blur-sm lg:hidden transition-all"
           />
-          <div className="fixed inset-x-3 bottom-24 z-50 rounded-2xl border border-orange-200/10 bg-[#080b16] p-3 shadow-2xl shadow-black/50 lg:hidden">
+          <div className="fixed inset-x-4 bottom-28 z-50 rounded-3xl border border-white/10 bg-[#080b16]/90 p-4 shadow-[0_0_40px_rgba(0,0,0,0.6)] backdrop-blur-xl lg:hidden">
             <div className="mb-3 flex items-center justify-between px-1">
               <div>
-                <p className="text-[10px] font-black uppercase tracking-[0.24em] text-primary">Aura menu</p>
-                <h3 className="mt-1 text-sm font-black">Quick access</h3>
+                <p className="text-[10px] font-black uppercase tracking-[0.24em] text-primary">Menu Aura</p>
+                <h3 className="mt-1 text-sm font-black">Truy cập nhanh</h3>
               </div>
               {!isPremium && (
                 <button
@@ -214,7 +214,7 @@ export function Sidebar() {
                 <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-white/5">
                   <HelpCircle size={21} />
                 </div>
-                <span className="text-xs font-black leading-tight sm:text-sm">Help</span>
+                <span className="text-xs font-black leading-tight sm:text-sm">Trợ giúp</span>
               </button>
               <button
                 type="button"
@@ -224,7 +224,7 @@ export function Sidebar() {
                 <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-rose-500/10">
                   <LogOut size={21} />
                 </div>
-                <span className="text-xs font-black leading-tight sm:text-sm">Logout</span>
+                <span className="text-xs font-black leading-tight sm:text-sm">Đăng xuất</span>
               </button>
             </div>
           </div>
@@ -260,7 +260,7 @@ export function Sidebar() {
           )}
         >
           <MoreHorizontal size={20} />
-          <span className="max-w-full truncate text-[10px] font-black leading-none">More</span>
+          <span className="max-w-full truncate text-[10px] font-black leading-none">Thêm</span>
           {(isMobileMenuOpen || isSecondaryActive) && (
             <span className="absolute -top-2 h-1 w-8 rounded-full bg-gradient-to-r from-orange-300 to-orange-600" />
           )}

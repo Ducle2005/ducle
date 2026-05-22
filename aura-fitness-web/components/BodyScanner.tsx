@@ -341,7 +341,7 @@ export function BodyScanner({ onClose, onScanComplete, userHeight, gender }: Bod
                         {!isReady && (
                             <div className="absolute inset-0 flex flex-col items-center justify-center text-white z-10 bg-slate-900">
                                 <Loader2 size={48} className="animate-spin text-amber-500 mb-4" />
-                                <div className="text-xs font-black uppercase tracking-widest italic text-center">Aura Neural Engine Initializing...</div>
+                                <div className="text-xs font-black uppercase tracking-widest italic text-center">Đang khởi tạo AI Aura...</div>
                             </div>
                         )}
                         {error && (
@@ -381,10 +381,10 @@ export function BodyScanner({ onClose, onScanComplete, userHeight, gender }: Bod
                                     <div className="w-full max-w-sm rounded-[32px] bg-slate-900/90 p-6 md:p-8 backdrop-blur-2xl border border-white/10 shadow-3xl overflow-y-auto max-h-[80vh]">
                                         <div className="flex flex-col items-center mb-6">
                                             <div className="p-3 rounded-full bg-emerald-500/10 mb-3 border border-emerald-500/20"><ShieldCheck size={32} className="text-emerald-500" /></div>
-                                            <h2 className="text-xl font-black italic uppercase text-white">Analysis Complete</h2>
+                                            <h2 className="text-xl font-black italic uppercase text-white">Phân tích hoàn tất</h2>
                                         </div>
                                         <div className="grid grid-cols-2 gap-3 mb-6">
-                                            {[["Body Fat", `${finalMetrics.bodyFat}%`], ["Chest", `${finalMetrics.chest}cm`], ["Waist", `${finalMetrics.waist}cm`], ["Hips", `${finalMetrics.hips}cm`]].map(([label, val]) => (
+                                            {[["Mỡ cơ thể", `${finalMetrics.bodyFat}%`], ["Ngực", `${finalMetrics.chest}cm`], ["Eo", `${finalMetrics.waist}cm`], ["Hông", `${finalMetrics.hips}cm`]].map(([label, val]) => (
                                                 <div key={label} className="bg-white/5 rounded-2xl p-3 border border-white/5 text-center">
                                                     <div className="text-[8px] font-black text-white/40 uppercase mb-1">{label}</div>
                                                     <div className="text-xl font-black text-white">{val}</div>
@@ -414,21 +414,21 @@ export function BodyScanner({ onClose, onScanComplete, userHeight, gender }: Bod
 
                     <div className="w-full lg:w-80 bg-slate-900 p-6 md:p-8 flex flex-col border-l border-white/5 overflow-y-auto">
                         <div className="mb-8">
-                            <div className="flex items-center gap-3 mb-2"><div className="bg-emerald-500/20 p-2 rounded-lg text-emerald-500"><Activity size={18} /></div><h3 className="font-black italic uppercase text-white">AI Biometrics</h3></div>
-                            <p className="text-[10px] text-slate-400 font-medium leading-relaxed">Đứng cách camera 2m. Đảm bảo toàn bộ cơ thể trong khung Silhouette để AI có kết quả chuẩn nhất.</p>
+                            <div className="flex items-center gap-3 mb-2"><div className="bg-emerald-500/20 p-2 rounded-lg text-emerald-500"><Activity size={18} /></div><h3 className="font-black italic uppercase text-white">Sinh trắc AI</h3></div>
+                            <p className="text-[10px] text-slate-400 font-medium leading-relaxed">Đứng cách camera 2m. Đảm bảo toàn bộ cơ thể nằm trong khung dáng người để AI có kết quả chuẩn nhất.</p>
                         </div>
                         <div className="flex-1 space-y-4">
                             <div className="p-4 rounded-2xl bg-slate-950 border border-white/5">
-                                <div className="text-[8px] font-black text-slate-500 uppercase tracking-widest mb-3">Live Telemetry</div>
+                                <div className="text-[8px] font-black text-slate-500 uppercase tracking-widest mb-3">Dữ liệu trực tiếp</div>
                                 <div className="space-y-3">
-                                    {[["Chest", metrics.chest], ["Waist", metrics.waist], ["Hips", metrics.hips], ["Body Fat", `${metrics.bodyFat}%`]].map(([l, v]) => (
-                                        <div key={l} className="flex justify-between items-center"><span className="text-[10px] font-bold text-slate-400">{l}</span><span className={`text-xs font-black ${l==='Body Fat'?'text-emerald-500':'text-white'}`}>{v} {l!=='Body Fat'&&'cm'}</span></div>
+                                    {[["Ngực", metrics.chest], ["Eo", metrics.waist], ["Hông", metrics.hips], ["Mỡ cơ thể", `${metrics.bodyFat}%`]].map(([l, v]) => (
+                                        <div key={l} className="flex justify-between items-center"><span className="text-[10px] font-bold text-slate-400">{l}</span><span className={`text-xs font-black ${l==='Mỡ cơ thể'?'text-emerald-500':'text-white'}`}>{v} {l!=='Mỡ cơ thể'&&'cm'}</span></div>
                                     ))}
                                 </div>
                             </div>
                             {isScanning && (
                                 <div className="space-y-2">
-                                    <div className="flex justify-between text-[8px] font-black text-emerald-500 uppercase tracking-widest"><span>Analyzing...</span><span>{scanProgress}%</span></div>
+                                    <div className="flex justify-between text-[8px] font-black text-emerald-500 uppercase tracking-widest"><span>Đang phân tích...</span><span>{scanProgress}%</span></div>
                                     <div className="h-1 w-full bg-white/5 rounded-full overflow-hidden"><motion.div initial={{ width: 0 }} animate={{ width: `${scanProgress}%` }} className="h-full bg-emerald-500 shadow-[0_0_10px_#10b981]" /></div>
                                 </div>
                             )}
@@ -439,7 +439,7 @@ export function BodyScanner({ onClose, onScanComplete, userHeight, gender }: Bod
                                     {autoScanCountdown !== null ? `BẮT ĐẦU TRONG ${autoScanCountdown}s` : "Bắt đầu quét AI"}
                                 </button>
                             ) : null}
-                            <div className="mt-4 text-center text-[8px] font-black text-slate-600 uppercase tracking-widest">Aura VIP Intelligence v1.0</div>
+                            <div className="mt-4 text-center text-[8px] font-black text-slate-600 uppercase tracking-widest">Trí tuệ VIP Aura v1.0</div>
                         </div>
                     </div>
                 </div>

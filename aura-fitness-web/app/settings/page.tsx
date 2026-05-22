@@ -76,7 +76,7 @@ function buildReminderSuggestions(profile: Partial<Profile>): ReminderSuggestion
 
   if (profile.preferredWorkoutType === "CARDIO") {
     suggestions.push(
-      { time: "06:00", label: "Sáng sớm", reason: "Cardio buổi sáng giúp tỉnh táo và giữ nhịp đều." },
+      { time: "06:00", label: "Sáng sớm", reason: "Tập tim mạch buổi sáng giúp tỉnh táo và giữ nhịp đều." },
       { time: "17:30", label: "Cuối chiều", reason: "Dễ duy trì khi tan làm và chưa quá muộn." }
     );
   } else if (profile.goal === "BULK") {
@@ -377,7 +377,7 @@ export default function SettingsPage() {
                   <InputField label="Mục tiêu cân nặng (kg)" type="number" value={profile.targetWeight || ""} onChange={(v) => handleChange("targetWeight", parseFloat(v) || 0)} />
                   
                   <div className="space-y-2">
-                    <label className="text-xs font-black uppercase tracking-widest text-muted-foreground">Trình độ (Level)</label>
+                    <label className="text-xs font-black uppercase tracking-widest text-muted-foreground">Trình độ</label>
                     <select 
                       className="w-full rounded-xl border border-white/10 bg-white/5 px-4 py-3 text-sm focus:border-primary focus:outline-none [&>option]:bg-slate-900 [&>option]:text-white"
                       value={profile.experienceLevel || "BEGINNER"} onChange={(e) => handleChange("experienceLevel", e.target.value)}
@@ -394,9 +394,9 @@ export default function SettingsPage() {
                       className="w-full rounded-xl border border-white/10 bg-white/5 px-4 py-3 text-sm focus:border-primary focus:outline-none [&>option]:bg-slate-900 [&>option]:text-white"
                       value={profile.preferredWorkoutType || "GYM"} onChange={(e) => handleChange("preferredWorkoutType", e.target.value)}
                     >
-                      <option value="GYM">Gym / Thể hình</option>
-                      <option value="CARDIO">Cardio</option>
-                      <option value="CALISTHENICS">Calisthenics</option>
+                      <option value="GYM">Thể hình</option>
+                      <option value="CARDIO">Tim mạch</option>
+                      <option value="CALISTHENICS">Thể trọng</option>
                     </select>
                   </div>
 
@@ -427,7 +427,7 @@ export default function SettingsPage() {
                 {profile.reminderEnabled && (
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6 p-6 border border-primary/20 bg-primary/5 rounded-xl">
                     <div className="space-y-2">
-                      <label className="text-xs font-black uppercase tracking-widest text-muted-foreground">Giờ nhắc (Daily)</label>
+                      <label className="text-xs font-black uppercase tracking-widest text-muted-foreground">Giờ nhắc hằng ngày</label>
                       <input 
                         type="time" 
                         value={normalizeReminderTime(profile.reminderTime || null) || "17:00"} 
@@ -503,13 +503,13 @@ export default function SettingsPage() {
               <form onSubmit={handleSaveProfile} className="space-y-6 animate-in fade-in slide-in-from-bottom-4 sm:space-y-8">
                 <div className="grid grid-cols-1 gap-4 sm:gap-6 md:grid-cols-2">
                   <div className="space-y-2">
-                    <label className="text-xs font-black uppercase tracking-widest text-muted-foreground">Giao diện (Theme)</label>
+                    <label className="text-xs font-black uppercase tracking-widest text-muted-foreground">Giao diện</label>
                     <select 
                       className="w-full rounded-xl border border-white/10 bg-white/5 px-4 py-3 text-sm focus:border-primary focus:outline-none [&>option]:bg-slate-900 [&>option]:text-white"
                       value={profile.theme || "DARK"} onChange={(e) => handleChange("theme", e.target.value)}
                     >
-                      <option value="DARK">Tối (Dark Mode) - Mặc định</option>
-                      <option value="LIGHT">Sáng (Light Mode)</option>
+                      <option value="DARK">Tối - Mặc định</option>
+                      <option value="LIGHT">Sáng</option>
                     </select>
                   </div>
 
@@ -519,8 +519,8 @@ export default function SettingsPage() {
                       className="w-full rounded-xl border border-white/10 bg-white/5 px-4 py-3 text-sm focus:border-primary focus:outline-none [&>option]:bg-slate-900 [&>option]:text-white"
                       value={profile.weightUnit || "KG"} onChange={(e) => handleChange("weightUnit", e.target.value)}
                     >
-                      <option value="KG">Kilograms (kg)</option>
-                      <option value="LB">Pounds (lb)</option>
+                      <option value="KG">Kilôgam (kg)</option>
+                      <option value="LB">Pao (lb)</option>
                     </select>
                   </div>
 
@@ -531,7 +531,7 @@ export default function SettingsPage() {
                       value={profile.heightUnit || "CM"} onChange={(e) => handleChange("heightUnit", e.target.value)}
                     >
                       <option value="CM">Centimet (cm)</option>
-                      <option value="FT">Feet (ft)</option>
+                      <option value="FT">Foot (ft)</option>
                     </select>
                   </div>
                 </div>

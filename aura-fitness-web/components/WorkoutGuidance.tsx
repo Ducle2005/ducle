@@ -100,9 +100,9 @@ export function WorkoutGuidance({ todaysPlan, plans = [] }: WorkoutGuidanceProps
             Cách đọc RPE/RIR
           </div>
           <div className="grid grid-cols-1 gap-2 text-xs text-muted-foreground sm:grid-cols-3">
-            <p><strong className="text-foreground">RPE 7</strong>: còn khoảng 3 reps.</p>
-            <p><strong className="text-foreground">RPE 8</strong>: còn khoảng 2 reps.</p>
-            <p><strong className="text-foreground">RPE 9</strong>: còn khoảng 1 rep, dùng cẩn thận.</p>
+            <p><strong className="text-foreground">RPE 7</strong>: còn khoảng 3 lần.</p>
+            <p><strong className="text-foreground">RPE 8</strong>: còn khoảng 2 lần.</p>
+            <p><strong className="text-foreground">RPE 9</strong>: còn khoảng 1 lần, dùng cẩn thận.</p>
           </div>
         </div>
 
@@ -174,7 +174,7 @@ export function WorkoutGuidance({ todaysPlan, plans = [] }: WorkoutGuidanceProps
                   <div className="min-w-0">
                     <h3 className="truncate text-sm font-black">{exercise.name}</h3>
                     <p className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">
-                      {exercise.muscleGroup || "Exercise"}
+                      {exercise.muscleGroup || "Bài tập"}
                     </p>
                   </div>
                   <a

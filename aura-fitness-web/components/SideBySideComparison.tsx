@@ -57,7 +57,7 @@ export function SideBySideComparison({ scans, onClose }: SideBySideComparisonPro
             </button>
             <div>
               <h2 className="text-2xl font-black italic tracking-tighter text-white uppercase">So sánh Tiến độ AI</h2>
-              <div className="text-[10px] font-black text-amber-500 uppercase tracking-widest">VIP Intelligence Analysis</div>
+              <div className="text-[10px] font-black text-amber-500 uppercase tracking-widest">Phân tích trí tuệ VIP</div>
             </div>
           </div>
           <div className="flex items-center gap-3">
@@ -174,10 +174,10 @@ export function SideBySideComparison({ scans, onClose }: SideBySideComparisonPro
             <section className="rounded-3xl bg-gradient-to-br from-indigo-900/40 to-slate-900 p-8 border border-indigo-500/10 shadow-2xl">
                 <div className="flex items-center gap-3 mb-4">
                    <Calendar size={18} className="text-indigo-400" />
-                   <h4 className="text-sm font-black italic uppercase text-white">Insight từ Aura AI</h4>
+                   <h4 className="text-sm font-black italic uppercase text-white">Nhận định từ Aura AI</h4>
                 </div>
                 <p className="text-sm text-slate-300 font-medium leading-relaxed italic">
-                    "Trong {Math.floor((new Date(afterScan.scanDate).getTime() - new Date(beforeScan.scanDate).getTime()) / (1000 * 60 * 60 * 24))} ngày qua, tỉ lệ mỡ cơ thể của bạn giảm {Math.abs(afterScan.bodyFatPercentage - beforeScan.bodyFatPercentage).toFixed(1)}%. Khối lượng cơ bắp ở ngực cho thấy có sự dày lên rõ rệt. Hãy tiếp tục duy trì cường độ Volume tập luyện hiện tại."
+                    "Trong {Math.floor((new Date(afterScan.scanDate).getTime() - new Date(beforeScan.scanDate).getTime()) / (1000 * 60 * 60 * 24))} ngày qua, tỉ lệ mỡ cơ thể của bạn giảm {Math.abs(afterScan.bodyFatPercentage - beforeScan.bodyFatPercentage).toFixed(1)}%. Khối lượng cơ bắp ở ngực cho thấy có sự dày lên rõ rệt. Hãy tiếp tục duy trì khối lượng tập luyện hiện tại."
                 </p>
             </section>
         </div>

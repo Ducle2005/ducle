@@ -85,7 +85,7 @@ export function RestTimer({ isOpen, onClose, defaultSeconds = 90 }: RestTimerPro
             <div className="mb-4 flex items-center justify-between">
               <div className="flex items-center gap-2">
                 <Clock size={20} className="text-primary" />
-                <span className="font-bold uppercase tracking-widest">Rest Timer</span>
+                <span className="font-bold uppercase tracking-widest">Giờ nghỉ</span>
               </div>
               <button
                 onClick={onClose}

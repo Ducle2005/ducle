@@ -546,7 +546,7 @@ export function WorkoutLogger({ isOpen, onClose, onComplete, planId }: WorkoutLo
                         <Plus size={32} />
                       </div>
                       <h3 className="font-bold">Buổi tập này chưa có bài tập nào.</h3>
-                      <p className="text-sm text-muted-foreground">Hãy cập nhật giáo án để logger có thể nạp các hiệp tập.</p>
+                      <p className="text-sm text-muted-foreground">Hãy cập nhật giáo án để bộ ghi tập có thể nạp các hiệp tập.</p>
                     </div>
                   ) : (
                     exercises.map((exercise, exerciseIndex) => (
@@ -564,7 +564,7 @@ export function WorkoutLogger({ isOpen, onClose, onComplete, planId }: WorkoutLo
                             <div className="min-w-0">
                               <h3 className="truncate text-lg font-black uppercase tracking-tight">{exercise.name}</h3>
                               <div className="mt-1 flex flex-wrap gap-2 text-[10px] font-black uppercase tracking-widest text-muted-foreground">
-                                {exercise.performance?.bestWeight ? <span>PR {exercise.performance.bestWeight}kg x {exercise.performance.bestReps}</span> : <span>Chua co PR</span>}
+                                {exercise.performance?.bestWeight ? <span>Kỷ lục {exercise.performance.bestWeight}kg x {exercise.performance.bestReps}</span> : <span>Chưa có kỷ lục</span>}
                                 {exercise.performance?.bestOneRepMax ? <span>1RM {exercise.performance.bestOneRepMax.toFixed(1)}kg</span> : null}
                                 {exercise.sets[0]?.tempo ? <span>Tempo {exercise.sets[0].tempo}</span> : null}
                               </div>
@@ -602,10 +602,10 @@ export function WorkoutLogger({ isOpen, onClose, onComplete, planId }: WorkoutLo
                             <ExerciseCoachGuide exercise={exercise} />
 
                             <div className="hidden grid-cols-[3rem_7rem_1fr_1fr_5rem_5rem_6rem_6rem_3rem] gap-3 px-2 text-center text-[10px] font-black uppercase tracking-widest text-muted-foreground lg:grid">
-                              <span>Set</span>
-                              <span>Loai</span>
-                              <span>Ta</span>
-                              <span>Reps</span>
+                              <span>Hiệp</span>
+                              <span>Loại</span>
+                              <span>Tạ</span>
+                              <span>Lần</span>
                               <span>RPE</span>
                               <span>RIR</span>
                               <span>Nghi</span>
@@ -621,7 +621,7 @@ export function WorkoutLogger({ isOpen, onClose, onComplete, planId }: WorkoutLo
                                 }`}
                               >
                                 <div className="flex items-center justify-between lg:block">
-                                  <span className="text-[10px] font-black uppercase tracking-widest text-muted-foreground lg:hidden">Set</span>
+                                  <span className="text-[10px] font-black uppercase tracking-widest text-muted-foreground lg:hidden">Hiệp</span>
                                   <span className="text-center text-sm font-black">{setIndex + 1}</span>
                                 </div>
                                 <select
@@ -710,21 +710,21 @@ export function WorkoutLogger({ isOpen, onClose, onComplete, planId }: WorkoutLo
                       Điều khiển buổi tập
                     </h3>
                     <div className="grid grid-cols-2 gap-3">
-                      <SessionStat label="Set xong" value={completedSetCount} />
-                      <SessionStat label="Volume" value={`${(totalVolume / 1000).toFixed(1)}k`} />
+                      <SessionStat label="Hiệp xong" value={completedSetCount} />
+                      <SessionStat label="Khối lượng" value={`${(totalVolume / 1000).toFixed(1)}k`} />
                       <SessionStat label="Thời gian" value={formatTime(elapsedTime)} />
                       <SessionStat label="Bài tập" value={exercises.length} />
                     </div>
                   </div>
 
                   <div className="rounded-3xl border border-white/10 bg-white/[0.03] p-5">
-                    <h3 className="mb-3 text-sm font-black uppercase tracking-widest text-primary">Checklist chuyên nghiệp</h3>
+                    <h3 className="mb-3 text-sm font-black uppercase tracking-widest text-primary">Danh sách kiểm tra chuyên nghiệp</h3>
                     <div className="space-y-2 text-xs text-muted-foreground">
-                      <p>1. Khởi động khớp và warm-up set trước khi vào tạ nặng.</p>
-                      <p>2. Nếu form vỡ, giảm 5-10% tạ và hoàn thành reps sạch.</p>
-                      <p>RPE 7-8: còn 2-3 reps trong bình.</p>
-                      <p>RPE 9: gần tới failure, chỉ dùng cho set chính.</p>
-                      <p>Nếu volume giảm 2 buổi liên tiếp, cần xem lại phục hồi.</p>
+                      <p>1. Khởi động khớp và làm hiệp khởi động trước khi vào tạ nặng.</p>
+                      <p>2. Nếu kỹ thuật vỡ, giảm 5-10% tạ và hoàn thành số lần sạch.</p>
+                      <p>RPE 7-8: còn khoảng 2-3 lần trong khả năng.</p>
+                      <p>RPE 9: gần tới ngưỡng thất bại, chỉ dùng cho hiệp chính.</p>
+                      <p>Nếu khối lượng giảm 2 buổi liên tiếp, cần xem lại phục hồi.</p>
                     </div>
                   </div>
 
@@ -735,8 +735,8 @@ export function WorkoutLogger({ isOpen, onClose, onComplete, planId }: WorkoutLo
                     </h3>
                     <div className="space-y-2 text-xs text-muted-foreground">
                       <p>Đau nhói ở khớp, mất thăng bằng, tê buốt hoặc choáng.</p>
-                      <p>Không có người hỗ trợ khi set nặng sát failure.</p>
-                      <p>Nhịp thở mất kiểm soát hoặc không giữ được core.</p>
+                      <p>Không có người hỗ trợ khi hiệp nặng gần tới ngưỡng thất bại.</p>
+                      <p>Nhịp thở mất kiểm soát hoặc không giữ được thân giữa.</p>
                     </div>
                   </div>
                 </aside>
@@ -790,14 +790,14 @@ export function WorkoutLogger({ isOpen, onClose, onComplete, planId }: WorkoutLo
 
             <div>
               <h2 className="mb-2 text-4xl font-black uppercase tracking-tight">Hoàn thành</h2>
-              <p className="font-medium text-muted-foreground">Buổi tập đã được lưu cùng RPE, ghi chú và volume.</p>
+              <p className="font-medium text-muted-foreground">Buổi tập đã được lưu cùng RPE, ghi chú và khối lượng.</p>
             </div>
 
             <div className="grid grid-cols-2 gap-4">
-              <SummaryCard label="Volume" value={`${(summaryData.volume / 1000).toFixed(1)}k kg`} />
+              <SummaryCard label="Khối lượng" value={`${(summaryData.volume / 1000).toFixed(1)}k kg`} />
               <SummaryCard label="Thời gian" value={summaryData.time} />
               <SummaryCard label="XP" value={`+${summaryData.xp}`} />
-              <SummaryCard label="Level" value={summaryData.level} />
+              <SummaryCard label="Cấp độ" value={summaryData.level} />
             </div>
 
             <div className="rounded-3xl border border-primary/20 bg-primary/5 p-6">

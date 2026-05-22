@@ -152,15 +152,15 @@ export default function VIPIntelligence() {
                     <Crown size={14} /> Aura VIP Intelligence
                   </div>
                   <h1 className="max-w-2xl text-4xl font-black uppercase italic tracking-tighter text-white lg:text-6xl">
-                    Mở khóa phân tích Premium
+                    Mở khóa phân tích cao cấp
                   </h1>
                   <p className="mt-5 max-w-xl text-sm font-medium leading-7 text-slate-400 lg:text-base">
-                    Nâng cấp để dùng phân tích nhịp tim, progressive overload, AI Body Composition và các tính năng AI chuyên sâu.
+                    Nâng cấp để dùng phân tích nhịp tim, tăng tải tiến bộ, thành phần cơ thể bằng AI và các tính năng AI chuyên sâu.
                   </p>
 
                   <div className="mt-8 grid grid-cols-1 gap-3 sm:grid-cols-2">
                     {[
-                      "AI Coach không giới hạn",
+                      "Huấn luyện AI không giới hạn",
                       "Phân tích ảnh và chỉ số cơ thể",
                       "Dự báo cường độ tập luyện",
                       "Báo cáo phục hồi sau buổi tập",
@@ -177,7 +177,7 @@ export default function VIPIntelligence() {
                     className="mt-8 inline-flex items-center justify-center gap-3 rounded-2xl bg-amber-400 px-8 py-4 text-sm font-black uppercase tracking-widest text-slate-950 shadow-xl shadow-amber-500/20 transition-all hover:scale-[1.02] active:scale-95"
                   >
                     <Crown size={18} fill="currentColor" />
-                    Nâng cấp Premium ngay
+                    Nâng cấp gói cao cấp ngay
                   </button>
                 </div>
 
@@ -185,7 +185,7 @@ export default function VIPIntelligence() {
                   <div className="mb-6 flex h-16 w-16 items-center justify-center rounded-3xl border border-amber-500/20 bg-amber-500/10 text-amber-400">
                     <BrainCircuit size={34} />
                   </div>
-                  <h2 className="text-2xl font-black uppercase italic tracking-tight text-white">Gói Premium đang chờ kích hoạt</h2>
+                  <h2 className="text-2xl font-black uppercase italic tracking-tight text-white">Gói cao cấp đang chờ kích hoạt</h2>
                   <p className="mt-3 text-sm leading-6 text-slate-400">
                     Sau khi thanh toán hoặc dùng chế độ demo, hệ thống sẽ tự refresh quyền tài khoản và hiển thị thông báo thành công ngay trên giao diện.
                   </p>
@@ -225,7 +225,7 @@ export default function VIPIntelligence() {
                   <CheckCircle2 size={22} />
                 </div>
                 <div>
-                  <h2 className="text-sm font-black uppercase tracking-widest text-emerald-300">Đăng ký Premium thành công</h2>
+                  <h2 className="text-sm font-black uppercase tracking-widest text-emerald-300">Đăng ký gói cao cấp thành công</h2>
                   <p className="mt-1 text-sm font-medium text-emerald-50/80">
                     Tài khoản đã được mở khóa Aura VIP. Các phân tích nâng cao đã sẵn sàng sử dụng.
                   </p>
@@ -250,10 +250,10 @@ export default function VIPIntelligence() {
               <Crown size={14} /> Aura Neural
             </div>
             <div className="inline-flex items-center gap-2 rounded-full bg-emerald-500/10 px-4 py-1 text-xs font-black text-emerald-500 border border-emerald-500/20 uppercase tracking-widest">
-              {isLoading ? "Đang đồng bộ" : "Live Intelligence"}
+              {isLoading ? "Đang đồng bộ" : "Trí tuệ trực tiếp"}
             </div>
           </div>
-          <h1 className="text-5xl font-black italic tracking-tighter mb-4 uppercase">TRÍ TUỆ VIP & HP BIOMETRICS</h1>
+          <h1 className="text-5xl font-black italic tracking-tighter mb-4 uppercase">TRÍ TUỆ VIP & SINH TRẮC HP</h1>
           <p className="text-slate-400 font-medium max-w-2xl">Phân tích chuyên sâu từ hệ tim mạch đến cường độ tập luyện để tối ưu hóa từng giọt mồ hôi của bạn.</p>
         </header>
 
@@ -270,13 +270,13 @@ export default function VIPIntelligence() {
                     <Heart size={24} className="animate-pulse" />
                   </div>
                   <div>
-                    <h3 className="text-xl font-black italic tracking-tight uppercase">Phân tích Nhịp tim (HR Intelligence)</h3>
+                    <h3 className="text-xl font-black italic tracking-tight uppercase">Phân tích trí tuệ nhịp tim</h3>
                     <p className="text-sm font-medium text-slate-400">Được đo chuẩn hóa theo ngưỡng kỵ khí</p>
                   </div>
                 </div>
                 <div className="text-center">
                   <div className="text-4xl font-black italic tracking-tighter text-rose-500">{currentBpm}</div>
-                  <div className="text-[10px] font-black uppercase text-slate-500 tracking-widest">BPM REALTIME</div>
+                  <div className="text-[10px] font-black uppercase text-slate-500 tracking-widest">NHỊP TIM TRỰC TIẾP</div>
                   <input
                     aria-label="Điều chỉnh BPM"
                     type="range"
@@ -291,8 +291,8 @@ export default function VIPIntelligence() {
 
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-10">
                 {[
-                  { label: "Đốt mỡ (Fat Burn)", range: `${insights?.heartRate?.fatBurnZone?.min || 0}-${insights?.heartRate?.fatBurnZone?.max || 0}`, color: "bg-emerald-500", active: currentBpm < 140 },
-                  { label: "Tim mạch (Cardio)", range: `${insights?.heartRate?.cardioZone?.min || 0}-${insights?.heartRate?.cardioZone?.max || 0}`, color: "bg-amber-500", active: currentBpm >= 140 && currentBpm < 165 },
+                  { label: "Đốt mỡ", range: `${insights?.heartRate?.fatBurnZone?.min || 0}-${insights?.heartRate?.fatBurnZone?.max || 0}`, color: "bg-emerald-500", active: currentBpm < 140 },
+                    { label: "Tim mạch", range: `${insights?.heartRate?.cardioZone?.min || 0}-${insights?.heartRate?.cardioZone?.max || 0}`, color: "bg-amber-500", active: currentBpm >= 140 && currentBpm < 165 },
                   { label: "Ngưỡng (Peak)", range: `${insights?.heartRate?.peakZone?.min || 0}-${insights?.heartRate?.peakZone?.max || 0}`, color: "bg-rose-500", active: currentBpm >= 165 },
                 ].map((zone, i) => (
                   <div key={i} className={`p-4 rounded-2xl border transition-all ${zone.active ? "border-white/20 bg-white/5 scale-[1.02]" : "border-white/5 bg-white/2 opacity-50"}`}>
@@ -313,7 +313,7 @@ export default function VIPIntelligence() {
                   </div>
                   <div className="flex-1">
                     <div className="flex items-center justify-between mb-1">
-                      <span className="text-sm font-black uppercase tracking-wider text-white">Chỉ số Phục hồi sau set (Post-Set Recovery)</span>
+                      <span className="text-sm font-black uppercase tracking-wider text-white">Chỉ số phục hồi sau hiệp</span>
                       <span className="text-xs font-black text-emerald-500 uppercase">Tốt (+24 BPM/phút)</span>
                     </div>
                     <p className="text-xs text-slate-400 font-medium">Tốc độ giảm nhịp tim của bạn nhanh hơn 15% so với mức trung bình. Hệ tim mạch của bạn đang phục hồi rất tốt, có thể rút ngắn thời gian nghỉ xuống còn 45s.</p>
@@ -332,8 +332,8 @@ export default function VIPIntelligence() {
                   <TrendingUp size={24} />
                 </div>
                 <div>
-                  <h3 className="text-xl font-black italic tracking-tight uppercase">Phân tích Cường độ (Progressive Overload)</h3>
-                  <p className="text-sm font-medium text-slate-400">Dựa trên khối lượng tập luyện tích lũy (Volume)</p>
+                  <h3 className="text-xl font-black italic tracking-tight uppercase">Phân tích tăng tải tiến bộ</h3>
+                  <p className="text-sm font-medium text-slate-400">Dựa trên khối lượng tập luyện tích lũy</p>
                 </div>
               </div>
 
@@ -360,10 +360,10 @@ export default function VIPIntelligence() {
                   <div className="bg-amber-500/10 p-3 rounded-full mb-4 text-amber-500 border border-amber-500/20">
                     <Flame size={24} />
                   </div>
-                  <div className="text-[10px] font-black uppercase text-slate-500 tracking-widest mb-1">DỰ BÁO SỨC MẠNH (Pred. 1RM)</div>
+                  <div className="text-[10px] font-black uppercase text-slate-500 tracking-widest mb-1">DỰ BÁO SỨC MẠNH 1 LẦN TỐI ĐA</div>
                   <div className="text-5xl font-black italic tracking-tighter text-amber-500">105 <span className="text-xl font-normal text-slate-500 uppercase tracking-normal">KG</span></div>
-                  <div className="mt-2 text-xs font-black text-white uppercase tracking-wider">Cho bài Bench Press</div>
-                  <p className="mt-4 text-[10px] text-slate-500 font-black uppercase max-w-[150px]">Dựa trên Epley Formula từ dữ liệu tập 8 reps gần nhất.</p>
+                  <div className="mt-2 text-xs font-black text-white uppercase tracking-wider">Cho bài đẩy ngực ghế ngang</div>
+                  <p className="mt-4 text-[10px] text-slate-500 font-black uppercase max-w-[150px]">Dựa trên công thức Epley từ dữ liệu tập 8 lần gần nhất.</p>
                 </div>
               </div>
             </section>
@@ -394,7 +394,7 @@ export default function VIPIntelligence() {
                 <div className="bg-emerald-500/20 p-2 rounded-lg text-emerald-400">
                   <ShieldCheck size={20} />
                 </div>
-                <h3 className="font-black italic uppercase tracking-tight text-white">AI Body Composition</h3>
+                <h3 className="font-black italic uppercase tracking-tight text-white">Thành phần cơ thể AI</h3>
               </div>
               
               <div className="relative aspect-video rounded-2xl bg-slate-950 mb-6 flex flex-col items-center justify-center border-2 border-dashed border-white/10 overflow-hidden group">
@@ -438,7 +438,7 @@ export default function VIPIntelligence() {
         {/* Scan History Gallery */}
         {scans.length > 0 && (
           <section className="mt-12">
-             <h3 className="text-xl font-black italic uppercase tracking-tight text-white mb-6">Lịch sử Quét Biometrics</h3>
+             <h3 className="text-xl font-black italic uppercase tracking-tight text-white mb-6">Lịch sử quét sinh trắc</h3>
              <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-6">
                 {scans.map((scan) => (
                     <div key={scan.id} className="group relative aspect-[3/4] rounded-2xl overflow-hidden border border-white/5 bg-slate-900 transition-all hover:scale-[1.05] hover:border-white/20">

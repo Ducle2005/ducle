@@ -149,7 +149,7 @@ export function HelpCenter({ isOpen, onClose }: HelpCenterProps) {
           <motion.section
             role="dialog"
             aria-modal="true"
-            aria-label="Help Center"
+            aria-label="Trung tâm trợ giúp"
             initial={{ opacity: 0, y: 22, scale: 0.98 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 22, scale: 0.98 }}
@@ -159,7 +159,7 @@ export function HelpCenter({ isOpen, onClose }: HelpCenterProps) {
             <header className="flex items-center justify-between border-b border-white/10 px-5 py-4 sm:px-6">
               <div>
                 <div className="text-[11px] font-black uppercase tracking-[0.22em] text-orange-300">Aura Fitness</div>
-                <h2 className="mt-1 text-xl font-black sm:text-2xl">Help Center</h2>
+                <h2 className="mt-1 text-xl font-black sm:text-2xl">Trung tâm trợ giúp</h2>
               </div>
               <button
                 type="button"
@@ -196,7 +196,7 @@ export function HelpCenter({ isOpen, onClose }: HelpCenterProps) {
               <div className="min-h-0 overflow-y-auto p-5 sm:p-6">
                 {activeTab === "guide" && (
                   <div>
-                    <h3 className="text-lg font-black">Hướng dẫn sử dụng app</h3>
+                    <h3 className="text-lg font-black">Hướng dẫn sử dụng ứng dụng</h3>
                     <div className="mt-5 grid gap-3 sm:grid-cols-2">
                       {guideItems.map((item) => {
                         const Icon = item.icon;
@@ -332,7 +332,7 @@ export function HelpCenter({ isOpen, onClose }: HelpCenterProps) {
                       <div className="rounded-xl bg-white/5 p-4">
                         <CreditCard className="text-orange-300" size={22} />
                         <h4 className="mt-3 font-black">Hủy / gia hạn gói tập</h4>
-                        <p className="mt-2 text-sm leading-6 text-white/65">Các thay đổi membership cần xác nhận bởi phòng gym để đảm bảo quyền lợi hội viên.</p>
+                        <p className="mt-2 text-sm leading-6 text-white/65">Các thay đổi gói hội viên cần xác nhận bởi phòng gym để đảm bảo quyền lợi hội viên.</p>
                       </div>
                       <div className="rounded-xl bg-white/5 p-4">
                         <FileText className="text-orange-300" size={22} />

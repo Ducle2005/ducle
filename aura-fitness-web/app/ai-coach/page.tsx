@@ -35,7 +35,7 @@ export default function AICoachPage() {
       {
         id: "welcome",
         sender: "ai",
-        text: `Xin chào ${user.name}! Tôi là Aura AI Coach. ${isPremium ? "🏆 Bạn đang sử dụng gói Premium - Mọi tính năng 'Mắt thần' và phân tích chuyên sâu đã sẵn sàng!" : "💡 Bạn đang dùng bản Miễn phí (5 câu hỏi/ngày)."}\n\nHôm nay tôi có thể giúp gì cho bạn?`,
+        text: `Xin chào ${user.name}! Tôi là huấn luyện viên AI Aura. ${isPremium ? "🏆 Bạn đang sử dụng gói cao cấp - Mọi tính năng 'Mắt thần' và phân tích chuyên sâu đã sẵn sàng!" : "💡 Bạn đang dùng bản miễn phí (5 câu hỏi/ngày)."}\n\nHôm nay tôi có thể giúp gì cho bạn?`,
         timestamp: new Date()
       }
     ]);
@@ -168,7 +168,7 @@ export default function AICoachPage() {
                 <span className="absolute bottom-0 right-0 h-3 w-3 rounded-full border-2 border-background bg-emerald-500"></span>
               </div>
               <div>
-                <h3 className="text-base font-black italic tracking-tight text-white">Aura Coach</h3>
+                <h3 className="text-base font-black italic tracking-tight text-white">Huấn luyện Aura</h3>
                 <p className="flex items-center gap-1.5 text-[11px] font-bold tracking-widest text-primary uppercase">
                   <span className="relative flex h-1.5 w-1.5">
                     <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-primary opacity-75"></span>
@@ -184,7 +184,7 @@ export default function AICoachPage() {
                 animate={{ opacity: 1 }}
                 className="rounded-full bg-amber-500/10 px-2.5 py-1 text-[10px] font-black uppercase tracking-wider text-amber-500 ring-1 ring-amber-500/20"
               >
-                Premium
+                Cao cấp
               </motion.div>
             )}
           </div>
@@ -323,10 +323,10 @@ export default function AICoachPage() {
             <h1 className="flex items-center gap-3 text-5xl font-black uppercase tracking-tight text-white">
               <Brain className="text-primary" size={48} /> Aura AI
             </h1>
-            <h2 className="mt-2 text-2xl font-bold tracking-tight text-slate-400">120Hz ProMotion Experience</h2>
+            <h2 className="mt-2 text-2xl font-bold tracking-tight text-slate-400">Trải nghiệm mượt 120Hz</h2>
             <p className="mt-6 text-base leading-relaxed text-slate-500">
               Trải nghiệm huấn luyện viên AI đỉnh cao với giao diện siêu mượt mà mô phỏng iPhone 14 Pro Max.
-              Hệ thống vật lý <span className="font-bold text-primary">Framer Motion Spring</span> mang lại cảm giác phản hồi 120fps chân thực nhất.
+              Hệ thống hiệu ứng lò xo chuyển động mang lại cảm giác phản hồi 120 khung hình/giây chân thực nhất.
             </p>
             
             <div className="mt-8 flex flex-col gap-4">
@@ -335,7 +335,7 @@ export default function AICoachPage() {
                   <Cpu size={24} />
                 </div>
                 <div>
-                  <h4 className="text-lg font-bold text-white">Dynamic Island</h4>
+                  <h4 className="text-lg font-bold text-white">Đảo tương tác</h4>
                   <p className="text-sm text-slate-400">Tương tác thời gian thực</p>
                 </div>
               </div>
@@ -344,8 +344,8 @@ export default function AICoachPage() {
                   <Sparkles size={24} />
                 </div>
                 <div>
-                  <h4 className="text-lg font-bold text-white">Fluid Animations</h4>
-                  <p className="text-sm text-slate-400">60-120fps Spring Physics</p>
+                  <h4 className="text-lg font-bold text-white">Chuyển động mượt</h4>
+                  <p className="text-sm text-slate-400">Hiệu ứng lò xo 60-120 khung hình/giây</p>
                 </div>
               </div>
             </div>

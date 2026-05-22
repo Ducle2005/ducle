@@ -52,7 +52,7 @@ export function AuraRoadmap({ data, onClose }: AuraRoadmapProps) {
             animate={{ opacity: 1, y: 0 }}
             className="text-3xl md:text-4xl font-black italic uppercase tracking-tighter text-white mb-2"
         >
-            {data.title || "Aura Elite AI Roadmap"}
+            {data.title || "Lộ trình AI Aura Elite"}
         </motion.h1>
         <motion.p 
             initial={{ opacity: 0 }}
@@ -142,7 +142,7 @@ export function AuraRoadmap({ data, onClose }: AuraRoadmapProps) {
           >
             TIẾP TỤC ĐẾN DASHBOARD <ArrowRight size={16} />
           </button>
-          <div className="text-[10px] font-bold text-white/20 uppercase tracking-[0.3em]">AURA NEURAL ROADMAP v1.0</div>
+                <div className="text-[10px] font-bold text-white/20 uppercase tracking-[0.3em]">LỘ TRÌNH AI AURA v1.0</div>
       </div>
     </div>
   );

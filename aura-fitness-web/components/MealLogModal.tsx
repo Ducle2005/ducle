@@ -156,7 +156,7 @@ export function MealLogModal({ isOpen, defaultMealType = "BREAKFAST", onClose, o
             </label>
 
             <MacroInput label="Calo" value={calories} onChange={setCalories} />
-            <MacroInput label="Protein (g)" value={protein} onChange={setProtein} />
+            <MacroInput label="Chất đạm (g)" value={protein} onChange={setProtein} />
             <MacroInput label="Carb (g)" value={carbs} onChange={setCarbs} />
             <MacroInput label="Chất béo (g)" value={fat} onChange={setFat} />
           </div>

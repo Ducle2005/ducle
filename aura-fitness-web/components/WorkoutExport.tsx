@@ -64,7 +64,7 @@ export function WorkoutExport({ history }: WorkoutExportProps) {
           className="glass flex items-center gap-2 rounded-xl px-4 py-2.5 text-sm font-bold transition-all hover:text-primary disabled:opacity-50"
         >
           <Printer size={18} />
-          <span className="hidden sm:inline">In PDF</span>
+          <span className="hidden sm:inline">In báo cáo PDF</span>
         </button>
         <button
           onClick={handleDownloadHTML}

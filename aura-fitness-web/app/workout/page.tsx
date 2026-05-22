@@ -272,7 +272,7 @@ export default function WorkoutPage() {
                     color="text-primary"
                   />
                   <StatsCard
-                    label="Volume 7 ngày"
+                    label="Khối lượng 7 ngày"
                     value={(weeklyVolume / 1000).toFixed(1)}
                     unit="kg"
                     icon={Zap}

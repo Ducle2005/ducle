@@ -48,7 +48,7 @@ export function UpgradeModal({ isOpen, onClose, onUpgradeSuccess }: UpgradeModal
     await refreshUser();
     setSuccess(true);
     setShowQR(false);
-    toast.success("Đăng ký Premium thành công. Aura VIP đã được mở khóa.");
+    toast.success("Đăng ký gói cao cấp thành công. Aura VIP đã được mở khóa.");
     onUpgradeSuccess?.();
 
     setTimeout(() => {
@@ -80,7 +80,7 @@ export function UpgradeModal({ isOpen, onClose, onUpgradeSuccess }: UpgradeModal
       await apiFetch("/auth/upgrade", { method: "POST" });
       await completeUpgrade();
     } catch (err: unknown) {
-      const message = err instanceof Error ? err.message : "Không thể nâng cấp Premium. Vui lòng thử lại.";
+      const message = err instanceof Error ? err.message : "Không thể nâng cấp gói cao cấp. Vui lòng thử lại.";
       toast.error(message);
       setLoading(false);
     }
@@ -189,12 +189,12 @@ export function UpgradeModal({ isOpen, onClose, onUpgradeSuccess }: UpgradeModal
                     <h2 className="text-5xl font-black italic tracking-tighter text-white drop-shadow-lg leading-[1.1]">
                       MỞ KHÓA <br/><span className="bg-gradient-to-r from-primary to-cyan-400 bg-clip-text text-transparent">SỨC MẠNH AI</span>
                     </h2>
-                    <p className="mt-5 text-slate-400 font-medium text-lg max-w-sm">Trải nghiệm huấn luyện viên cá nhân thông minh nhất với công nghệ Neural Sync Engine.</p>
+                    <p className="mt-5 text-slate-400 font-medium text-lg max-w-sm">Trải nghiệm huấn luyện viên cá nhân thông minh nhất với công nghệ đồng bộ thần kinh Aura.</p>
                   </div>
 
                   <div className="space-y-5 mb-10">
                     {[
-                      { icon: <Sparkles size={18} className="text-primary" />, text: "Không giới hạn tương tác với AI Coach" },
+                      { icon: <Sparkles size={18} className="text-primary" />, text: "Không giới hạn tương tác với huấn luyện AI" },
                       { icon: <Check size={18} className="text-cyan-400" />, text: "Tính năng 'Mắt Thần' phân tích ảnh & tư thế" },
                       { icon: <Crown size={18} className="text-amber-400" />, text: "Kích hoạt mô hình AI Gemini 1.5 Pro" },
                       { icon: <Zap size={18} className="text-orange-400" />, text: "Gợi ý lộ trình tập luyện cá nhân hóa 100%" }
@@ -288,7 +288,7 @@ export function UpgradeModal({ isOpen, onClose, onUpgradeSuccess }: UpgradeModal
                       <div className="mb-8 w-full rounded-3xl bg-slate-900 p-6 border border-white/5 shadow-inner relative overflow-hidden">
                         <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-primary via-purple-500 to-primary" />
                         <div className="text-[10px] font-black text-slate-500 uppercase tracking-widest mb-3">Thông tin chuyển khoản</div>
-                        <div className="text-sm font-black text-white mb-1">MB Bank - LE VIET DUC</div>
+                        <div className="text-sm font-black text-white mb-1">Ngân hàng MB - LE VIET DUC</div>
                         <div className="text-2xl font-black text-primary tracking-tighter mb-4">{accountNo}</div>
                         <div className="inline-flex w-full justify-center rounded-xl bg-black/50 px-4 py-3 text-xs font-mono text-slate-300 border border-white/5 break-all shadow-inner">
                           ND: {content.replace(/%20/g, " ")}

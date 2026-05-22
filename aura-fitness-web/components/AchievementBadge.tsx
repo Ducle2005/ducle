@@ -73,6 +73,6 @@ export const AVAILABLE_ACHIEVEMENTS = [
   { id: "streak_7", name: "7 ngày lửa", description: "Duy trì streak 7 ngày liên tiếp", icon: "streak_7" },
   { id: "streak_30", name: "Kim cương bền bỉ", description: "Duy trì streak 30 ngày", icon: "streak_30" },
   { id: "volume_king", name: "Vua khối lượng", description: "Đạt 50,000kg tổng volume", icon: "volume_king" },
-  { id: "macro_master", name: "Bậc thầy Macro", description: "Đạt mục tiêu macro 7 ngày liên tiếp", icon: "macro_master" },
+  { id: "macro_master", name: "Bậc thầy dinh dưỡng", description: "Đạt mục tiêu dưỡng chất 7 ngày liên tiếp", icon: "macro_master" },
   { id: "consistency", name: "Sấm sét đều đặn", description: "Tập ít nhất 4 buổi/tuần trong 4 tuần", icon: "consistency" },
 ];

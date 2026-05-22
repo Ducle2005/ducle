@@ -101,7 +101,7 @@ export default function NutritionPage() {
                   </div>
                   <div className="space-y-2">
                     {mealLogs.length === 0 ? (
-                      <p className="py-2 text-xs italic text-muted-foreground/50">Chưa có món nào được ghi log.</p>
+                      <p className="py-2 text-xs italic text-muted-foreground/50">Chưa có món nào được ghi lại.</p>
                     ) : (
                       mealLogs.map((log) => (
                         <div key={log.id} className="flex items-center justify-between gap-3 rounded-lg border-b border-white/5 px-2 py-2 text-sm transition-colors last:border-0 hover:bg-white/5">
