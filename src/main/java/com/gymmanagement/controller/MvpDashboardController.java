@@ -448,7 +448,8 @@ public class MvpDashboardController {
 
 		String prompt = buildAiPrompt(customer, cleanMessage);
 		try {
-			return callGemini(prompt, imageBase64);
+			String reply = callGemini(prompt, imageBase64);
+			return isIncompleteAiReply(reply) ? fallbackCoachReply(customer, cleanMessage) : reply;
 		} catch (Exception ex) {
 			System.err.println("Gemini API error: " + ex.getMessage());
 			return "AI đang gặp lỗi kết nối tới API Gemini. Bạn kiểm tra GEMINI_API_KEY trên Render hoặc thử lại sau ít phút nhé.";
@@ -517,7 +518,7 @@ public class MvpDashboardController {
 		Map<String, Object> generationConfig = new LinkedHashMap<String, Object>();
 		generationConfig.put("temperature", 0.45);
 		generationConfig.put("topP", 0.9);
-		generationConfig.put("maxOutputTokens", 1100);
+		generationConfig.put("maxOutputTokens", 2048);
 
 		Map<String, Object> request = new LinkedHashMap<String, Object>();
 		request.put("contents", contents);
@@ -541,10 +542,17 @@ public class MvpDashboardController {
 		if (!(contentValue instanceof Map)) return "";
 		Object partsValue = ((Map<?, ?>) contentValue).get("parts");
 		if (!(partsValue instanceof List) || ((List<?>) partsValue).isEmpty()) return "";
-		Object partValue = ((List<?>) partsValue).get(0);
-		if (!(partValue instanceof Map)) return "";
-		Object textValue = ((Map<?, ?>) partValue).get("text");
-		return textValue == null ? "" : String.valueOf(textValue).trim();
+		StringBuilder text = new StringBuilder();
+		for (Object partValue : (List<?>) partsValue) {
+			if (partValue instanceof Map) {
+				Object textValue = ((Map<?, ?>) partValue).get("text");
+				if (textValue != null) {
+					if (text.length() > 0) text.append("\n");
+					text.append(String.valueOf(textValue).trim());
+				}
+			}
+		}
+		return text.toString().trim();
 	}
 
 	private String mimeTypeFromDataUrl(String value) {
@@ -579,6 +587,51 @@ public class MvpDashboardController {
 		if ("CUT".equals(value) || "LOSE_WEIGHT".equals(value)) return "giảm mỡ/siết cân";
 		if ("MAINTAIN".equals(value)) return "duy trì sức khỏe và vóc dáng";
 		return label;
+	}
+
+	private boolean isIncompleteAiReply(String reply) {
+		if (reply == null) return true;
+		String clean = reply.trim();
+		if (clean.length() < 80) return true;
+		String lower = clean.toLowerCase();
+		return clean.endsWith("-")
+				|| clean.endsWith(":")
+				|| clean.endsWith(",")
+				|| lower.endsWith(" và")
+				|| lower.endsWith(" với")
+				|| lower.matches("(?s).*\\n\\s*-\\s*.{0,4}$");
+	}
+
+	private String fallbackCoachReply(Customer customer, String message) {
+		String lowerMessage = nonBlank(message, "").toLowerCase();
+		boolean nutritionQuestion = lowerMessage.contains("ăn")
+				|| lowerMessage.contains("dinh dưỡng")
+				|| lowerMessage.contains("calo")
+				|| lowerMessage.contains("protein")
+				|| lowerMessage.contains("sức khỏe")
+				|| lowerMessage.contains("food");
+		String goal = goalLabel(customer.getGoal());
+		int calories = customer.getCalorieTarget() == null ? 2000 : customer.getCalorieTarget();
+
+		if (nutritionQuestion) {
+			StringBuilder reply = new StringBuilder();
+			reply.append("Để hỗ trợ mục tiêu ").append(goal).append(" với mốc khoảng ").append(calories).append(" kcal/ngày, bạn nên ăn theo hướng đủ đạm, carb vừa phải và chất béo tốt.\n\n");
+			reply.append("- Bữa sáng: trứng hoặc ức gà/cá ngừ, thêm yến mạch/khoai lang và 1 phần trái cây.\n");
+			reply.append("- Bữa trưa: cơm vừa đủ, 150-200g thịt nạc/cá/đậu hũ, nhiều rau xanh.\n");
+			reply.append("- Trước hoặc sau tập: sữa chua Hy Lạp, chuối, whey hoặc một bữa nhẹ giàu protein.\n");
+			reply.append("- Bữa tối: ưu tiên protein nạc, rau, hạn chế đồ chiên và nước ngọt.\n\n");
+			reply.append("Nếu đang BULK, tăng thêm 200-300 kcal từ cơm, khoai, sữa hoặc hạt. Nếu thấy bụng nặng, chia nhỏ thành 4-5 bữa để dễ theo hơn.");
+			return reply.toString();
+		}
+
+		StringBuilder reply = new StringBuilder();
+		reply.append("Với mục tiêu ").append(goal).append(", hôm nay bạn có thể đi theo buổi tập gọn nhưng hiệu quả:\n\n");
+		reply.append("- Khởi động 8-10 phút: xoay khớp, đi bộ nhanh, squat không tạ.\n");
+		reply.append("- Bài chính: Squat 3x8-10, Bench Press hoặc Push Up 3x8-12, Row 3x10-12.\n");
+		reply.append("- Bài phụ: Lateral Raise 3x12-15, Plank 3 hiệp 30-45 giây.\n");
+		reply.append("- Cường độ: chọn mức còn dư 1-2 reps ở mỗi hiệp, không tập tới kiệt sức quá sớm.\n\n");
+		reply.append("Sau buổi tập, ghi lại mức tạ/reps để lần sau tăng nhẹ. Nếu đau nhói hoặc chóng mặt thì dừng và nghỉ ngay.");
+		return reply.toString();
 	}
 
 	private Map<String, Object> buildRoadmap(Customer customer, Map<String, Object> scanData) {
