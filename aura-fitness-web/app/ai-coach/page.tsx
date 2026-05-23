@@ -18,6 +18,14 @@ interface ChatMessage {
   timestamp: Date;
 }
 
+function formatMessageText(text: string) {
+  return text
+    .replace(/\*\*/g, "")
+    .replace(/^\s*\*\s+/gm, "- ")
+    .replace(/\n{3,}/g, "\n\n")
+    .trim();
+}
+
 export default function AICoachPage() {
   const { user, isLoading: authLoading } = useAuth();
   const [messages, setMessages] = useState<ChatMessage[]>([]);
@@ -197,19 +205,19 @@ export default function AICoachPage() {
                    key={m.id}
                    className={`flex w-full ${m.sender === "user" ? "justify-end" : "justify-start"}`}
                  >
-                    <div className={`flex max-w-[85%] items-end gap-2.5 ${m.sender === "user" ? "flex-row-reverse" : "flex-row"}`}>
+                    <div className={`flex items-end gap-2.5 ${m.sender === "user" ? "max-w-[84%] flex-row-reverse" : "max-w-[92%] flex-row"}`}>
                       {/* Avatar */}
                       <div className={`flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full shadow-md ${m.sender === "user" ? "bg-slate-800 text-white" : "bg-gradient-to-br from-primary to-emerald-500 text-background"}`}>
                         {m.sender === "user" ? <User size={16} /> : <Sparkles size={16} />}
                       </div>
                       
                       {/* Bubble */}
-                      <div className={`relative rounded-[1.25rem] px-4 py-3 ${
+                      <div className={`relative min-w-0 rounded-[1.25rem] px-4 py-3 ${
                           m.sender === "user" 
                             ? "rounded-br-sm bg-primary text-background" 
                             : "rounded-bl-sm bg-slate-800/90 text-foreground ring-1 ring-white/5"
                         }`}>
-                        <p className="text-[15px] font-medium leading-relaxed whitespace-pre-wrap">{m.text}</p>
+                        <p className="whitespace-pre-wrap break-words text-[14px] font-medium leading-6 sm:text-[15px]">{formatMessageText(m.text)}</p>
                         <div className={`mt-1.5 text-[10px] font-bold ${m.sender === "user" ? "text-background/60" : "text-muted-foreground"}`}>
                           {m.timestamp.toLocaleTimeString("vi-VN", { hour: "2-digit", minute: "2-digit" })}
                         </div>

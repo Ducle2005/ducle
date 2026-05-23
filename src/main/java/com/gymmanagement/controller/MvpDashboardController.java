@@ -457,9 +457,15 @@ public class MvpDashboardController {
 
 	private String buildAiPrompt(Customer customer, String message) {
 		StringBuilder prompt = new StringBuilder();
-		prompt.append("Bạn là huấn luyện viên cá nhân AI của Aura Fitness.\n");
-		prompt.append("Trả lời bằng tiếng Việt tự nhiên, ngắn gọn, dễ làm theo.\n");
-		prompt.append("Chỉ tư vấn tập luyện, dinh dưỡng, phục hồi và sức khỏe cơ bản. Nếu có dấu hiệu nguy hiểm, hãy khuyên người dùng gặp chuyên gia y tế.\n\n");
+		prompt.append("Bạn là Aura Coach, huấn luyện viên cá nhân AI trong app Aura Fitness.\n");
+		prompt.append("Mục tiêu: trả lời thông minh, thực tế, cá nhân hóa theo hồ sơ người dùng, bằng tiếng Việt tự nhiên.\n");
+		prompt.append("Quy tắc trả lời:\n");
+		prompt.append("- Trả lời trực tiếp vào câu hỏi, không mở đầu kiểu 'Chào bạn' nếu không cần.\n");
+		prompt.append("- Không dùng dấu markdown thô như *, **, ###. Nếu cần liệt kê, dùng gạch đầu dòng ngắn bằng dấu '-'.\n");
+		prompt.append("- Nếu người dùng hỏi về ăn uống, hãy đưa món cụ thể, cách chia bữa và lưu ý theo mục tiêu.\n");
+		prompt.append("- Nếu người dùng hỏi về tập luyện, hãy đưa lịch/bài tập/reps/sets ở mức có thể làm ngay.\n");
+		prompt.append("- Giữ câu trả lời khoảng 120-220 từ, đủ ý, không bị bỏ dở giữa câu.\n");
+		prompt.append("- Chỉ tư vấn tập luyện, dinh dưỡng, phục hồi và sức khỏe cơ bản. Nếu có dấu hiệu nguy hiểm, khuyên người dùng gặp chuyên gia y tế.\n\n");
 		prompt.append("Hồ sơ người dùng:\n");
 		prompt.append("- Tên: ").append(nonBlank(customer.getName(), "chưa rõ")).append("\n");
 		prompt.append("- Email: ").append(nonBlank(customer.getEmailId(), "chưa rõ")).append("\n");
@@ -469,13 +475,14 @@ public class MvpDashboardController {
 		prompt.append("- Chiều cao: ").append(customer.getHeight() == null ? "chưa rõ" : customer.getHeight() + " cm").append("\n");
 		prompt.append("- Mỡ: ").append(customer.getBodyFat() == null ? "chưa rõ" : customer.getBodyFat() + "%").append("\n");
 		prompt.append("- Cơ bắp: ").append(customer.getMuscleMass() == null ? "chưa rõ" : customer.getMuscleMass() + " kg").append("\n");
-		prompt.append("- Mục tiêu: ").append(nonBlank(customer.getGoal(), "chưa rõ")).append("\n");
+		prompt.append("- Mục tiêu: ").append(goalLabel(customer.getGoal())).append("\n");
 		prompt.append("- Mục tiêu calorie: ").append(customer.getCalorieTarget() == null ? "chưa rõ" : customer.getCalorieTarget()).append("\n");
 		prompt.append("- Số ngày tập/tuần: ").append(customer.getWorkoutDaysPerWeek() == null ? "chưa rõ" : customer.getWorkoutDaysPerWeek()).append("\n");
 		prompt.append("- Kinh nghiệm: ").append(nonBlank(customer.getExperienceLevel(), "chưa rõ")).append("\n");
 		prompt.append("- Kiểu tập ưa thích: ").append(nonBlank(customer.getPreferredWorkoutType(), "chưa rõ")).append("\n");
 		prompt.append("- Số kế hoạch tập hiện có: ").append(plansFor(customer).size()).append("\n\n");
-		prompt.append("Câu hỏi của người dùng:\n").append(message);
+		prompt.append("Câu hỏi của người dùng:\n").append(message).append("\n\n");
+		prompt.append("Hãy trả lời như một coach đang nhắn trong app mobile: rõ ràng, thân thiện, có bước hành động cụ thể.");
 		return prompt.toString();
 	}
 
@@ -508,8 +515,9 @@ public class MvpDashboardController {
 		contents.add(content);
 
 		Map<String, Object> generationConfig = new LinkedHashMap<String, Object>();
-		generationConfig.put("temperature", 0.7);
-		generationConfig.put("maxOutputTokens", 768);
+		generationConfig.put("temperature", 0.45);
+		generationConfig.put("topP", 0.9);
+		generationConfig.put("maxOutputTokens", 1100);
 
 		Map<String, Object> request = new LinkedHashMap<String, Object>();
 		request.put("contents", contents);
@@ -520,7 +528,7 @@ public class MvpDashboardController {
 
 		ResponseEntity<Map> response = new RestTemplate().postForEntity(url, new HttpEntity<Map<String, Object>>(request, headers), Map.class);
 		String reply = extractGeminiText(response.getBody());
-		return reply.isEmpty() ? "AI đã nhận câu hỏi nhưng chưa trả về nội dung. Bạn thử lại giúp mình nhé." : reply;
+		return reply.isEmpty() ? "AI đã nhận câu hỏi nhưng chưa trả về nội dung. Bạn thử lại giúp mình nhé." : cleanAiReply(reply);
 	}
 
 	private String extractGeminiText(Map<?, ?> body) {
@@ -554,6 +562,23 @@ public class MvpDashboardController {
 
 	private String nonBlank(String value, String fallback) {
 		return value == null || value.trim().isEmpty() ? fallback : value.trim();
+	}
+
+	private String cleanAiReply(String reply) {
+		return reply
+				.replace("**", "")
+				.replaceAll("(?m)^\\s*\\*\\s+", "- ")
+				.replaceAll("\\n{3,}", "\n\n")
+				.trim();
+	}
+
+	private String goalLabel(String goal) {
+		String label = nonBlank(goal, "chưa rõ");
+		String value = label.toUpperCase();
+		if ("BULK".equals(value) || "GAIN_MUSCLE".equals(value)) return "tăng cơ/tăng cân có kiểm soát";
+		if ("CUT".equals(value) || "LOSE_WEIGHT".equals(value)) return "giảm mỡ/siết cân";
+		if ("MAINTAIN".equals(value)) return "duy trì sức khỏe và vóc dáng";
+		return label;
 	}
 
 	private Map<String, Object> buildRoadmap(Customer customer, Map<String, Object> scanData) {
