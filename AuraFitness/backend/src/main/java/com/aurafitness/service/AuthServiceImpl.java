@@ -120,6 +120,9 @@ public class AuthServiceImpl implements AuthService {
         Set<String> roles = user.getRoles();
         if (roles != null) {
             roles.remove("ROLE_PREMIUM");
+            if (roles.isEmpty()) {
+                roles.add("ROLE_USER");
+            }
             user.setRoles(roles);
             userRepository.save(user);
         }
