@@ -933,7 +933,7 @@ export function AuthPage({ mode = "onboarding" }: { mode?: "onboarding" | "login
                         setSelectedSugar(option.title);
                         setStep("water");
                       }}
-                      className={cn("group flex min-h-[60px] w-full items-center gap-4 rounded-[14px] border border-transparent bg-[#202020] px-8 py-4 text-left shadow-2xl transition hover:border-white/15 active:scale-[0.985]", option.widthClass)}
+                      className={cn("group flex min-h-[60px] w-full items-center gap-4 rounded-[14px] border border-transparent bg-[#202020] px-8 py-4 text-left shadow-2xl transition hover:border-white/15 active:scale-[0.985]")}
                     >
                       <Icon size={22} className="shrink-0 text-white/65 transition group-hover:text-white" strokeWidth={2.4} />
                       <span className="text-base font-black leading-5">{option.title}</span>
