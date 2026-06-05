@@ -10,7 +10,6 @@ import {
   User,
   ChevronRight,
   TrendingUp,
-  Search,
   Bell,
   Plus,
 } from "lucide-react";
@@ -153,14 +152,7 @@ export default function Home() {
                   <span className="hidden sm:inline">Cập nhật chỉ số</span>
                 </button>
 
-                <div className="group relative hidden lg:block">
-                  <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" size={18} />
-                  <input
-                    type="text"
-                    placeholder={t("search_placeholder")}
-                    className="glass w-64 rounded-xl border border-border bg-card/50 py-2.5 pl-10 pr-4 text-sm transition-all focus:outline-none focus:ring-2 focus:ring-primary/20"
-                  />
-                </div>
+
 
                 <button className="glass hidden rounded-xl p-2.5 text-muted-foreground transition-colors hover:text-primary lg:block">
                   <Bell size={20} />
