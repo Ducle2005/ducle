@@ -1109,7 +1109,7 @@ export function AuthPage() {
                   </div>
                   <div className="text-8xl font-black text-white/10">&gt;&gt;</div>
                   <div className="relative h-56 w-36">
-                    <Image src={athleticImage} alt="Mục tiêu" fill sizes="160px" unoptimized className="object-cover object-top" />
+                    <Image src={fitnessGoals.find((item) => item.label === selectedGoal)?.image || athleticImage} alt="Mục tiêu" fill sizes="160px" unoptimized className="object-cover object-top" />
                   </div>
                 </div>
                 <div className="grid grid-cols-2 border border-white/10 text-left">

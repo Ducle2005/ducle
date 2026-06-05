@@ -50,13 +50,7 @@ export function UpgradeModal({ isOpen, onClose, onUpgradeSuccess }: UpgradeModal
     setShowQR(false);
     toast.success("Đăng ký gói cao cấp thành công. Aura VIP đã được mở khóa.");
     onUpgradeSuccess?.();
-
-    setTimeout(() => {
-      onClose();
-      setSuccess(false);
-      setLoading(false);
-    }, 5000);
-  }, [onClose, onUpgradeSuccess, refreshUser, toast]);
+  }, [onUpgradeSuccess, refreshUser, toast]);
 
   // Polling logic for automatic payment detection
   useEffect(() => {
@@ -169,10 +163,25 @@ export function UpgradeModal({ isOpen, onClose, onUpgradeSuccess }: UpgradeModal
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.5 }}
-                  className="max-w-lg text-lg text-slate-300 font-medium"
+                  className="max-w-lg text-lg text-slate-300 font-medium animate-pulse"
                 >
                   Giao dịch thành công. Toàn bộ đặc quyền &quot;Mắt Thần&quot; và Aura Neural Engine PRO đã được mở khóa dành riêng cho bạn.
                 </motion.p>
+                <motion.button
+                  initial={{ opacity: 0, y: 20, scale: 0.9 }}
+                  animate={{ opacity: 1, y: 0, scale: 1 }}
+                  transition={{ delay: 0.6, type: "spring", stiffness: 200 }}
+                  onClick={() => {
+                    onClose();
+                    setTimeout(() => {
+                      setSuccess(false);
+                      setLoading(false);
+                    }, 500);
+                  }}
+                  className="mt-10 rounded-2xl bg-gradient-to-r from-amber-400 via-yellow-300 to-amber-500 px-8 py-4 text-sm font-black uppercase text-slate-950 shadow-[0_0_30px_rgba(251,191,36,0.3)] transition-all hover:scale-[1.03] active:scale-95 hover:shadow-[0_0_50px_rgba(251,191,36,0.5)] cursor-pointer"
+                >
+                  Bắt đầu trải nghiệm VIP
+                </motion.button>
               </motion.div>
             ) : (
               <div className="flex h-full flex-col lg:flex-row">

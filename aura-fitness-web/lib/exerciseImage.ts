@@ -77,6 +77,30 @@ export function getExerciseImageSrc(exercise: Exercise): string {
   const raw = exercise.imageUrl?.trim();
   const videoId = getYouTubeVideoId(exercise.videoUrl);
 
+  // ── CUSTOM NAME-BASED MAPPING FOR REAL PEOPLE PHOTOS ──
+  const nameLower = exercise.name?.toLowerCase() || "";
+  if (nameLower.includes("squat") || nameLower.includes("ganh dui")) {
+    return "/exercises/squat.png";
+  }
+  if (nameLower.includes("bench press") || nameLower.includes("day nguc")) {
+    if (nameLower.includes("incline") || nameLower.includes("doc len")) {
+      return "/onboarding/goal-muscle-gain.png";
+    }
+    return "/exercises/bench-press.png";
+  }
+  if (nameLower.includes("barbell row") || nameLower.includes("cheo lung")) {
+    return "/exercises/barbell-row.png";
+  }
+  if (nameLower.includes("overhead press") || nameLower.includes("day vai")) {
+    return "/exercises/overhead-press.png";
+  }
+  if (nameLower.includes("plank")) {
+    return "/onboarding/body-lean.png";
+  }
+  if (nameLower.includes("dumbbell press") && (nameLower.includes("incline") || nameLower.includes("doc len"))) {
+    return "/onboarding/goal-muscle-gain.png";
+  }
+
   // Keep real exercise imagery from backend uploads or external catalog URLs.
   // Onboarding illustrations are intentionally ignored here because they crop badly in exercise cards.
   if (raw && raw.length > 0 && isExerciseImage(raw)) {

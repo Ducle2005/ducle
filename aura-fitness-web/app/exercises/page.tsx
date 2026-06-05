@@ -107,7 +107,7 @@ export default function ExercisesPage() {
   const [exercisePage, setExercisePage] = useState<ExercisePageResponse | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [selectedExercise, setSelectedExercise] = useState<Exercise | null>(null);
-  const selectedExerciseEmbedUrl = selectedExercise ? getYouTubeEmbedUrl(selectedExercise.videoUrl) : "";
+  const selectedExerciseEmbedUrl = selectedExercise ? getYouTubeEmbedUrl(selectedExercise.videoUrl, selectedExercise.name) : "";
   const selectedExerciseGuideUrl = selectedExercise ? getYouTubeSearchUrl(selectedExercise.name) : "";
 
   const activeFilters = useMemo(

@@ -57,10 +57,36 @@ export function getYouTubeVideoId(url: string | null | undefined) {
   return "";
 }
 
-export function getYouTubeEmbedUrl(url: string | null | undefined) {
+export function getYouTubeEmbedUrl(url: string | null | undefined, name?: string) {
   const id = getYouTubeVideoId(url);
-  if (UNAVAILABLE_YOUTUBE_VIDEO_IDS.has(id)) return "";
-  return id ? `https://www.youtube.com/embed/${id}` : "";
+  
+  if (id && !UNAVAILABLE_YOUTUBE_VIDEO_IDS.has(id)) {
+    return `https://www.youtube.com/embed/${id}`;
+  }
+
+  if (name) {
+    const nameLower = name.toLowerCase();
+    if (nameLower.includes("squat") || nameLower.includes("ganh dui")) {
+      return "https://www.youtube.com/embed/ultWGrY3OQA";
+    }
+    if (nameLower.includes("bench press") || nameLower.includes("day nguc")) {
+      if (nameLower.includes("incline") || nameLower.includes("doc len")) {
+        return "https://www.youtube.com/embed/8iPjfLa5pDU";
+      }
+      return "https://www.youtube.com/embed/rT7DgipK6B8";
+    }
+    if (nameLower.includes("barbell row") || nameLower.includes("cheo lung")) {
+      return "https://www.youtube.com/embed/RQU8K-PMkpA";
+    }
+    if (nameLower.includes("overhead press") || nameLower.includes("day vai")) {
+      return "https://www.youtube.com/embed/2yjwHevEzP0";
+    }
+    if (nameLower.includes("plank")) {
+      return "https://www.youtube.com/embed/pSHjTRCQxIw";
+    }
+  }
+
+  return "";
 }
 
 export function getYouTubeThumbnailUrl(url: string | null | undefined) {
