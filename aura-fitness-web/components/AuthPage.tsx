@@ -79,7 +79,7 @@ const steps: OnboardingStep[] = [
   "account",
 ];
 
-const maleImage = "/onboarding/male-average.svg";
+const maleImage = "/onboarding/gender-male.png";
 const athleticImage = "/onboarding/male-bulky.svg";
 
 const genderOptions = [
@@ -87,7 +87,7 @@ const genderOptions = [
   {
     label: "Nữ",
     value: "female",
-    image: "/onboarding/female-athletic.svg",
+    image: "/onboarding/gender-female.png",
   },
 ];
 
