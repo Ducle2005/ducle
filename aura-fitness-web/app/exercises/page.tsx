@@ -115,30 +115,38 @@ export default function ExercisesPage() {
     [filters.equipment, filters.level, filters.muscle, filters.search],
   );
 
-  const loadExercises = useCallback(async () => {
+  useEffect(() => {
+    if (!user) return;
+    
+    let isActive = true;
     setIsLoading(true);
-    try {
-      const data = await exerciseApi.getExercises({
+    
+    const handler = setTimeout(() => {
+      exerciseApi.getExercises({
         page,
         size: 12,
         muscle: filters.muscle || undefined,
         level: filters.level || undefined,
         equipment: filters.equipment || undefined,
         search: filters.search.trim() || undefined,
+      }).then(data => {
+        if (isActive) {
+          setExercisePage(data);
+          setIsLoading(false);
+        }
+      }).catch(error => {
+        if (isActive) {
+          console.error("Failed to load exercises:", error);
+          setIsLoading(false);
+        }
       });
-      setExercisePage(data);
-    } catch (error) {
-      console.error("Failed to load exercises:", error);
-    } finally {
-      setIsLoading(false);
-    }
-  }, [filters.equipment, filters.level, filters.muscle, filters.search, page]);
+    }, filters.search.trim() ? 400 : 50);
 
-  useEffect(() => {
-    if (user) {
-      void loadExercises();
-    }
-  }, [loadExercises, user]);
+    return () => {
+      isActive = false;
+      clearTimeout(handler);
+    };
+  }, [filters.equipment, filters.level, filters.muscle, filters.search, page, user]);
 
   const updateFilter = (key: FilterKey, value: string) => {
     setPage(0);
