@@ -111,6 +111,17 @@ export function CreatePlanModal({ isOpen, onClose, onCreated, initialPlan }: Cre
     );
   }, [initialPlan, isOpen]);
 
+  useEffect(() => {
+    if (isOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "";
+    }
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [isOpen]);
+
   const filteredCatalog = useMemo(() => {
     const needle = search.trim().toLowerCase();
     const selectedIds = new Set(selectedExercises.map((entry) => entry.exercise.id));

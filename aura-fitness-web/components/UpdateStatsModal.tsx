@@ -71,6 +71,17 @@ export function UpdateStatsModal({ isOpen, onClose, initialData, onUpdate }: Upd
     setFormData(EMPTY_FORM);
   }, [initialData, isOpen]);
 
+  useEffect(() => {
+    if (isOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "";
+    }
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [isOpen]);
+
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
     setIsSaving(true);
@@ -128,7 +139,7 @@ export function UpdateStatsModal({ isOpen, onClose, initialData, onUpdate }: Upd
           initial={{ opacity: 0, scale: 0.9, y: 20 }}
           animate={{ opacity: 1, scale: 1, y: 0 }}
           exit={{ opacity: 0, scale: 0.9, y: 20 }}
-          className="relative w-full max-w-2xl overflow-hidden p-8 glass-card shadow-2xl"
+          className="relative w-full max-w-2xl max-h-[90vh] overflow-y-auto p-8 glass-card shadow-2xl"
         >
           <div className="mb-8 flex items-center justify-between">
             <div className="flex items-center gap-3">
