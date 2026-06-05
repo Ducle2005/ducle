@@ -81,29 +81,29 @@ export function getYouTubeEmbedUrl(url: string | null | undefined, name?: string
     if (nameLower.includes("overhead press") || nameLower.includes("day vai")) {
       return "https://www.youtube.com/embed/2yjwHevEzP0";
     }
-    if (nameLower.includes("pull up") || nameLower.includes("keo xa")) {
+    if (nameLower.includes("pull up") || nameLower.includes("len xa")) {
       return "https://www.youtube.com/embed/eGo4IYlbE5g";
     }
-    if (nameLower.includes("lateral raise") || nameLower.includes("dang vai")) {
-      return "https://www.youtube.com/embed/3VcKaXatldo";
+    if (nameLower.includes("lateral raise") || nameLower.includes("dang ta vai")) {
+      return "https://www.youtube.com/embed/3VcKaX3J8xs";
     }
-    if (nameLower.includes("bicep curl") || nameLower.includes("cuon tay")) {
+    if (nameLower.includes("bicep curl") || nameLower.includes("cuon ta tay")) {
       return "https://www.youtube.com/embed/ykJgrb560_8";
     }
-    if (nameLower.includes("tricep") || nameLower.includes("tay sau")) {
-      return "https://www.youtube.com/embed/nRiJVZDpdL0";
+    if (nameLower.includes("tricep extension") || nameLower.includes("duoi tay sau")) {
+      return "https://www.youtube.com/embed/nRiJVZD5m80";
     }
     if (nameLower.includes("romanian deadlift") || nameLower.includes("rdl")) {
-      return "https://www.youtube.com/embed/JCXUYuzwFtM";
+      return "https://www.youtube.com/embed/2SHsk9AzdgA";
     }
-    if (nameLower.includes("deadlift") || nameLower.includes("keo lung")) {
+    if (nameLower.includes("deadlift")) {
       return "https://www.youtube.com/embed/op9kVnSso6Q";
     }
     if (nameLower.includes("leg press") || nameLower.includes("dap dui")) {
-      return "https://www.youtube.com/embed/IZxyjW7MPpk";
+      return "https://www.youtube.com/embed/IZxyjW7MPJQ";
     }
     if (nameLower.includes("calf raise") || nameLower.includes("nhon got")) {
-      return "https://www.youtube.com/embed/gwLzBJYoWlU";
+      return "https://www.youtube.com/embed/8pI7S8s6Mhk";
     }
     if (nameLower.includes("crunch") || nameLower.includes("gap bung")) {
       return "https://www.youtube.com/embed/Xyd_fa5zoEU";
