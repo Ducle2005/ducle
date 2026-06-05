@@ -127,11 +127,14 @@ public class Profile {
 
     private Integer aiChatCount = 0;
     private java.time.LocalDate lastAiChatDate;
+    private java.time.LocalDate premiumStartDate;
 
     public Integer getAiChatCount() { return aiChatCount; }
     public void setAiChatCount(Integer aiChatCount) { this.aiChatCount = aiChatCount; }
     public java.time.LocalDate getLastAiChatDate() { return lastAiChatDate; }
     public void setLastAiChatDate(java.time.LocalDate lastAiChatDate) { this.lastAiChatDate = lastAiChatDate; }
+    public java.time.LocalDate getPremiumStartDate() { return premiumStartDate; }
+    public void setPremiumStartDate(java.time.LocalDate premiumStartDate) { this.premiumStartDate = premiumStartDate; }
 
     public static class ProfileBuilder {
         private Long id;
@@ -157,6 +160,7 @@ public class Profile {
         private String weightUnit;
         private String heightUnit;
         private Double hrv;
+        private java.time.LocalDate premiumStartDate;
 
         public ProfileBuilder id(Long id) { this.id = id; return this; }
         public ProfileBuilder age(Integer age) { this.age = age; return this; }
@@ -181,10 +185,13 @@ public class Profile {
         public ProfileBuilder weightUnit(String weightUnit) { this.weightUnit = weightUnit; return this; }
         public ProfileBuilder heightUnit(String heightUnit) { this.heightUnit = heightUnit; return this; }
         public ProfileBuilder hrv(Double hrv) { this.hrv = hrv; return this; }
+        public ProfileBuilder premiumStartDate(java.time.LocalDate premiumStartDate) { this.premiumStartDate = premiumStartDate; return this; }
         public Profile build() { 
-            return new Profile(id, age, gender, height, weight, bodyFat, muscleMass, waterIntake, calorieTarget, goal, user,
+            Profile profile = new Profile(id, age, gender, height, weight, bodyFat, muscleMass, waterIntake, calorieTarget, goal, user,
                                avatarUrl, targetWeight, workoutDaysPerWeek, experienceLevel, preferredWorkoutType,
-                               reminderEnabled, reminderTime, reminderDays, theme, weightUnit, heightUnit, hrv); 
+                               reminderEnabled, reminderTime, reminderDays, theme, weightUnit, heightUnit, hrv);
+            profile.setPremiumStartDate(premiumStartDate);
+            return profile; 
         }
     }
 }

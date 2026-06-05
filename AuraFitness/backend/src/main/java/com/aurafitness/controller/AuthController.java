@@ -111,7 +111,7 @@ public class AuthController {
         String email = authentication.getName();
         try {
             authService.downgradePremium(email);
-            return ResponseEntity.ok("Successfully downgraded to User!");
+            return ResponseEntity.ok("Hủy gói VIP thành công. Hệ thống đã tiến hành hoàn tiền cho bạn!");
         } catch (Exception e) {
             e.printStackTrace();
             return new ResponseEntity<>("Downgrade failed: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);

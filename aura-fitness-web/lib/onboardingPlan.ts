@@ -81,6 +81,7 @@ function buildProfilePayload(selections: OnboardingSelections): Partial<Profile>
     workoutDaysPerWeek: 3,
     experienceLevel: experienceLevelFromSelection(selections.fitnessLevel),
     preferredWorkoutType: workoutTypeFromEquipment(selections.equipment),
+    weight: Number(selections.weightValue) || null,
     heightUnit: "CM",
     weightUnit: "KG",
   };

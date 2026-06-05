@@ -2,6 +2,7 @@ package com.aurafitness.service;
 
 import com.aurafitness.entity.*;
 import com.aurafitness.repository.*;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.*;
 import org.springframework.stereotype.Service;
@@ -253,25 +254,141 @@ public class AICoachService {
 
                 String systemInstruction = "Bạn là một PT chuyên nghiệp với 10 năm kinh nghiệm. " +
                     "Chỉ trả lời các câu hỏi liên quan đến sức khỏe, gym và dinh dưỡng. " +
+
+    @SuppressWarnings("unchecked")
+    public String getChatResponse(String email, String message, String imageBase64) {
+        User user = userRepository.findByEmail(email).orElseThrow();
+        Profile profile = profileRepository.findByUser(user).orElseGet(() -> {
+            Profile p = new Profile();
+            p.setUser(user);
+            return p;
+        });
+
+        boolean isPremium = user.getRoles() != null && user.getRoles().contains("ROLE_PREMIUM");
+
+        LocalDate today = LocalDate.now();
+        if (profile.getLastAiChatDate() == null || !profile.getLastAiChatDate().equals(today)) {
+            profile.setLastAiChatDate(today);
+            profile.setAiChatCount(0);
+        }
+        
+        System.out.println("AI Chat Check - Email: " + email + ", Count: " + profile.getAiChatCount() + ", Premium: " + isPremium);
+
+        if (!isPremium && profile.getAiChatCount() != null && profile.getAiChatCount() >= 5) {
+            return "⛔ Bạn đã đạt giới hạn 5 tin nhắn/ngày của gói Free. Nâng cấp Premium để trò chuyện và dùng tính năng chụp ảnh phân tích!";
+        }
+        if (!isPremium && imageBase64 != null && !imageBase64.isEmpty()) {
+            return "📸 Tính năng 'Mắt thần' (Gửi ảnh) chỉ dành cho khách Premium. Hãy nâng cấp để mở khóa nhé!";
+        }
+
+        profile.setAiChatCount(profile.getAiChatCount() == null ? 1 : profile.getAiChatCount() + 1);
+        profileRepository.save(profile);
+        
+        // --- 1. Tổng hợp Context (dữ liệu cá nhân) ---
+        StringBuilder context = new StringBuilder();
+        context.append("Tên người dùng: ").append(user.getName()).append(".\n");
+
+        if (isPremium) {
+            if (profile != null && profile.getId() != null) {
+            String goal = profile.getGoal() != null ? profile.getGoal().name() : "Chưa xác định";
+            Double weight = profile.getWeight();
+            context.append("Hồ sơ: Mục tiêu [").append(goal)
+                   .append("], Thể trọng [").append(weight != null ? weight + "kg" : "chưa rõ")
+                   .append("], Tỉ lệ mỡ [").append(profile.getBodyFat() != null ? profile.getBodyFat() + "%" : "chưa rõ")
+                   .append("], Trình độ [").append(profile.getExperienceLevel() != null ? profile.getExperienceLevel() : "Người mới")
+                   .append("], Loại hình tập [").append(profile.getPreferredWorkoutType() != null ? profile.getPreferredWorkoutType() : "Gym")
+                   .append("].\n");
+        }
+
+        // Dinh dưỡng
+        try {
+            Map<String, Object> nutrition = nutritionService.getDailyNutrition(email, LocalDate.now());
+            Map<String, Object> totals = (Map<String, Object>) nutrition.get("totals");
+            Integer targetCals = (Integer) nutrition.get("target");
+            if (totals != null) {
+                int cals = ((Number) totals.get("calories")).intValue();
+                int pro = ((Number) totals.get("protein")).intValue();
+                context.append("Dinh dưỡng hôm nay: Đã nạp ").append(cals).append(" kcal / ").append(targetCals != null ? targetCals : "?").append(" kcal mục tiêu. ");
+                context.append("Protein đạt ").append(pro).append("g.\n");
+            }
+            List<FoodLog> logs = (List<FoodLog>) nutrition.get("logs");
+            if (logs != null && !logs.isEmpty()) {
+                context.append("Danh sách thực phẩm hôm nay: ");
+                logs.forEach(l -> context.append(l.getFoodName()).append(" (").append(l.getCalories()).append(" kcal), "));
+                context.append("\n");
+            } else {
+                context.append("Dinh dưỡng: CHƯA NHẬP BẤT KỲ MÓN ĂN NÀO HÔM NAY.\n");
+            }
+        } catch (Exception ignored) {}
+
+        // Tiến độ / Workout
+        try {
+            Map<String, Object> comparison = analyticsService.getWeeklyComparison(email);
+            if (comparison != null) {
+                double delta = ((Number) comparison.get("deltaPercentage")).doubleValue();
+                context.append("Tiến độ theo tuần: Khối lượng tập ").append(delta >= 0 ? "TĂNG " : "GIẢM ").append(Math.abs(Math.round(delta))).append("% so với tuần trước.\n");
+            }
+            List<WorkoutSession> sessions = workoutSessionRepository.findByUserOrderByStartTimeDesc(user);
+            if (!sessions.isEmpty()) {
+                WorkoutSession last = sessions.get(0);
+                boolean isToday = last.getStartTime().toLocalDate().equals(LocalDate.now());
+                context.append("Trạng thái tập: ").append(isToday ? "ĐÃ TẬP HÔM NAY" : "CHƯA TẬP HÔM NAY").append(". ");
+                context.append("Buổi tập gần nhất: Ngày ").append(last.getStartTime().toLocalDate().toString())
+                       .append(" (Hoàn thành ").append(last.getWorkoutSets().size()).append(" hiệp tập).\n");
+                
+                if (!last.getWorkoutSets().isEmpty()) {
+                    context.append("Chi tiết bài tập gần nhất: ");
+                    last.getWorkoutSets().stream().map(s -> s.getWorkoutExercise().getExercise().getName())
+                        .distinct().limit(5).forEach(name -> context.append(name).append(", "));
+                    context.append("...\n");
+                }
+            } else {
+                context.append("Trạng thái tập: CHƯA CÓ DỮ LIỆU TẬP LUYỆN NÀO TRÊN HỆ THỐNG.\n");
+            }
+            
+            Map<String, String> stagnation = analyticsService.detectStagnation(email);
+            if (stagnation != null && "STAGNANT".equals(stagnation.get("status"))) {
+                context.append("Chú ý từ hệ thống: Khối lượng tập đang bị CHỮNG LẠI trong 3 buổi gần nhất.\n");
+            }
+        } catch (Exception ignored) {}
+        } else {
+            context.append("Trạng thái: Khách Free (chỉ cung cấp ngữ cảnh tối giản).\n");
+        }
+
+        // --- 2. Gọi Gemini API ---
+        if (geminiApiKey != null && !geminiApiKey.isEmpty()) {
+            try {
+                RestTemplate restTemplate = new RestTemplate();
+                String modelName = isPremium ? geminiPremiumModel : geminiChatModel;
+                String url = "https://generativelanguage.googleapis.com/v1beta/models/" + modelName + ":generateContent?key=" + geminiApiKey;
+
+                String systemInstruction = "Bạn là một PT chuyên nghiệp với 10 năm kinh nghiệm. " +
+                    "Chỉ trả lời các câu hỏi liên quan đến sức khỏe, gym và dinh dưỡng. " +
                     "Nếu user hỏi lạc đề, hãy lịch sự từ chối. Trả lời ngắn gọn, dùng gạch đầu dòng.\n" +
                     "Thông tin hồ sơ user hiện tại:\n" + context.toString();
 
                 String prompt = "Câu hỏi của user: " + message;
                 
-                String inlineData = "";
+                ObjectMapper mapper = new ObjectMapper();
+                Map<String, Object> systemInstructionMap = Map.of(
+                    "parts", List.of(Map.of("text", systemInstruction))
+                );
+
+                List<Map<String, Object>> partsList = new ArrayList<>();
+                partsList.add(Map.of("text", prompt));
+
                 if (isPremium && imageBase64 != null && !imageBase64.isEmpty()) {
                     String cleanB64 = imageBase64.contains(",") ? imageBase64.split(",")[1] : imageBase64;
-                    inlineData = ", {\"inlineData\": {\"mimeType\": \"image/jpeg\", \"data\": \"" + cleanB64 + "\"}}";
+                    partsList.add(Map.of("inlineData", Map.of("mimeType", "image/jpeg", "data", cleanB64)));
                 }
 
-                String requestJson = "{" +
-                        "\"systemInstruction\": {" +
-                        "  \"parts\": [{\"text\": \"" + systemInstruction.replace("\"", "\\\"").replace("\n", "\\n").replace("\r", "") + "\"}]" +
-                        "}," +
-                        "\"contents\": [{" +
-                        "  \"parts\":[{\"text\": \"" + prompt.replace("\"", "\\\"").replace("\n", "\\n").replace("\r", "") + "\"}" + inlineData + "]" +
-                        "}]" +
-                        "}";
+                Map<String, Object> contentsMap = Map.of("parts", partsList);
+                Map<String, Object> requestMap = Map.of(
+                    "systemInstruction", systemInstructionMap,
+                    "contents", List.of(contentsMap)
+                );
+
+                String requestJson = mapper.writeValueAsString(requestMap);
 
                 HttpHeaders headers = new HttpHeaders();
                 headers.setContentType(MediaType.APPLICATION_JSON);
@@ -328,39 +445,6 @@ public class AICoachService {
         try {
             RestTemplate restTemplate = new RestTemplate();
             String url = "https://generativelanguage.googleapis.com/v1beta/models/" + geminiRoadmapModel + ":generateContent?key=" + geminiApiKey;
-
-            String systemInstruction = "Bạn là HLV Trưởng của Aura Fitness. Nhiệm vụ của bạn là lập LỘ TRÌNH TẬP LUYỆN CAO CẤP (Elite Roadmap) dựa trên chỉ số sinh trắc học của người dùng.\n" +
-                "Lộ trình phải chia làm 4 Giai đoạn (Phase 1-4), mỗi giai đoạn 2 tuần.\n" +
-                "Định dạng trả lời bằng JSON với cấu trúc:\n" +
-                "{\n" +
-                "  \"title\": \"Tên lộ trình\",\n" +
-                "  \"overview\": \"Tổng quan chiến lược\",\n" +
-                "  \"phases\": [\n" +
-                "    { \"name\": \"Giai đoạn 1\", \"focus\": \"Trọng tâm\", \"weeks\": \"1-2\", \"details\": \"Mô tả chi tiết\", \"exercises\": [\"bài 1\", \"bài 2\"] },\n" +
-                "    ... lặp lại cho 4 phase\n" +
-                "  ],\n" +
-                "  \"nutritionAdvice\": \"Lời khuyên dinh dưỡng tối ưu\",\n" +
-                "  \"recoveryTip\": \"Mẹo phục hồi chuyên sâu\"\n" +
-                "}\n" +
-                "Ngôn ngữ: Tiếng Việt.";
-
-            String prompt = "Hãy lập lộ trình cho tôi dựa trên ngữ cảnh: " + context.toString();
-
-            String requestJson = "{" +
-                    "\"systemInstruction\": {" +
-                    "  \"parts\": [{\"text\": \"" + systemInstruction.replace("\"", "\\\"").replace("\n", "\\n").replace("\r", "") + "\"}]" +
-                    "}," +
-                    "\"contents\": [{" +
-                    "  \"parts\":[{\"text\": \"" + prompt.replace("\"", "\\\"").replace("\n", "\\n").replace("\r", "") + "\"}]" +
-                    "}]," +
-                    "\"generationConfig\": { \"responseMimeType\": \"application/json\" }" +
-                    "}";
-
-            HttpHeaders headers = new HttpHeaders();
-            headers.setContentType(MediaType.APPLICATION_JSON);
-            HttpEntity<String> entity = new HttpEntity<>(requestJson, headers);
-
-            ResponseEntity<Map> res = restTemplate.postForEntity(url, entity, Map.class);
             if (res.getStatusCode().is2xxSuccessful() && res.getBody() != null) {
                 List candidates = (List) res.getBody().get("candidates");
                 if (candidates != null && !candidates.isEmpty()) {

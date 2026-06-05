@@ -32,10 +32,10 @@ public class NutritionService {
         List<FoodLog> logs = foodLogRepository.findByUserAndDate(user, date);
         Profile profile = profileRepository.findByUser(user).orElse(new Profile());
 
-        int totalCalories = logs.stream().mapToInt(FoodLog::getCalories).sum();
-        double totalProtein = logs.stream().mapToDouble(FoodLog::getProtein).sum();
-        double totalCarbs = logs.stream().mapToDouble(FoodLog::getCarbs).sum();
-        double totalFat = logs.stream().mapToDouble(FoodLog::getFat).sum();
+        int totalCalories = logs.stream().mapToInt(l -> l.getCalories() != null ? l.getCalories() : 0).sum();
+        double totalProtein = logs.stream().mapToDouble(l -> l.getProtein() != null ? l.getProtein() : 0.0).sum();
+        double totalCarbs = logs.stream().mapToDouble(l -> l.getCarbs() != null ? l.getCarbs() : 0.0).sum();
+        double totalFat = logs.stream().mapToDouble(l -> l.getFat() != null ? l.getFat() : 0.0).sum();
 
         Map<String, Object> summary = new HashMap<>();
         summary.put("logs", logs);
@@ -90,10 +90,10 @@ public class NutritionService {
             LocalDate date = today.minusDays(i);
             List<FoodLog> logs = foodLogRepository.findByUserAndDate(user, date);
 
-            int totalCalories = logs.stream().mapToInt(FoodLog::getCalories).sum();
-            double totalProtein = logs.stream().mapToDouble(FoodLog::getProtein).sum();
-            double totalCarbs = logs.stream().mapToDouble(FoodLog::getCarbs).sum();
-            double totalFat = logs.stream().mapToDouble(FoodLog::getFat).sum();
+            int totalCalories = logs.stream().mapToInt(l -> l.getCalories() != null ? l.getCalories() : 0).sum();
+            double totalProtein = logs.stream().mapToDouble(l -> l.getProtein() != null ? l.getProtein() : 0.0).sum();
+            double totalCarbs = logs.stream().mapToDouble(l -> l.getCarbs() != null ? l.getCarbs() : 0.0).sum();
+            double totalFat = logs.stream().mapToDouble(l -> l.getFat() != null ? l.getFat() : 0.0).sum();
 
             Map<String, Object> dayData = new HashMap<>();
             dayData.put("date", date.toString());

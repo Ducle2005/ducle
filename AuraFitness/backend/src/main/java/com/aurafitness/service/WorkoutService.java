@@ -102,17 +102,11 @@ public class WorkoutService {
             throw new AccessDeniedException("You do not have access to this workout plan");
         }
 
-        // Unlink from workout sessions to avoid foreign key constraint violations
+        // Delete workout sessions associated with this plan to clean up old data
         List<WorkoutSession> sessions = workoutSessionRepository.findByUserOrderByStartTimeDesc(user);
         for (WorkoutSession session : sessions) {
             if (session.getWorkoutPlan() != null && session.getWorkoutPlan().getId().equals(planId)) {
-                session.setWorkoutPlan(null);
-                for (WorkoutSet set : session.getWorkoutSets()) {
-                    if (set.getWorkoutExercise() != null && set.getWorkoutExercise().getWorkoutPlan() != null && set.getWorkoutExercise().getWorkoutPlan().getId().equals(planId)) {
-                        set.setWorkoutExercise(null);
-                    }
-                }
-                workoutSessionRepository.save(session);
+                workoutSessionRepository.delete(session);
             }
         }
 
