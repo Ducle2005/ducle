@@ -94,47 +94,47 @@ const genderOptions = [
 const bodyTypes = [
   {
     label: "Mảnh khảnh",
-    image: "/onboarding/male-lean.svg",
+    image: "/onboarding/body-lean.png",
   },
-  { label: "Trung bình", image: maleImage },
+  { label: "Trung bình", image: "/onboarding/body-average.png" },
   {
     label: "To",
-    image: athleticImage,
+    image: "/onboarding/body-muscular.png",
   },
   {
     label: "Nặng",
-    image: "/onboarding/male-heavy.svg",
+    image: "/onboarding/body-heavy.png",
   },
 ];
 
 const fitnessGoals = [
   {
     label: "Giảm Cân",
-    image: "/onboarding/male-average.svg",
+    image: "/onboarding/goal-weight-loss.png",
   },
-  { label: "Tăng Cơ Bắp", image: athleticImage },
+  { label: "Tăng Cơ Bắp", image: "/onboarding/goal-muscle-gain.png" },
   {
     label: "Cắt Nét Cơ",
-    image: "/onboarding/goal-cut.svg",
+    image: "/onboarding/goal-cut-real.png",
   },
 ];
 
 const ageGroups = [
   {
     label: "18-29",
-    image: "/onboarding/age-pair-young.svg",
+    image: "/onboarding/age-18-29.png",
   },
   {
     label: "30-39",
-    image: "/onboarding/age-pair-adult.svg",
+    image: "/onboarding/age-30-39.png",
   },
   {
     label: "40-49",
-    image: "/onboarding/male-average.svg",
+    image: "/onboarding/age-40-49.png",
   },
   {
     label: "50+",
-    image: "/onboarding/male-heavy.svg",
+    image: "/onboarding/age-50-plus.png",
   },
 ];
 
