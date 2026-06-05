@@ -48,7 +48,7 @@ export default function NutritionPage() {
   return (
     <div className="flex min-h-screen bg-background text-foreground">
       <Sidebar />
-      <main className="mobile-scroll-page">
+      <main className="mobile-page overflow-x-hidden">
         <header className="mb-7 flex flex-col gap-4 sm:mb-10 lg:mb-12 lg:flex-row lg:items-center lg:justify-between">
           <div>
             <h1 className="text-2xl font-black uppercase tracking-tight sm:text-3xl">Trạm dinh dưỡng</h1>

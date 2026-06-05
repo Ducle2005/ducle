@@ -101,4 +101,20 @@ public class AuthController {
             return new ResponseEntity<>("Upgrade failed: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
+    @PostMapping("/downgrade")
+    public ResponseEntity<String> downgradePremium() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication == null) {
+            return new ResponseEntity<>("Authentication required", HttpStatus.UNAUTHORIZED);
+        }
+        String email = authentication.getName();
+        try {
+            authService.downgradePremium(email);
+            return ResponseEntity.ok("Successfully downgraded to User!");
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ResponseEntity<>("Downgrade failed: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
 }

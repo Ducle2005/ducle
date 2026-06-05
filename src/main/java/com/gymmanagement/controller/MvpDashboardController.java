@@ -83,7 +83,7 @@ public class MvpDashboardController {
 		Customer customer = currentUserService.getCurrentCustomer(authorizationHeader);
 		if (customer == null) return unauthorized();
 
-		List<Map<String, Object>> logs = foodLogsByEmail.getOrDefault(customer.getEmail(), new ArrayList<>());
+		List<Map<String, Object>> logs = foodLogsByEmail.getOrDefault(customer.getEmailId(), new ArrayList<>());
 		String today = LocalDate.now().toString();
 		List<Map<String, Object>> todayLogs = new ArrayList<>();
 		int totalCalories = 0, totalProtein = 0, totalCarbs = 0, totalFat = 0;
@@ -120,7 +120,7 @@ public class MvpDashboardController {
 		response.put("id", System.currentTimeMillis());
 		if (!response.containsKey("date")) response.put("date", LocalDate.now().toString());
 		
-		foodLogsByEmail.computeIfAbsent(customer.getEmail(), k -> new ArrayList<>()).add(response);
+		foodLogsByEmail.computeIfAbsent(customer.getEmailId(), k -> new ArrayList<>()).add(response);
 		
 		return ResponseEntity.ok(response);
 	}

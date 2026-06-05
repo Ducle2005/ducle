@@ -97,4 +97,16 @@ public class AuthServiceImpl implements AuthService {
         user.setRoles(roles);
         userRepository.save(user);
     }
+
+    @Override
+    public void downgradePremium(String email) {
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found"));
+        Set<String> roles = user.getRoles();
+        if (roles != null) {
+            roles.remove("ROLE_PREMIUM");
+            user.setRoles(roles);
+            userRepository.save(user);
+        }
+    }
 }

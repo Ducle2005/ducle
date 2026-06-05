@@ -8,4 +8,5 @@ public interface AuthService {
     String register(RegisterDto registerDto);
     void changePassword(String email, String currentPassword, String newPassword);
     void upgradeToPremium(String email);
+    void downgradePremium(String email);
 }

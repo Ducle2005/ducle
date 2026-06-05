@@ -22,8 +22,8 @@ import { useAuth } from "@/context/AuthContext";
 import { vipApi, type VIPInsights } from "@/lib/vipApi";
 import { Sidebar } from "@/components/Sidebar";
 import { UpgradeModal } from "@/components/UpgradeModal";
-import { getFullImageUrl } from "@/lib/api";
 import { AuthPage } from "@/components/AuthPage";
+import { apiFetch, getFullImageUrl } from "@/lib/api";
 
 const BodyScanner = dynamic(
   () => import("@/components/BodyScanner").then((mod) => mod.BodyScanner),
@@ -58,7 +58,7 @@ interface BodyScanMetrics {
 }
 
 export default function VIPIntelligence() {
-  const { user } = useAuth();
+  const { user, refreshUser } = useAuth();
   const [insights, setInsights] = useState<VIPInsights | null>(null);
   const [scans, setScans] = useState<BodyScanRecord[]>([]);
   const [profile, setProfile] = useState<VIPProfile | null>(null);
@@ -137,6 +137,17 @@ export default function VIPIntelligence() {
       loadScans();
     } catch (err) {
       console.error(err);
+    }
+  };
+
+  const handleCancelVIP = async () => {
+    if (!confirm("Bạn có chắc chắn muốn hủy gói VIP?")) return;
+    try {
+      await apiFetch("/auth/downgrade", { method: "POST" });
+      await refreshUser();
+    } catch (err) {
+      console.error("Failed to cancel VIP:", err);
+      alert("Không thể hủy gói VIP lúc này.");
     }
   };
 
@@ -247,13 +258,21 @@ export default function VIPIntelligence() {
         {/* Header */}
         <header className="mb-12">
           {/* ... */}
-          <div className="flex items-center gap-3 mb-4">
-            <div className="inline-flex items-center gap-2 rounded-full bg-amber-500/10 px-4 py-1 text-xs font-black text-amber-500 border border-amber-500/20 uppercase tracking-widest">
-              <Crown size={14} /> Aura Neural
+          <div className="flex items-center justify-between gap-3 mb-4">
+            <div className="flex items-center gap-3">
+              <div className="inline-flex items-center gap-2 rounded-full bg-amber-500/10 px-4 py-1 text-xs font-black text-amber-500 border border-amber-500/20 uppercase tracking-widest">
+                <Crown size={14} /> Aura Neural
+              </div>
+              <div className="inline-flex items-center gap-2 rounded-full bg-emerald-500/10 px-4 py-1 text-xs font-black text-emerald-500 border border-emerald-500/20 uppercase tracking-widest">
+                {isLoading ? "Đang đồng bộ" : "Trí tuệ trực tiếp"}
+              </div>
             </div>
-            <div className="inline-flex items-center gap-2 rounded-full bg-emerald-500/10 px-4 py-1 text-xs font-black text-emerald-500 border border-emerald-500/20 uppercase tracking-widest">
-              {isLoading ? "Đang đồng bộ" : "Trí tuệ trực tiếp"}
-            </div>
+            <button
+              onClick={handleCancelVIP}
+              className="rounded-full bg-rose-500/10 px-4 py-1 text-xs font-black text-rose-500 border border-rose-500/20 uppercase tracking-widest transition-colors hover:bg-rose-500/20"
+            >
+              Hủy gói VIP
+            </button>
           </div>
           <h1 className="text-5xl font-black italic tracking-tighter mb-4 uppercase">TRÍ TUỆ VIP & SINH TRẮC HP</h1>
           <p className="text-slate-400 font-medium max-w-2xl">Phân tích chuyên sâu từ hệ tim mạch đến cường độ tập luyện để tối ưu hóa từng giọt mồ hôi của bạn.</p>
