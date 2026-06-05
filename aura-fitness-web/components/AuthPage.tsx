@@ -49,6 +49,7 @@ type OnboardingStep =
   | "water"
   | "hydrationResult"
   | "height"
+  | "weight"
   | "planChart"
   | "fitnessLevel"
   | "focusAreas"
@@ -70,6 +71,7 @@ const steps: OnboardingStep[] = [
   "water",
   "hydrationResult",
   "height",
+  "weight",
   "planChart",
   "fitnessLevel",
   "focusAreas",
@@ -139,6 +141,7 @@ const ageGroups = [
 ];
 
 const dietOptions = [
+  { title: "Truyền thống", description: "Ăn đa dạng các loại thực phẩm", icon: CheckCircle2 },
   { title: "Ăn chay trường", description: "Không bao gồm thịt", icon: Leaf },
   { title: "Ăn chay", description: "Không bao gồm tất cả các sản phẩm động vật", icon: Leaf },
   { title: "Keto", description: "Ăn ít carb, nhiều chất béo", icon: Flame },
@@ -147,9 +150,9 @@ const dietOptions = [
 ];
 
 const sugarOptions = [
-  { title: "Không thường xuyên. Tôi không hảo ngọt", icon: Candy, widthClass: "max-w-[405px]" },
-  { title: "3-5 lần mỗi tuần", icon: IceCreamCone, widthClass: "max-w-[216px]" },
-  { title: "Khá nhiều mỗi ngày", icon: CupSoda, widthClass: "max-w-[242px]" },
+  { title: "Không thường xuyên. Tôi không hảo ngọt", icon: Candy },
+  { title: "3-5 lần mỗi tuần", icon: IceCreamCone },
+  { title: "Khá nhiều mỗi ngày", icon: CupSoda },
 ];
 
 const waterOptions = [
@@ -157,7 +160,7 @@ const waterOptions = [
   { title: "2-6 cốc", description: "0,5-1,5 l / 17-50 oz", icon: Waves },
   { title: "7-10 cốc", description: "1,5-2,5 l / 50-85 oz", icon: Waves },
   { title: "Hơn 10 cốc", description: "hơn 2,5 l / 85 oz", icon: CloudRain },
-  { title: "Tôi chỉ uống cà phê hoặc trà", description: "", icon: Coffee, separated: true },
+  { title: "Chủ yếu là nước ngọt, cà phê, trà", description: "", icon: Coffee, separated: true },
 ];
 
 const fitnessLevels = [
@@ -484,6 +487,7 @@ export function AuthPage({ mode = "onboarding" }: { mode?: "onboarding" | "login
   const [selectedWater, setSelectedWater] = useState(waterOptions[1].title);
   const [heightUnit, setHeightUnit] = useState<HeightUnit>("cm");
   const [heightValue, setHeightValue] = useState("");
+  const [weightValue, setWeightValue] = useState("");
   const [fitnessLevel, setFitnessLevel] = useState(fitnessLevels[1].title);
   const [selectedFocusAreas, setSelectedFocusAreas] = useState<string[]>(["Chân khỏe"]);
   const [selectedEquipment, setSelectedEquipment] = useState<string[]>(["Tạ đơn"]);
@@ -514,6 +518,7 @@ export function AuthPage({ mode = "onboarding" }: { mode?: "onboarding" | "login
         if (parsed.selectedWater) setSelectedWater(parsed.selectedWater);
         if (parsed.heightUnit) setHeightUnit(parsed.heightUnit);
         if (parsed.heightValue) setHeightValue(parsed.heightValue);
+        if (parsed.weightValue) setWeightValue(parsed.weightValue);
         if (parsed.fitnessLevel) setFitnessLevel(parsed.fitnessLevel);
         if (parsed.selectedFocusAreas) setSelectedFocusAreas(parsed.selectedFocusAreas);
         if (parsed.selectedEquipment) setSelectedEquipment(parsed.selectedEquipment);
@@ -540,6 +545,7 @@ export function AuthPage({ mode = "onboarding" }: { mode?: "onboarding" | "login
       selectedWater,
       heightUnit,
       heightValue,
+      weightValue,
       fitnessLevel,
       selectedFocusAreas,
       selectedEquipment,
@@ -547,7 +553,7 @@ export function AuthPage({ mode = "onboarding" }: { mode?: "onboarding" | "login
     localStorage.setItem("aura_onboarding_state", JSON.stringify(stateToSave));
   }, [
     isLoaded, step, selectedGender, selectedBodyType, selectedGoal, selectedAge,
-    selectedDiet, selectedSugar, selectedWater, heightUnit, heightValue,
+    selectedDiet, selectedSugar, selectedWater, heightUnit, heightValue, weightValue,
     fitnessLevel, selectedFocusAreas, selectedEquipment
   ]);
 
@@ -557,6 +563,9 @@ export function AuthPage({ mode = "onboarding" }: { mode?: "onboarding" | "login
   const isHeightValid =
     Number.isFinite(numericHeight) &&
     (heightUnit === "cm" ? numericHeight >= 90 && numericHeight <= 240 : numericHeight >= 3 && numericHeight <= 8);
+
+  const numericWeight = Number(weightValue);
+  const isWeightValid = Number.isFinite(numericWeight) && numericWeight >= 30 && numericWeight <= 300;
 
   const assessment = useMemo(() => {
     if (selectedGoal === "Giảm Cân") {
@@ -603,6 +612,13 @@ export function AuthPage({ mode = "onboarding" }: { mode?: "onboarding" | "login
       };
     }
 
+    if (selectedWater === waterOptions[3].title) {
+      return {
+        title: "Tuyệt vời!",
+        message: "Cơ thể bạn luôn được cấp đủ nước tối đa. Điều này rất tốt cho sự phát triển của cơ bắp và phục hồi.",
+      };
+    }
+
     return {
       title: "Ôi! Thật ấn tượng!",
       message: "Bạn uống nhiều nước hơn 72% người dùng. Tiếp tục phát huy nhé!",
@@ -631,7 +647,8 @@ export function AuthPage({ mode = "onboarding" }: { mode?: "onboarding" | "login
     if (step === "equipment") setStep("focusAreas");
     if (step === "focusAreas") setStep("fitnessLevel");
     if (step === "fitnessLevel") setStep("planChart");
-    if (step === "planChart") setStep("height");
+    if (step === "planChart") setStep("weight");
+    if (step === "weight") setStep("height");
     if (step === "height") setStep("hydrationResult");
     if (step === "hydrationResult") setStep("water");
     if (step === "water") setStep("sugar");
@@ -665,6 +682,7 @@ export function AuthPage({ mode = "onboarding" }: { mode?: "onboarding" | "login
     water: selectedWater,
     heightUnit,
     heightValue,
+    weightValue,
     fitnessLevel,
     focusAreas: selectedFocusAreas,
     equipment: selectedEquipment,

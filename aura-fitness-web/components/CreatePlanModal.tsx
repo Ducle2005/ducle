@@ -231,7 +231,7 @@ export function CreatePlanModal({ isOpen, onClose, onCreated, initialPlan }: Cre
           initial={{ opacity: 0, scale: 0.95, y: 24 }}
           animate={{ opacity: 1, scale: 1, y: 0 }}
           exit={{ opacity: 0, scale: 0.95, y: 24 }}
-          className="relative grid max-h-[92vh] w-full max-w-7xl grid-cols-1 overflow-y-auto rounded-[2rem] border border-white/10 bg-slate-950/95 shadow-2xl lg:grid-cols-[1.05fr_0.95fr] lg:overflow-hidden"
+          className="relative grid max-h-[92vh] w-full max-w-7xl grid-cols-1 overflow-y-auto overscroll-contain touch-pan-y rounded-[2rem] border border-white/10 bg-slate-950/95 shadow-2xl lg:grid-cols-[1.05fr_0.95fr] lg:overflow-hidden"
         >
           <section className="border-b border-white/5 p-6 overflow-y-auto lg:border-b-0 lg:border-r lg:p-8">
             <div className="mb-6 flex items-start justify-between gap-4">

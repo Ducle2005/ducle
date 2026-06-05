@@ -489,7 +489,7 @@ export function WorkoutLogger({ isOpen, onClose, onComplete, planId }: WorkoutLo
 
   return (
     <AnimatePresence>
-      <div className="fixed inset-0 z-[250] flex flex-col bg-background/95 backdrop-blur-xl">
+      <div className="fixed inset-0 z-[250] flex flex-col bg-background/95 backdrop-blur-xl overscroll-contain touch-pan-y">
         {!showSummary ? (
           <>
             <header className="flex h-20 shrink-0 items-center justify-between border-b border-white/5 bg-background/70 px-4 lg:px-8">
@@ -531,7 +531,7 @@ export function WorkoutLogger({ isOpen, onClose, onComplete, planId }: WorkoutLo
               </div>
             </header>
 
-            <div className="flex-1 overflow-y-auto px-4 py-6 pb-32 lg:px-8">
+            <div className="flex-1 overflow-y-auto px-4 py-6 pb-32 lg:px-8 overscroll-contain">
               <div className="mx-auto grid max-w-7xl grid-cols-1 gap-6 xl:grid-cols-[minmax(0,1fr)_22rem]">
                 <div className="space-y-5">
                   {error && (
