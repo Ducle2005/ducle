@@ -556,9 +556,32 @@ export default function SettingsPage() {
 
                 <div className="pt-8 border-t border-white/10">
                   <h3 className="text-xl font-bold text-rose-500 mb-4">Khu vực nguy hiểm</h3>
-                  <button onClick={logout} className="flex items-center gap-2 px-6 py-3 bg-rose-500/10 text-rose-500 rounded-xl hover:bg-rose-500/20 font-bold transition-colors">
-                    <LogOut size={18} /> Đăng xuất khỏi hệ thống
-                  </button>
+                  <div className="flex flex-col sm:flex-row gap-4">
+                    <button onClick={logout} className="flex items-center justify-center gap-2 px-6 py-3 bg-rose-500/10 text-rose-500 rounded-xl hover:bg-rose-500/20 font-bold transition-colors">
+                      <LogOut size={18} /> Đăng xuất khỏi hệ thống
+                    </button>
+                    {user?.roles?.includes("ROLE_PREMIUM") && (
+                      <button 
+                        onClick={async () => {
+                          if (!confirm("Bạn có chắc chắn muốn hủy gói VIP? Các đặc quyền của bạn sẽ bị gỡ bỏ ngay lập tức.")) return;
+                          setIsSaving(true);
+                          try {
+                            await apiFetch("/auth/downgrade", { method: "POST" });
+                            toast.success("Đã hủy gói VIP thành công.");
+                            await refreshUser();
+                          } catch (error) {
+                            toast.error("Có lỗi xảy ra khi hủy gói VIP.");
+                          } finally {
+                            setIsSaving(false);
+                          }
+                        }}
+                        disabled={isSaving}
+                        className="flex items-center justify-center gap-2 px-6 py-3 bg-rose-500/10 text-rose-500 rounded-xl hover:bg-rose-500/20 font-bold transition-colors disabled:opacity-50"
+                      >
+                        <Shield size={18} /> Hủy gói VIP
+                      </button>
+                    )}
+                  </div>
                 </div>
               </div>
             )}
