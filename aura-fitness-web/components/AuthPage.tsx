@@ -430,10 +430,40 @@ function MuscleBadge({ label, selected }: { label: string; selected: boolean }) 
   );
 }
 
-function PlanChart({ goal }: { goal: string }) {
-  const target = goal === "Giảm Cân" ? 68 : goal === "Cắt Nét Cơ" ? 74 : 89;
-  const start = goal === "Giảm Cân" ? 89 : 68;
+function PlanChart({ goal, weight }: { goal: string; weight: string }) {
+  const numericWeight = Number(weight) || 70;
+  
+  let target = numericWeight;
+  let isGoingDown = true;
+  if (goal === "Giảm Cân") {
+    target = Math.round(numericWeight * 0.85);
+    isGoingDown = true;
+  } else if (goal === "Cắt Nét Cơ") {
+    target = Math.round(numericWeight * 0.95);
+    isGoingDown = true;
+  } else {
+    // Tăng Cơ Bắp
+    target = Math.round(numericWeight * 1.15);
+    isGoingDown = false;
+  }
+  
+  const start = numericWeight;
   const verb = goal === "Giảm Cân" ? "để lấy lại vóc dáng" : goal === "Cắt Nét Cơ" ? "để cắt nét cơ thể" : "để tăng cơ bắp";
+
+  const pathDown = "M35 28 C85 30 92 72 145 105 C205 142 268 128 326 154 C382 178 400 228 425 242";
+  const fillDown = pathDown + " L425 286 L35 286 Z";
+  
+  const pathUp = "M35 238 C85 240 92 198 145 165 C205 128 268 142 326 116 C382 92 400 42 425 28";
+  const fillUp = pathUp + " L425 286 L35 286 Z";
+
+  const chartPath = isGoingDown ? pathDown : pathUp;
+  const chartFill = isGoingDown ? fillDown : fillUp;
+  const startY = isGoingDown ? 28 : 238;
+  const targetY = isGoingDown ? 242 : 28;
+
+  // Calculate label positions to avoid overlap
+  const startLabelTop = isGoingDown ? 0 : 210;
+  const targetLabelTop = isGoingDown ? 210 : 28;
 
   return (
     <div className="mx-auto w-full max-w-[520px] text-center">
@@ -458,14 +488,14 @@ function PlanChart({ goal }: { goal: string }) {
               <stop offset="100%" stopColor="#ff5a1f" stopOpacity="0.02" />
             </linearGradient>
           </defs>
-          <path d="M35 238 C85 240 92 198 145 165 C205 128 268 142 326 116 C382 92 400 42 425 28 L425 286 L35 286 Z" fill="url(#chartFill)" />
-          <path d="M35 238 C85 240 92 198 145 165 C205 128 268 142 326 116 C382 92 400 42 425 28" fill="none" stroke="#ff5a1f" strokeWidth="4" />
-          <circle cx="35" cy="238" r="5" fill="#ff4b12" />
-          <circle cx="425" cy="28" r="7" fill="#ff4b12" stroke="#ffd08a" strokeWidth="3" />
+          <path d={chartFill} fill="url(#chartFill)" />
+          <path d={chartPath} fill="none" stroke="#ff5a1f" strokeWidth="4" />
+          <circle cx="35" cy={startY} r="5" fill="#ff4b12" />
+          <circle cx="425" cy={targetY} r="7" fill="#ff4b12" stroke="#ffd08a" strokeWidth="3" />
           <line x1="35" x2="425" y1="286" y2="286" stroke="#4a2a1d" strokeWidth="2" />
         </svg>
-        <div className="absolute left-2 top-[210px] rounded-lg bg-[#4b4b4b] px-2 py-1 text-base font-black text-white">{start} kg</div>
-        <div className="absolute right-5 top-[28px] rounded-lg bg-[#ff4b12] px-2 py-1 text-base font-black text-white">{target} kg</div>
+        <div style={{ top: `${startLabelTop}px` }} className="absolute left-2 rounded-lg bg-[#4b4b4b] px-2 py-1 text-base font-black text-white">{start} kg</div>
+        <div style={{ top: `${targetLabelTop}px` }} className="absolute right-5 rounded-lg bg-[#ff4b12] px-2 py-1 text-base font-black text-white">{target} kg</div>
         <div className="absolute bottom-0 left-5 text-sm font-semibold text-white/65">14 thg 5, 2026</div>
         <div className="absolute bottom-0 right-2 text-sm font-semibold text-white/65">8 thg 10, 2026</div>
       </div>
@@ -1036,7 +1066,7 @@ export function AuthPage({ mode = "onboarding" }: { mode?: "onboarding" | "login
 
           {step === "planChart" && (
             <Screen>
-              <PlanChart goal={selectedGoal} />
+              <PlanChart goal={selectedGoal} weight={weightValue} />
               <div className="mt-10 text-center">
                 <button type="button" onClick={() => setStep("fitnessLevel")} className="w-full max-w-[330px] rounded-[24px] bg-[#ff4b12] px-8 py-4 text-base font-black shadow-lg shadow-[#ff4b12]/20 transition hover:scale-[1.02]">
                   Tiếp tục
