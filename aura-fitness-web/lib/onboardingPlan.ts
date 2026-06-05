@@ -13,6 +13,7 @@ export interface OnboardingSelections {
   water: string;
   heightUnit: "cm" | "ft";
   heightValue: string;
+  weightValue: string;
   fitnessLevel: string;
   focusAreas: string[];
   equipment: string[];
