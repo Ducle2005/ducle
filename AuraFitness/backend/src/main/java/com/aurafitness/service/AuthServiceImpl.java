@@ -116,12 +116,6 @@ public class AuthServiceImpl implements AuthService {
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found"));
 
         Profile profile = profileRepository.findByUser(user).orElse(null);
-        if (profile != null && profile.getPremiumStartDate() != null) {
-            java.time.LocalDate now = java.time.LocalDate.now();
-            if (now.isBefore(profile.getPremiumStartDate().plusDays(7))) {
-                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Bạn chỉ có thể hủy gói VIP sau 7 ngày kể từ lúc đăng ký.");
-            }
-        }
 
         Set<String> roles = user.getRoles();
         if (roles != null) {
