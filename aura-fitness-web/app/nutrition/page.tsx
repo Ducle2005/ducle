@@ -2,7 +2,7 @@
 
 import { useEffect, useMemo, useState } from "react";
 import { motion } from "framer-motion";
-import { Plus, Utensils, Coffee, Sunrise, Sun, Moon } from "lucide-react";
+import { Plus, Utensils, Coffee, Sunrise, Sun, Moon, Trash2 } from "lucide-react";
 import { Sidebar } from "@/components/Sidebar";
 import { AuthPage } from "@/components/AuthPage";
 import { MealLogModal } from "@/components/MealLogModal";
@@ -35,6 +35,15 @@ export default function NutritionPage() {
   };
 
   const openMealModal = (mealType: MealType) => { setActiveMealType(mealType); setIsLogModalOpen(true); };
+
+  const handleDeleteLog = async (id: number) => {
+    try {
+      await nutritionApi.deleteLog(id);
+      void loadNutrition();
+    } catch (error) {
+      console.error("Failed to delete log:", error);
+    }
+  };
 
   const totals = nutritionData?.totals || { calories: 0, protein: 0, carbs: 0, fat: 0 };
   const target = nutritionData?.target || 2000;
@@ -104,12 +113,21 @@ export default function NutritionPage() {
                       <p className="py-2 text-xs italic text-muted-foreground/50">Chưa có món nào được ghi lại.</p>
                     ) : (
                       mealLogs.map((log) => (
-                        <div key={log.id} className="flex items-center justify-between gap-3 rounded-lg border-b border-white/5 px-2 py-2 text-sm transition-colors last:border-0 hover:bg-white/5">
-                          <div className="min-w-0">
+                        <div key={log.id} className="group/item flex items-center justify-between gap-3 rounded-lg border-b border-white/5 px-2 py-2 text-sm transition-colors last:border-0 hover:bg-white/5">
+                          <div className="min-w-0 flex-1">
                             <span className="font-medium">{log.foodName}</span>
                             <p className="text-[11px] text-muted-foreground">{Math.round(log.protein)}P • {Math.round(log.carbs)}C • {Math.round(log.fat)}F</p>
                           </div>
-                          <span className="shrink-0 font-black opacity-60">{log.calories} kcal</span>
+                          <div className="flex items-center gap-3">
+                            <span className="shrink-0 font-black opacity-60">{log.calories} kcal</span>
+                            <button
+                              onClick={() => handleDeleteLog(log.id)}
+                              className="text-muted-foreground opacity-0 transition-all hover:text-rose-500 group-hover/item:opacity-100"
+                              title="Xóa món ăn"
+                            >
+                              <Trash2 size={16} />
+                            </button>
+                          </div>
                         </div>
                       ))
                     )}
