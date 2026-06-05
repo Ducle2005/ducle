@@ -16,7 +16,6 @@ export interface OnboardingSelections {
   fitnessLevel: string;
   focusAreas: string[];
   equipment: string[];
-  exercisePreference: string;
 }
 
 const AURA_PLAN_PREFIX = "Aura AI";
