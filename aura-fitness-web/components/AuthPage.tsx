@@ -25,8 +25,6 @@ import {
   Menu,
   Minus,
   Sparkles,
-  ThumbsDown,
-  ThumbsUp,
   User,
   Waves,
   X,
@@ -55,7 +53,6 @@ type OnboardingStep =
   | "fitnessLevel"
   | "focusAreas"
   | "equipment"
-  | "exercisePreference"
   | "loadingPlan"
   | "bodyEvaluation"
   | "account";
@@ -77,7 +74,6 @@ const steps: OnboardingStep[] = [
   "fitnessLevel",
   "focusAreas",
   "equipment",
-  "exercisePreference",
   "loadingPlan",
   "bodyEvaluation",
   "account",
@@ -203,11 +199,6 @@ const equipmentOptions = [
   { title: "Tạ chuông", icon: Dumbbell },
   { title: "Không có dụng cụ", icon: X },
 ];
-
-const preferenceExercise = {
-  title: "Yoga / Giãn cơ",
-  image: "/onboarding/yoga-stretch.svg",
-};
 
 function cn(...classes: Array<string | false | null | undefined>) {
   return classes.filter(Boolean).join(" ");
@@ -496,7 +487,6 @@ export function AuthPage() {
   const [fitnessLevel, setFitnessLevel] = useState(fitnessLevels[1].title);
   const [selectedFocusAreas, setSelectedFocusAreas] = useState<string[]>(["Chân khỏe"]);
   const [selectedEquipment, setSelectedEquipment] = useState<string[]>(["Tạ đơn"]);
-  const [exercisePreference, setExercisePreference] = useState("Trung lập");
   const [loadingProgress, setLoadingProgress] = useState(0);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -584,8 +574,7 @@ export function AuthPage() {
   const goBack = () => {
     if (step === "account") setStep("bodyEvaluation");
     if (step === "bodyEvaluation") setStep("loadingPlan");
-    if (step === "loadingPlan") setStep("exercisePreference");
-    if (step === "exercisePreference") setStep("equipment");
+    if (step === "loadingPlan") setStep("equipment");
     if (step === "equipment") setStep("focusAreas");
     if (step === "focusAreas") setStep("fitnessLevel");
     if (step === "fitnessLevel") setStep("planChart");
@@ -626,7 +615,6 @@ export function AuthPage() {
     fitnessLevel,
     focusAreas: selectedFocusAreas,
     equipment: selectedEquipment,
-    exercisePreference,
   });
 
   const finishAuthAndCreatePlan = async (accessToken: string) => {
@@ -1082,45 +1070,9 @@ export function AuthPage() {
                     );
                   })}
                 </div>
-                <button type="button" onClick={() => setStep("exercisePreference")} className="mt-8 w-full rounded-[24px] bg-[#ff4b12] px-8 py-4 text-base font-black shadow-lg shadow-[#ff4b12]/20 transition hover:scale-[1.02]">
+                <button type="button" onClick={() => setStep("loadingPlan")} className="mt-8 w-full rounded-[24px] bg-[#ff4b12] px-8 py-4 text-base font-black shadow-lg shadow-[#ff4b12]/20 transition hover:scale-[1.02]">
                   Tiếp tục
                 </button>
-              </div>
-            </Screen>
-          )}
-
-          {step === "exercisePreference" && (
-            <Screen>
-              <h1 className="text-center text-[34px] font-black leading-tight sm:text-4xl">Thích hay không thích</h1>
-              <div className="mx-auto mt-10 w-full max-w-[470px] overflow-hidden rounded-[18px] bg-[#202020] shadow-2xl">
-                <div className="relative h-[365px]">
-                  <Image src={preferenceExercise.image} alt={preferenceExercise.title} fill sizes="470px" unoptimized className="object-cover object-center" />
-                  <div className="absolute inset-0 bg-gradient-to-t from-[#202020] via-transparent to-transparent" />
-                </div>
-                <div className="bg-[#2b2b2b] py-3 text-center text-xl font-black">{preferenceExercise.title}</div>
-              </div>
-              <div className="mx-auto mt-10 grid w-full max-w-[470px] grid-cols-3 gap-8">
-                {[
-                  { label: "Không thích", icon: ThumbsDown },
-                  { label: "Trung lập", icon: Minus },
-                  { label: "Thích", icon: ThumbsUp },
-                ].map((option) => {
-                  const Icon = option.icon;
-                  return (
-                    <button
-                      key={option.label}
-                      type="button"
-                      onClick={() => {
-                        setExercisePreference(option.label);
-                        setStep("loadingPlan");
-                      }}
-                      className={cn("flex h-28 flex-col items-center justify-center rounded-[14px] bg-[#202020] text-sm font-black shadow-2xl transition hover:-translate-y-1", exercisePreference === option.label && "outline outline-2 outline-[#ff4b12]")}
-                    >
-                      <Icon className="mb-5 text-[#ff4b12]" size={30} strokeWidth={2.8} />
-                      {option.label}
-                    </button>
-                  );
-                })}
               </div>
             </Screen>
           )}
