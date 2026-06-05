@@ -782,7 +782,46 @@ public class MvpDashboardController {
 		exercise.put("description", name + " foundational movement.");
 		exercise.put("instructions", Arrays.asList("Khởi động kỹ.", "Giữ kỹ thuật ổn định.", "Dừng lại nếu thấy đau."));
 		exercise.put("imageUrl", "https://placehold.co/640x480?text=" + name.replace(" ", "+"));
-		exercise.put("videoUrl", "");
+		
+		String videoUrl = "";
+		String nameLower = name.toLowerCase();
+		if (nameLower.contains("squat") || nameLower.contains("ganh dui")) {
+			videoUrl = "https://www.youtube.com/watch?v=tgTOGyGwOhQ";
+		} else if (nameLower.contains("bench press") || nameLower.contains("day nguc")) {
+			if (nameLower.contains("incline") || nameLower.contains("doc len")) {
+				videoUrl = "https://www.youtube.com/watch?v=hChjZQhX1Ls";
+			} else {
+				videoUrl = "https://www.youtube.com/watch?v=vcBig73ojpE";
+			}
+		} else if (nameLower.contains("barbell row") || nameLower.contains("cheo lung")) {
+			videoUrl = "https://www.youtube.com/watch?v=G8l_8chR5BE";
+		} else if (nameLower.contains("overhead press") || nameLower.contains("day vai")) {
+			videoUrl = "https://www.youtube.com/watch?v=wol7Hko8RhY";
+		} else if (nameLower.contains("plank")) {
+			videoUrl = "https://www.youtube.com/watch?v=KbcsJX1DfRs";
+		} else if (nameLower.contains("incline dumbbell press") || nameLower.contains("incline press")) {
+			videoUrl = "https://www.youtube.com/watch?v=hChjZQhX1Ls";
+		} else if (nameLower.contains("pull up") || nameLower.contains("len xa")) {
+			videoUrl = "https://www.youtube.com/watch?v=eGo4IYlbE5g";
+		} else if (nameLower.contains("lateral raise") || nameLower.contains("dang ta vai")) {
+			videoUrl = "https://www.youtube.com/watch?v=21lYP86dHW4";
+		} else if (nameLower.contains("bicep curl") || nameLower.contains("cuon ta tay")) {
+			videoUrl = "https://www.youtube.com/watch?v=UKAql7aYG90";
+		} else if (nameLower.contains("tricep extension") || nameLower.contains("duoi tay sau")) {
+			videoUrl = "https://www.youtube.com/watch?v=popGXI-qs98";
+		} else if (nameLower.contains("romanian deadlift") || nameLower.contains("rdl")) {
+			videoUrl = "https://www.youtube.com/watch?v=ZuukOrhhjk8";
+		} else if (nameLower.contains("deadlift")) {
+			videoUrl = "https://www.youtube.com/watch?v=wYREQkVtvEc";
+		} else if (nameLower.contains("leg press") || nameLower.contains("dap dui")) {
+			videoUrl = "https://www.youtube.com/watch?v=B6rGDcfyPto";
+		} else if (nameLower.contains("calf raise") || nameLower.contains("nhon got")) {
+			videoUrl = "https://www.youtube.com/watch?v=21inrjhoFkQ";
+		} else if (nameLower.contains("crunch") || nameLower.contains("gap bung")) {
+			videoUrl = "https://www.youtube.com/watch?v=0OxOI3sAIrM";
+		}
+		exercise.put("videoUrl", videoUrl);
+		
 		return exercise;
 	}
 
