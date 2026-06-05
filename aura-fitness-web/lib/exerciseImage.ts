@@ -94,6 +94,33 @@ export function getExerciseImageSrc(exercise: Exercise): string {
   if (nameLower.includes("overhead press") || nameLower.includes("day vai")) {
     return "/exercises/overhead-press.png";
   }
+  if (nameLower.includes("pull up") || nameLower.includes("keo xa")) {
+    return "/onboarding/body-muscular.png";
+  }
+  if (nameLower.includes("lateral raise") || nameLower.includes("dang vai")) {
+    return "/onboarding/gender-male.png";
+  }
+  if (nameLower.includes("bicep curl") || nameLower.includes("cuon tay")) {
+    return "/onboarding/body-muscular.png";
+  }
+  if (nameLower.includes("tricep") || nameLower.includes("tay sau")) {
+    return "/onboarding/body-lean.png";
+  }
+  if (nameLower.includes("romanian deadlift") || nameLower.includes("rdl")) {
+    return "/exercises/barbell-row.png";
+  }
+  if (nameLower.includes("deadlift") || nameLower.includes("keo lung")) {
+    return "/exercises/barbell-row.png";
+  }
+  if (nameLower.includes("leg press") || nameLower.includes("dap dui")) {
+    return "/exercises/squat.png";
+  }
+  if (nameLower.includes("calf raise") || nameLower.includes("nhon got")) {
+    return "/onboarding/body-average.png";
+  }
+  if (nameLower.includes("crunch") || nameLower.includes("gap bung")) {
+    return "/onboarding/goal-cut-real.png";
+  }
   if (nameLower.includes("plank")) {
     return "/onboarding/body-lean.png";
   }

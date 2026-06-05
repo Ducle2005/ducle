@@ -81,6 +81,33 @@ export function getYouTubeEmbedUrl(url: string | null | undefined, name?: string
     if (nameLower.includes("overhead press") || nameLower.includes("day vai")) {
       return "https://www.youtube.com/embed/2yjwHevEzP0";
     }
+    if (nameLower.includes("pull up") || nameLower.includes("keo xa")) {
+      return "https://www.youtube.com/embed/eGo4IYlbE5g";
+    }
+    if (nameLower.includes("lateral raise") || nameLower.includes("dang vai")) {
+      return "https://www.youtube.com/embed/3VcKaXatldo";
+    }
+    if (nameLower.includes("bicep curl") || nameLower.includes("cuon tay")) {
+      return "https://www.youtube.com/embed/ykJgrb560_8";
+    }
+    if (nameLower.includes("tricep") || nameLower.includes("tay sau")) {
+      return "https://www.youtube.com/embed/nRiJVZDpdL0";
+    }
+    if (nameLower.includes("romanian deadlift") || nameLower.includes("rdl")) {
+      return "https://www.youtube.com/embed/JCXUYuzwFtM";
+    }
+    if (nameLower.includes("deadlift") || nameLower.includes("keo lung")) {
+      return "https://www.youtube.com/embed/op9kVnSso6Q";
+    }
+    if (nameLower.includes("leg press") || nameLower.includes("dap dui")) {
+      return "https://www.youtube.com/embed/IZxyjW7MPpk";
+    }
+    if (nameLower.includes("calf raise") || nameLower.includes("nhon got")) {
+      return "https://www.youtube.com/embed/gwLzBJYoWlU";
+    }
+    if (nameLower.includes("crunch") || nameLower.includes("gap bung")) {
+      return "https://www.youtube.com/embed/Xyd_fa5zoEU";
+    }
     if (nameLower.includes("plank")) {
       return "https://www.youtube.com/embed/pSHjTRCQxIw";
     }
