@@ -24,7 +24,6 @@ import {
   Mail,
   Menu,
   Minus,
-  PersonStanding,
   Sparkles,
   ThumbsDown,
   ThumbsUp,
@@ -328,14 +327,111 @@ function IconChoice({
   );
 }
 
+// SVG body silhouette with accurate muscle group highlights
+function MuscleSVG({ label, selected }: { label: string; selected: boolean }) {
+  const accent = selected ? "#ff4b12" : "#3b82f6";
+  const silhouette = selected ? "#c87050" : "#64748b";
+
+  // Which parts to highlight
+  const isFullBody = label === "Toàn thân";
+  const isShoulder = label === "Vai";
+  const isBicep = label === "Bắp tay lớn";
+  const isBack = label === "Lưng rộng";
+  const isChest = label === "Ngực";
+  const isAbs = label === "Sáu múi";
+  const isGlute = label === "Mông săn chắc";
+  const isLeg = label === "Chân khỏe";
+
+  return (
+    <svg viewBox="0 0 60 110" className="h-full w-full" xmlns="http://www.w3.org/2000/svg">
+      {/* Body background */}
+      <ellipse cx="30" cy="10" rx="7" ry="8" fill={silhouette} opacity="0.5" />
+      {/* Torso */}
+      <path d="M18 22 Q14 30 14 50 Q14 58 18 60 L42 60 Q46 58 46 50 Q46 30 42 22 Z" fill={silhouette} opacity="0.4" />
+      {/* Left arm */}
+      <path d="M18 24 Q10 28 8 38 Q7 44 9 50 L13 48 Q12 42 13 36 Q15 30 19 27 Z" fill={silhouette} opacity="0.4" />
+      {/* Right arm */}
+      <path d="M42 24 Q50 28 52 38 Q53 44 51 50 L47 48 Q48 42 47 36 Q45 30 41 27 Z" fill={silhouette} opacity="0.4" />
+      {/* Hips */}
+      <path d="M18 60 Q14 65 14 72 L46 72 Q46 65 42 60 Z" fill={silhouette} opacity="0.4" />
+      {/* Left leg */}
+      <path d="M14 72 Q12 82 13 95 Q14 100 18 102 L22 102 Q24 100 24 96 L22 72 Z" fill={silhouette} opacity="0.4" />
+      {/* Right leg */}
+      <path d="M38 72 Q38 82 37 96 Q37 100 38 102 L42 102 Q46 100 47 95 Q48 82 46 72 Z" fill={silhouette} opacity="0.4" />
+
+      {/* === HIGHLIGHTS === */}
+
+      {/* Full body - highlight everything */}
+      {isFullBody && <>
+        <ellipse cx="30" cy="10" rx="6" ry="7" fill={accent} opacity="0.85" />
+        <path d="M19 23 Q15 31 15 50 Q15 57 19 59 L41 59 Q45 57 45 50 Q45 31 41 23 Z" fill={accent} opacity="0.85" />
+        <path d="M19 25 Q11 29 9 39 Q8 44 10 49 L13 47 Q12 42 13 37 Q15 31 20 28 Z" fill={accent} opacity="0.85" />
+        <path d="M41 25 Q49 29 51 39 Q52 44 50 49 L47 47 Q48 42 47 37 Q45 31 40 28 Z" fill={accent} opacity="0.85" />
+        <path d="M19 59 Q15 64 15 71 L45 71 Q45 64 41 59 Z" fill={accent} opacity="0.85" />
+        <path d="M15 71 Q13 82 14 95 Q15 99 19 101 L22 101 Q24 99 24 95 L23 71 Z" fill={accent} opacity="0.85" />
+        <path d="M37 71 Q37 82 36 95 Q36 99 38 101 L41 101 Q45 99 46 95 Q47 82 45 71 Z" fill={accent} opacity="0.85" />
+      </>}
+
+      {/* Shoulders */}
+      {isShoulder && <>
+        <path d="M19 24 Q14 26 12 32 Q13 35 16 36 Q18 34 20 30 Q20 27 19 24 Z" fill={accent} opacity="0.9" />
+        <path d="M41 24 Q46 26 48 32 Q47 35 44 36 Q42 34 40 30 Q40 27 41 24 Z" fill={accent} opacity="0.9" />
+      </>}
+
+      {/* Biceps */}
+      {isBicep && <>
+        <path d="M11 34 Q9 40 10 46 L13 44 Q12 39 13 35 Z" fill={accent} opacity="0.9" />
+        <path d="M49 34 Q51 40 50 46 L47 44 Q48 39 47 35 Z" fill={accent} opacity="0.9" />
+      </>}
+
+      {/* Back */}
+      {isBack && <>
+        <path d="M20 24 Q18 28 17 38 Q17 48 18 55 L22 55 Q21 46 21 36 Q21 28 23 24 Z" fill={accent} opacity="0.9" />
+        <path d="M40 24 Q42 28 43 38 Q43 48 42 55 L38 55 Q39 46 39 36 Q39 28 37 24 Z" fill={accent} opacity="0.9" />
+        <rect x="22" y="24" width="16" height="10" rx="3" fill={accent} opacity="0.6" />
+      </>}
+
+      {/* Chest */}
+      {isChest && <>
+        <path d="M20 24 Q18 30 19 38 L29 38 Q29 30 27 24 Z" fill={accent} opacity="0.85" />
+        <path d="M31 24 Q33 30 31 38 L41 38 Q42 30 40 24 Z" fill={accent} opacity="0.85" />
+      </>}
+
+      {/* Abs / Six pack */}
+      {isAbs && <>
+        <rect x="24" y="38" width="12" height="6" rx="2" fill={accent} opacity="0.85" />
+        <rect x="24" y="46" width="12" height="6" rx="2" fill={accent} opacity="0.85" />
+        <rect x="24" y="54" width="12" height="5" rx="2" fill={accent} opacity="0.85" />
+      </>}
+
+      {/* Glutes */}
+      {isGlute && <>
+        <path d="M19 59 Q15 64 15 71 L29 71 Q29 64 26 59 Z" fill={accent} opacity="0.85" />
+        <path d="M31 59 Q34 64 45 71 L45 71 Q45 64 41 59 Z" fill={accent} opacity="0.85" />
+      </>}
+
+      {/* Legs */}
+      {isLeg && <>
+        <path d="M15 71 Q13 82 14 95 Q15 99 19 101 L22 101 Q24 99 24 95 L23 71 Z" fill={accent} opacity="0.85" />
+        <path d="M37 71 Q37 82 36 95 Q36 99 38 101 L41 101 Q45 99 46 95 Q47 82 45 71 Z" fill={accent} opacity="0.85" />
+      </>}
+    </svg>
+  );
+}
+
 function MuscleBadge({ label, selected }: { label: string; selected: boolean }) {
   return (
-    <div className={cn("relative mx-auto flex h-20 w-20 items-center justify-center rounded-[22px] bg-[#25272c]", selected && "bg-[#1847db]")}>
-      <PersonStanding className={selected ? "text-white" : "text-slate-300"} size={54} strokeWidth={1.6} />
-      <div className="absolute inset-x-5 top-4 h-3 rounded-full bg-blue-500/80" />
-      {label.includes("Chân") && <div className="absolute bottom-2 left-7 h-8 w-3 rounded-full bg-blue-500/80" />}
-      {label.includes("Ngực") && <div className="absolute left-6 top-7 h-4 w-8 rounded-full bg-blue-500/80" />}
-      {label.includes("Vai") && <div className="absolute left-3 top-5 h-4 w-4 rounded-full bg-blue-500/80" />}
+    <div
+      className={cn(
+        "relative mx-auto flex h-24 w-20 items-center justify-center rounded-[20px] transition-all duration-200",
+        selected
+          ? "bg-[#ff4b12]/15 ring-2 ring-[#ff4b12] shadow-[0_0_18px_rgba(255,75,18,0.35)]"
+          : "bg-[#1e2030] ring-1 ring-white/10 hover:ring-white/25"
+      )}
+    >
+      <div className="h-20 w-14 py-1">
+        <MuscleSVG label={label} selected={selected} />
+      </div>
     </div>
   );
 }
@@ -914,22 +1010,45 @@ export function AuthPage() {
 
           {step === "focusAreas" && (
             <Screen>
-              <h1 className="mx-auto max-w-[520px] text-left text-[32px] font-black leading-tight sm:text-center sm:text-4xl">
+              <h1 className="mx-auto max-w-[520px] text-center text-[32px] font-black leading-tight sm:text-4xl">
                 Bạn muốn tập trung vào vùng nào?
               </h1>
-              <div className="mx-auto mt-8 grid w-full max-w-[520px] grid-cols-2 gap-x-7 gap-y-7 sm:grid-cols-3">
+              <p className="mt-2 text-center text-sm font-semibold text-white/50">Chọn một hoặc nhiều vùng</p>
+              <div className="mx-auto mt-6 grid w-full max-w-[540px] grid-cols-3 gap-3 sm:gap-4">
                 {focusAreas.map((area) => {
                   const selected = selectedFocusAreas.includes(area);
                   return (
-                    <button key={area} type="button" onClick={() => toggleFocusArea(area)} className="text-center">
+                    <button
+                      key={area}
+                      type="button"
+                      onClick={() => toggleFocusArea(area)}
+                      className={cn(
+                        "group flex flex-col items-center gap-2 rounded-[20px] p-3 pb-3 text-center transition-all duration-200 active:scale-95",
+                        selected
+                          ? "bg-[#ff4b12]/10"
+                          : "bg-transparent hover:bg-white/5"
+                      )}
+                    >
                       <MuscleBadge label={area} selected={selected} />
-                      <div className={cn("mt-2 text-sm font-black", selected ? "text-white" : "text-slate-400")}>{area}</div>
+                      <div
+                        className={cn(
+                          "text-[13px] font-black leading-tight transition-colors",
+                          selected ? "text-[#ff4b12]" : "text-slate-400 group-hover:text-white"
+                        )}
+                      >
+                        {area}
+                      </div>
                     </button>
                   );
                 })}
               </div>
-              <div className="mt-10 text-center">
-                <button type="button" onClick={() => setStep("equipment")} className="w-full max-w-[330px] rounded-[24px] bg-[#ff4b12] px-8 py-4 text-base font-black shadow-lg shadow-[#ff4b12]/20 transition hover:scale-[1.02]">
+              <div className="mt-8 text-center">
+                <button
+                  type="button"
+                  onClick={() => setStep("equipment")}
+                  disabled={selectedFocusAreas.length === 0}
+                  className="w-full max-w-[330px] rounded-[24px] bg-[#ff4b12] px-8 py-4 text-base font-black shadow-lg shadow-[#ff4b12]/20 transition hover:scale-[1.02] disabled:cursor-not-allowed disabled:opacity-40"
+                >
                   Tiếp tục
                 </button>
               </div>
