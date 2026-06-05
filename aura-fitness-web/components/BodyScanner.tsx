@@ -373,7 +373,7 @@ export function BodyScanner({ onClose, onScanComplete, userHeight, gender }: Bod
                         
                         <div className="absolute inset-0 flex items-center justify-center pointer-events-none opacity-20">
                             <div className="border-[6px] border-dashed border-white/30 rounded-[100px] h-4/5 aspect-[1/2] animate-pulse" />
-                        </div>
+                        </div>  
 
                         <AnimatePresence>
                             {isAnalysisComplete && finalMetrics && (

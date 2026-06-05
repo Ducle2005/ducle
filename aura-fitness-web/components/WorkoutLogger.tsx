@@ -28,7 +28,7 @@ import {
 import { workoutApi } from "@/lib/workoutApi";
 import { gamificationApi } from "@/lib/gamificationApi";
 import { getErrorMessage } from "@/lib/errors";
-import { getYouTubeEmbedUrl, getYouTubeThumbnailUrl } from "@/lib/video";
+import { getYouTubeEmbedUrl, getYouTubeThumbnailUrl, getYouTubeVideoId } from "@/lib/video";
 import { RestTimer } from "./RestTimer";
 import { ProgressiveOverloadAlert } from "./ProgressiveOverloadAlert";
 import type {
@@ -601,101 +601,105 @@ export function WorkoutLogger({ isOpen, onClose, onComplete, planId }: WorkoutLo
                           <div className="mt-5 space-y-4">
                             <ExerciseCoachGuide exercise={exercise} />
 
-                            <div className="hidden grid-cols-[3rem_7rem_1fr_1fr_5rem_5rem_6rem_6rem_3rem] gap-3 px-2 text-center text-[10px] font-black uppercase tracking-widest text-muted-foreground lg:grid">
-                              <span>Hiệp</span>
-                              <span>Loại</span>
-                              <span>Tạ</span>
-                              <span>Lần</span>
-                              <span>RPE</span>
-                              <span>RIR</span>
-                              <span>Nghi</span>
-                              <span>Xong</span>
-                              <span />
-                            </div>
-
-                            {exercise.sets.map((set, setIndex) => (
-                              <div
-                                key={`${exercise.id}-${set.setNumber}`}
-                                className={`grid grid-cols-2 gap-3 rounded-2xl p-3 transition-all lg:grid-cols-[3rem_7rem_1fr_1fr_5rem_5rem_6rem_6rem_3rem] lg:items-center ${
-                                  set.completed ? "bg-primary/10" : "bg-white/5 hover:bg-white/10"
-                                }`}
-                              >
-                                <div className="flex items-center justify-between lg:block">
-                                  <span className="text-[10px] font-black uppercase tracking-widest text-muted-foreground lg:hidden">Hiệp</span>
-                                  <span className="text-center text-sm font-black">{setIndex + 1}</span>
+                            <div className="w-full lg:overflow-x-auto custom-scrollbar">
+                              <div className="space-y-4 lg:min-w-[900px] xl:min-w-full">
+                                <div className="hidden workout-log-grid gap-3 px-2 text-center text-[10px] font-black uppercase tracking-widest text-muted-foreground lg:grid">
+                                  <span>Hiệp</span>
+                                  <span>Loại</span>
+                                  <span>Tạ</span>
+                                  <span>Lần</span>
+                                  <span>RPE</span>
+                                  <span>RIR</span>
+                                  <span>Nghi</span>
+                                  <span>Xong</span>
+                                  <span />
                                 </div>
-                                <select
-                                  value={set.setType}
-                                  onChange={(event) => updateSet(exerciseIndex, setIndex, { setType: event.target.value as SetType })}
-                                  className="rounded-xl border border-white/10 bg-slate-950 px-2 py-2 text-xs font-bold outline-none focus:border-primary/40"
-                                >
-                                  {SET_TYPES.map((type) => (
-                                    <option key={type.value} value={type.value}>{type.label}</option>
-                                  ))}
-                                </select>
-                                <NumberInput
-                                  value={set.weight}
-                                  placeholder="kg"
-                                  step={2.5}
-                                  onChange={(value) => updateSet(exerciseIndex, setIndex, { weight: value })}
-                                  onStep={(delta) => updateSet(exerciseIndex, setIndex, { weight: String(Math.max((Number(set.weight) || 0) + delta, 0)) })}
-                                />
-                                <NumberInput
-                                  value={set.reps}
-                                  placeholder="reps"
-                                  step={1}
-                                  onChange={(value) => updateSet(exerciseIndex, setIndex, { reps: value })}
-                                  onStep={(delta) => updateSet(exerciseIndex, setIndex, { reps: String(Math.max((Number(set.reps) || 0) + delta, 0)) })}
-                                />
-                                <input
-                                  type="number"
-                                  min="0"
-                                  max="10"
-                                  step="0.5"
-                                  value={set.rpe}
-                                  onChange={(event) => updateSet(exerciseIndex, setIndex, { rpe: event.target.value })}
-                                  placeholder="RPE"
-                                  className="rounded-xl border border-white/10 bg-slate-950 px-2 py-2 text-center text-xs font-bold outline-none focus:border-primary/40"
-                                />
-                                <input
-                                  type="number"
-                                  min="0"
-                                  max="10"
-                                  value={set.rir}
-                                  onChange={(event) => updateSet(exerciseIndex, setIndex, { rir: event.target.value })}
-                                  placeholder="RIR"
-                                  className="rounded-xl border border-white/10 bg-slate-950 px-2 py-2 text-center text-xs font-bold outline-none focus:border-primary/40"
-                                />
-                                <input
-                                  type="number"
-                                  min="0"
-                                  value={set.restSeconds}
-                                  onChange={(event) => updateSet(exerciseIndex, setIndex, { restSeconds: Number(event.target.value || 0) })}
-                                  className="rounded-xl border border-white/10 bg-slate-950 px-2 py-2 text-center text-xs font-bold outline-none focus:border-primary/40"
-                                />
-                                <button
-                                  onClick={() => completeSet(exerciseIndex, setIndex)}
-                                  className={`flex h-10 items-center justify-center rounded-xl transition-all ${
-                                    set.completed ? "bg-primary text-background" : "bg-white/5 text-muted-foreground hover:text-primary"
-                                  }`}
-                                >
-                                  <Check size={18} />
-                                </button>
-                                <button
-                                  onClick={() => removeSet(exerciseIndex, setIndex)}
-                                  disabled={exercise.sets.length <= 1}
-                                  className="flex h-10 items-center justify-center rounded-xl text-muted-foreground transition-all hover:bg-rose-500/10 hover:text-rose-300 disabled:opacity-30"
-                                >
-                                  <Minus size={16} />
-                                </button>
-                                <input
-                                  value={set.notes}
-                                  onChange={(event) => updateSet(exerciseIndex, setIndex, { notes: event.target.value })}
-                                  placeholder="Ghi chu set, form, dau moi, spotter..."
-                                  className="col-span-2 rounded-xl border border-white/10 bg-slate-950 px-3 py-2 text-xs outline-none focus:border-primary/40 lg:col-span-9"
-                                />
+
+                                {exercise.sets.map((set, setIndex) => (
+                                  <div
+                                    key={`${exercise.id}-${set.setNumber}`}
+                                    className={`grid workout-log-grid gap-3 rounded-2xl p-3 transition-all lg:items-center ${
+                                      set.completed ? "bg-primary/10" : "bg-white/5 hover:bg-white/10"
+                                    }`}
+                                  >
+                                    <div className="flex items-center justify-between lg:block">
+                                      <span className="text-[10px] font-black uppercase tracking-widest text-muted-foreground lg:hidden">Hiệp</span>
+                                      <span className="text-center text-sm font-black">{setIndex + 1}</span>
+                                    </div>
+                                    <select
+                                      value={set.setType}
+                                      onChange={(event) => updateSet(exerciseIndex, setIndex, { setType: event.target.value as SetType })}
+                                      className="rounded-xl border border-white/10 bg-slate-950 px-2 py-2 text-xs font-bold outline-none focus:border-primary/40"
+                                    >
+                                      {SET_TYPES.map((type) => (
+                                        <option key={type.value} value={type.value}>{type.label}</option>
+                                      ))}
+                                    </select>
+                                    <NumberInput
+                                      value={set.weight}
+                                      placeholder="kg"
+                                      step={2.5}
+                                      onChange={(value) => updateSet(exerciseIndex, setIndex, { weight: value })}
+                                      onStep={(delta) => updateSet(exerciseIndex, setIndex, { weight: String(Math.max((Number(set.weight) || 0) + delta, 0)) })}
+                                    />
+                                    <NumberInput
+                                      value={set.reps}
+                                      placeholder="reps"
+                                      step={1}
+                                      onChange={(value) => updateSet(exerciseIndex, setIndex, { reps: value })}
+                                      onStep={(delta) => updateSet(exerciseIndex, setIndex, { reps: String(Math.max((Number(set.reps) || 0) + delta, 0)) })}
+                                    />
+                                    <input
+                                      type="number"
+                                      min="0"
+                                      max="10"
+                                      step="0.5"
+                                      value={set.rpe}
+                                      onChange={(event) => updateSet(exerciseIndex, setIndex, { rpe: event.target.value })}
+                                      placeholder="RPE"
+                                      className="rounded-xl border border-white/10 bg-slate-950 px-2 py-2 text-center text-xs font-bold outline-none focus:border-primary/40"
+                                    />
+                                    <input
+                                      type="number"
+                                      min="0"
+                                      max="10"
+                                      value={set.rir}
+                                      onChange={(event) => updateSet(exerciseIndex, setIndex, { rir: event.target.value })}
+                                      placeholder="RIR"
+                                      className="rounded-xl border border-white/10 bg-slate-950 px-2 py-2 text-center text-xs font-bold outline-none focus:border-primary/40"
+                                    />
+                                    <input
+                                      type="number"
+                                      min="0"
+                                      value={set.restSeconds}
+                                      onChange={(event) => updateSet(exerciseIndex, setIndex, { restSeconds: Number(event.target.value || 0) })}
+                                      className="rounded-xl border border-white/10 bg-slate-950 px-2 py-2 text-center text-xs font-bold outline-none focus:border-primary/40"
+                                    />
+                                    <button
+                                      onClick={() => completeSet(exerciseIndex, setIndex)}
+                                      className={`flex h-10 items-center justify-center rounded-xl transition-all ${
+                                        set.completed ? "bg-primary text-background" : "bg-white/5 text-muted-foreground hover:text-primary"
+                                      }`}
+                                    >
+                                      <Check size={18} />
+                                    </button>
+                                    <button
+                                      onClick={() => removeSet(exerciseIndex, setIndex)}
+                                      disabled={exercise.sets.length <= 1}
+                                      className="flex h-10 items-center justify-center rounded-xl text-muted-foreground transition-all hover:bg-rose-500/10 hover:text-rose-300 disabled:opacity-30"
+                                    >
+                                      <Minus size={16} />
+                                    </button>
+                                    <input
+                                      value={set.notes}
+                                      onChange={(event) => updateSet(exerciseIndex, setIndex, { notes: event.target.value })}
+                                      placeholder="Ghi chu set, form, dau moi, spotter..."
+                                      className="col-span-2 rounded-xl border border-white/10 bg-slate-950 px-3 py-2 text-xs outline-none focus:border-primary/40 lg:col-span-9"
+                                    />
+                                  </div>
+                                ))}
                               </div>
-                            ))}
+                            </div>
                           </div>
                         )}
                       </motion.section>
@@ -842,18 +846,32 @@ function NumberInput({
   onStep: (delta: number) => void;
 }) {
   return (
-    <div className="grid grid-cols-[2rem_minmax(0,1fr)_2rem] overflow-hidden rounded-xl border border-white/10 bg-slate-950">
-      <button onClick={() => onStep(-step)} className="flex items-center justify-center text-muted-foreground hover:text-primary">
+    <div className="grid grid-cols-[2rem_1fr_2rem] overflow-hidden rounded-xl border border-white/10 bg-slate-950">
+      <button 
+        type="button" 
+        onClick={() => onStep(-step)} 
+        className="flex items-center justify-center text-muted-foreground hover:text-primary active:scale-90 transition-transform"
+      >
         <Minus size={14} />
       </button>
       <input
-        type="number"
+        type="text"
+        inputMode="decimal"
         placeholder={placeholder}
         value={value}
-        onChange={(event) => onChange(event.target.value)}
-        className="min-w-0 border-x border-white/10 bg-transparent px-2 py-2 text-center text-sm font-bold outline-none"
+        onChange={(event) => {
+          const val = event.target.value;
+          if (val === "" || /^[0-9]*\.?[0-9]*$/.test(val)) {
+            onChange(val);
+          }
+        }}
+        className="w-full min-w-[3.5rem] border-x border-white/10 bg-transparent px-1 py-2 text-center text-sm font-black text-white outline-none focus:bg-white/5"
       />
-      <button onClick={() => onStep(step)} className="flex items-center justify-center text-muted-foreground hover:text-primary">
+      <button 
+        type="button" 
+        onClick={() => onStep(step)} 
+        className="flex items-center justify-center text-muted-foreground hover:text-primary active:scale-90 transition-transform"
+      >
         <Plus size={14} />
       </button>
     </div>
@@ -864,7 +882,7 @@ function ExerciseCoachGuide({ exercise }: { exercise: WorkoutExerciseDraft }) {
   const cues = buildExerciseCues(exercise);
   const mistakes = buildCommonMistakes(exercise);
   const instructions = normalizeInstructions(exercise.instructions);
-  const videoEmbedUrl = getYouTubeEmbedUrl(exercise.videoUrl);
+  const videoEmbedUrl = getYouTubeEmbedUrl(exercise.videoUrl, exercise.name);
   const videoThumbnailUrl = getYouTubeThumbnailUrl(exercise.videoUrl);
   const safeInstructions = instructions.length > 0
     ? instructions
@@ -886,10 +904,10 @@ function ExerciseCoachGuide({ exercise }: { exercise: WorkoutExerciseDraft }) {
             <div className="flex items-center justify-between border-b border-white/10 px-3 py-2">
               <div className="flex items-center gap-2 text-[10px] font-black uppercase tracking-widest text-primary">
                 <Video size={14} />
-                Video đúng bài
+                Video hướng dẫn
               </div>
               <a
-                href={exercise.videoUrl}
+                href={exercise.videoUrl || `https://www.youtube.com/watch?v=${getYouTubeVideoId(videoEmbedUrl)}`}
                 target="_blank"
                 rel="noreferrer"
                 className="flex items-center gap-1 text-[10px] font-bold uppercase tracking-widest text-muted-foreground transition-colors hover:text-primary"
@@ -898,40 +916,12 @@ function ExerciseCoachGuide({ exercise }: { exercise: WorkoutExerciseDraft }) {
                 <ExternalLink size={12} />
               </a>
             </div>
-            <div className="aspect-video w-full">
-              <a
-                href={exercise.videoUrl}
-                target="_blank"
-                rel="noreferrer"
-                className="group relative block h-full w-full overflow-hidden bg-slate-950"
-                aria-label={`Mở video hướng dẫn ${exercise.name}`}
-              >
-                <Image
-                  src={videoThumbnailUrl || "/onboarding/goal-cut.svg"}
-                  alt={`Video hướng dẫn ${exercise.name}`}
-                  fill
-                  sizes="(max-width: 768px) 100vw, 50vw"
-                  unoptimized
-                  className="object-cover opacity-90 transition duration-500 group-hover:scale-105 group-hover:opacity-100"
-                  loading="lazy"
-                  onError={(event) => {
-                    event.currentTarget.src = "/onboarding/goal-cut.svg";
-                  }}
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-slate-950/85 via-slate-950/10 to-transparent" />
-                <div className="absolute inset-0 flex items-center justify-center">
-                  <span className="flex h-16 w-16 items-center justify-center rounded-full bg-primary text-background shadow-lg shadow-primary/30 transition-transform group-hover:scale-110">
-                    <Play size={30} fill="currentColor" />
-                  </span>
-                </div>
-              </a>
+            <div className="relative aspect-video w-full overflow-hidden bg-slate-950">
               <iframe
-                className="hidden"
-                src={videoEmbedUrl}
+                src={`${videoEmbedUrl}?rel=0&modestbranding=1&playsinline=1`}
                 title={`Video hướng dẫn ${exercise.name}`}
-                loading="lazy"
+                className="absolute inset-0 h-full w-full border-0"
                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                referrerPolicy="strict-origin-when-cross-origin"
                 allowFullScreen
               />
             </div>
