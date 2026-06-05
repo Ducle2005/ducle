@@ -495,8 +495,61 @@ export function AuthPage({ mode = "onboarding" }: { mode?: "onboarding" | "login
   const [success, setSuccess] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [isHelpOpen, setIsHelpOpen] = useState(false);
+  const [isLoaded, setIsLoaded] = useState(false);
 
   const { login } = useAuth();
+
+  // Load state from localStorage on mount
+  useEffect(() => {
+    try {
+      const saved = localStorage.getItem("aura_onboarding_state");
+      if (saved) {
+        const parsed = JSON.parse(saved);
+        if (parsed.selectedGender) setSelectedGender(parsed.selectedGender);
+        if (parsed.selectedBodyType) setSelectedBodyType(parsed.selectedBodyType);
+        if (parsed.selectedGoal) setSelectedGoal(parsed.selectedGoal);
+        if (parsed.selectedAge) setSelectedAge(parsed.selectedAge);
+        if (parsed.selectedDiet) setSelectedDiet(parsed.selectedDiet);
+        if (parsed.selectedSugar) setSelectedSugar(parsed.selectedSugar);
+        if (parsed.selectedWater) setSelectedWater(parsed.selectedWater);
+        if (parsed.heightUnit) setHeightUnit(parsed.heightUnit);
+        if (parsed.heightValue) setHeightValue(parsed.heightValue);
+        if (parsed.fitnessLevel) setFitnessLevel(parsed.fitnessLevel);
+        if (parsed.selectedFocusAreas) setSelectedFocusAreas(parsed.selectedFocusAreas);
+        if (parsed.selectedEquipment) setSelectedEquipment(parsed.selectedEquipment);
+        if (parsed.step && mode !== "login-only") setStep(parsed.step);
+      }
+    } catch (e) {
+      console.error("Failed to parse onboarding state from local storage", e);
+    } finally {
+      setIsLoaded(true);
+    }
+  }, [mode]);
+
+  // Save state to localStorage whenever it changes
+  useEffect(() => {
+    if (!isLoaded) return;
+    const stateToSave = {
+      step: step === "loadingPlan" ? "equipment" : step, // don't save loading step
+      selectedGender,
+      selectedBodyType,
+      selectedGoal,
+      selectedAge,
+      selectedDiet,
+      selectedSugar,
+      selectedWater,
+      heightUnit,
+      heightValue,
+      fitnessLevel,
+      selectedFocusAreas,
+      selectedEquipment,
+    };
+    localStorage.setItem("aura_onboarding_state", JSON.stringify(stateToSave));
+  }, [
+    isLoaded, step, selectedGender, selectedBodyType, selectedGoal, selectedAge,
+    selectedDiet, selectedSugar, selectedWater, heightUnit, heightValue,
+    fitnessLevel, selectedFocusAreas, selectedEquipment
+  ]);
 
   const currentStepIndex = steps.indexOf(step);
   const progressWidth = `${((currentStepIndex + 1) / steps.length) * 100}%`;
@@ -573,7 +626,7 @@ export function AuthPage({ mode = "onboarding" }: { mode?: "onboarding" | "login
 
   const goBack = () => {
     if (step === "account") setStep("bodyEvaluation");
-    if (step === "bodyEvaluation") setStep("loadingPlan");
+    if (step === "bodyEvaluation") setStep("equipment"); // skip loadingPlan
     if (step === "loadingPlan") setStep("equipment");
     if (step === "equipment") setStep("focusAreas");
     if (step === "focusAreas") setStep("fitnessLevel");
@@ -621,6 +674,7 @@ export function AuthPage({ mode = "onboarding" }: { mode?: "onboarding" | "login
     await login(accessToken);
     setSuccess("Đang cá nhân hóa lộ trình tập cho bạn...");
     await completeOnboardingPlan(buildOnboardingSelections());
+    localStorage.removeItem("aura_onboarding_state");
     setSuccess("Lộ trình tập của bạn đã sẵn sàng.");
     router.push("/");
   };
@@ -1149,8 +1203,13 @@ export function AuthPage({ mode = "onboarding" }: { mode?: "onboarding" | "login
 
           {step === "account" && (
             <Screen className="max-w-md">
-              <div className="mb-5 rounded-[22px] border border-white/10 bg-white/[0.045] p-4 backdrop-blur-md">
-                <div className="text-[10px] font-black uppercase tracking-wider text-[#ff4b12]">Hồ sơ cá nhân</div>
+              <div className="mb-5 rounded-[22px] border border-white/10 bg-white/[0.045] p-4 backdrop-blur-md relative group">
+                <div className="flex items-center justify-between">
+                  <div className="text-[10px] font-black uppercase tracking-wider text-[#ff4b12]">Hồ sơ cá nhân</div>
+                  <button onClick={() => setStep("gender")} className="text-[10px] font-black uppercase tracking-wider text-white/50 hover:text-white transition-colors">
+                    Sửa đổi
+                  </button>
+                </div>
                 <div className="mt-2 flex flex-wrap items-center justify-between gap-3 text-sm font-black">
                   <span>{selectedGender.label}</span>
                   <span>{selectedBodyType}</span>
