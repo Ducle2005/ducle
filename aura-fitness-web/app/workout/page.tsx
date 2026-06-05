@@ -54,7 +54,7 @@ function getPlanVideoExercises(plan: WorkoutPlan) {
       id: entry.id,
       name: entry.exercise.name,
       videoUrl: entry.exercise.videoUrl,
-      embedUrl: getYouTubeEmbedUrl(entry.exercise.videoUrl),
+      embedUrl: getYouTubeEmbedUrl(entry.exercise.videoUrl, entry.exercise.name),
       thumbnailUrl: getYouTubeThumbnailUrl(entry.exercise.videoUrl),
     }))
     .filter((entry) => entry.embedUrl)

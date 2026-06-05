@@ -13,7 +13,7 @@ interface WorkoutGuidanceProps {
 export function WorkoutGuidance({ todaysPlan, plans = [] }: WorkoutGuidanceProps) {
   const fallbackPlan =
     plans.find((plan) =>
-      plan.workoutExercises?.some((entry) => getYouTubeEmbedUrl(entry.exercise.videoUrl))
+      plan.workoutExercises?.some((entry) => getYouTubeEmbedUrl(entry.exercise.videoUrl, entry.exercise.name))
     ) ??
     plans[0] ??
     null;
@@ -28,7 +28,7 @@ export function WorkoutGuidance({ todaysPlan, plans = [] }: WorkoutGuidanceProps
       name: entry.exercise.name,
       muscleGroup: entry.exercise.muscleGroup,
       videoUrl: entry.exercise.videoUrl,
-      embedUrl: getYouTubeEmbedUrl(entry.exercise.videoUrl),
+      embedUrl: getYouTubeEmbedUrl(entry.exercise.videoUrl, entry.exercise.name),
       thumbnailUrl: getYouTubeThumbnailUrl(entry.exercise.videoUrl),
     }))
     .filter((entry) => entry.embedUrl)
