@@ -49,7 +49,6 @@ type OnboardingStep =
   | "water"
   | "hydrationResult"
   | "height"
-  | "weight"
   | "planChart"
   | "fitnessLevel"
   | "focusAreas"
@@ -71,7 +70,6 @@ const steps: OnboardingStep[] = [
   "water",
   "hydrationResult",
   "height",
-  "weight",
   "planChart",
   "fitnessLevel",
   "focusAreas",
@@ -677,8 +675,7 @@ export function AuthPage({ mode = "onboarding" }: { mode?: "onboarding" | "login
     if (step === "equipment") setStep("focusAreas");
     if (step === "focusAreas") setStep("fitnessLevel");
     if (step === "fitnessLevel") setStep("planChart");
-    if (step === "planChart") setStep("weight");
-    if (step === "weight") setStep("height");
+    if (step === "planChart") setStep("height");
     if (step === "height") setStep("hydrationResult");
     if (step === "hydrationResult") setStep("water");
     if (step === "water") setStep("sugar");
@@ -1020,7 +1017,7 @@ export function AuthPage({ mode = "onboarding" }: { mode?: "onboarding" | "login
           {step === "height" && (
             <Screen className="flex min-h-[calc(100vh-12rem)] flex-col items-center justify-center text-center">
               <h1 className="mx-auto max-w-[460px] text-[34px] font-black leading-tight sm:text-4xl">
-                Chiều cao của bạn là bao nhiêu?
+                Chiều cao & Cân nặng của bạn?
               </h1>
               <div className="mt-11 flex rounded-[12px] bg-[#242424] p-0.5">
                 {(["cm", "ft"] as HeightUnit[]).map((unit) => (
@@ -1040,22 +1037,37 @@ export function AuthPage({ mode = "onboarding" }: { mode?: "onboarding" | "login
                   </button>
                 ))}
               </div>
-              <div className="mt-12 w-full max-w-[470px]">
-                <input
-                  type="number"
-                  inputMode="decimal"
-                  min={heightUnit === "cm" ? 90 : 3}
-                  max={heightUnit === "cm" ? 240 : 8}
-                  step={heightUnit === "cm" ? 1 : 0.1}
-                  value={heightValue}
-                  onChange={(e) => setHeightValue(e.target.value)}
-                  placeholder={heightUnit === "cm" ? "Chiều cao, cm" : "Chiều cao, ft"}
-                  className="w-full border-0 border-b-2 border-white/70 bg-transparent px-4 pb-3 text-center text-2xl font-semibold text-white outline-none transition placeholder:text-white/35 focus:border-[#ff4b12]"
-                />
+              <div className="mt-12 flex w-full max-w-[470px] gap-6">
+                <div className="flex-1">
+                  <input
+                    type="number"
+                    inputMode="decimal"
+                    min={heightUnit === "cm" ? 90 : 3}
+                    max={heightUnit === "cm" ? 240 : 8}
+                    step={heightUnit === "cm" ? 1 : 0.1}
+                    value={heightValue}
+                    onChange={(e) => setHeightValue(e.target.value)}
+                    placeholder={heightUnit === "cm" ? "Chiều cao, cm" : "Chiều cao, ft"}
+                    className="w-full border-0 border-b-2 border-white/70 bg-transparent px-2 pb-3 text-center text-2xl font-semibold text-white outline-none transition placeholder:text-white/35 focus:border-[#ff4b12]"
+                  />
+                </div>
+                <div className="flex-1">
+                  <input
+                    type="number"
+                    inputMode="decimal"
+                    min={30}
+                    max={300}
+                    step={1}
+                    value={weightValue}
+                    onChange={(e) => setWeightValue(e.target.value)}
+                    placeholder="Cân nặng, kg"
+                    className="w-full border-0 border-b-2 border-white/70 bg-transparent px-2 pb-3 text-center text-2xl font-semibold text-white outline-none transition placeholder:text-white/35 focus:border-[#ff4b12]"
+                  />
+                </div>
               </div>
               <button
                 type="button"
-                disabled={!isHeightValid}
+                disabled={!isHeightValid || !isWeightValid}
                 onClick={() => setStep("planChart")}
                 className="mt-10 w-full max-w-[330px] rounded-[24px] bg-[#ff4b12] px-8 py-4 text-base font-black shadow-lg shadow-[#ff4b12]/20 transition hover:scale-[1.02] disabled:pointer-events-none disabled:bg-[#9a2a06] disabled:text-white/45 disabled:shadow-none"
               >
