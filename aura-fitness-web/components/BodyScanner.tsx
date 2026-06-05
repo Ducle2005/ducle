@@ -327,16 +327,16 @@ export function BodyScanner({ onClose, onScanComplete, userHeight, gender }: Bod
 
   return (
     <div className="fixed inset-0 z-[100] flex items-center justify-center bg-slate-950/90 backdrop-blur-2xl p-4 overflow-hidden">
-        <div className="relative w-full max-w-6xl h-full max-h-[90vh] overflow-hidden rounded-[32px] border border-white/10 bg-slate-900 shadow-2xl flex flex-col">
+        <div className="relative w-full max-w-6xl h-full max-h-[90vh] overflow-y-auto pb-24 lg:pb-0 rounded-[32px] border border-white/10 bg-slate-900 shadow-2xl flex flex-col custom-scrollbar">
             {roadmapData ? (
                 <AuraRoadmap data={roadmapData} onClose={onClose} />
             ) : (
                 <>
-                <button onClick={onClose} className="absolute right-6 top-6 z-[110] rounded-full bg-black/50 p-2 text-white hover:bg-white/10 transition-all">
+                <button onClick={onClose} className="fixed right-8 top-8 lg:absolute lg:right-6 lg:top-6 z-[110] rounded-full bg-black/50 p-2 text-white hover:bg-white/10 transition-all">
                     <X size={24} />
                 </button>
 
-                <div className="flex h-full flex-col lg:flex-row overflow-hidden">
+                <div className="flex h-full flex-col lg:flex-row">
                     <div className="relative flex-1 bg-black overflow-hidden">
                         {!isReady && (
                             <div className="absolute inset-0 flex flex-col items-center justify-center text-white z-10 bg-slate-900">

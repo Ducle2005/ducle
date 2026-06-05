@@ -23,6 +23,7 @@ import { vipApi, type VIPInsights } from "@/lib/vipApi";
 import { Sidebar } from "@/components/Sidebar";
 import { UpgradeModal } from "@/components/UpgradeModal";
 import { getFullImageUrl } from "@/lib/api";
+import { AuthPage } from "@/components/AuthPage";
 
 const BodyScanner = dynamic(
   () => import("@/components/BodyScanner").then((mod) => mod.BodyScanner),
@@ -139,6 +140,7 @@ export default function VIPIntelligence() {
     }
   };
 
+  if (!user) return <AuthPage mode="login-only" />;
   if (!isPremium) {
     return (
       <>

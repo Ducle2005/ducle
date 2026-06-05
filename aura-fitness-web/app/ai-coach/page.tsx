@@ -123,7 +123,7 @@ Hôm nay tôi có thể giúp gì cho bạn?`,
     <div className="flex min-h-screen bg-[#07080c] text-foreground">
       <Sidebar />
       <main className="flex flex-1 flex-col lg:ml-20">
-        <div className="flex h-screen flex-col relative overflow-hidden">
+        <div className="flex h-[100dvh] flex-col relative overflow-hidden">
           
           {/* Subtle Background Radial Glows */}
           <div className="absolute top-0 left-1/4 h-[400px] w-[400px] rounded-full bg-primary/5 blur-[120px] pointer-events-none" />
@@ -187,10 +187,10 @@ Hôm nay tôi có thể giúp gì cho bạn?`,
                         💪 Luyện tập & Lịch tập
                       </h4>
                       <div className="space-y-2">
-                        <button onClick={() => setInput("Gợi ý lịch tập 4 buổi/tuần cho nam")} className="w-full text-left text-xs font-semibold text-slate-300 hover:text-white transition-colors bg-white/[0.03] p-2.5 rounded-xl border border-white/[0.03]">
+                        <button onClick={() => handleSend("Gợi ý lịch tập 4 buổi/tuần cho nam")} className="w-full text-left text-xs font-semibold text-slate-300 hover:text-white transition-colors bg-white/[0.03] p-2.5 rounded-xl border border-white/[0.03]">
                           "Gợi ý lịch tập 4 buổi/tuần"
                         </button>
-                        <button onClick={() => setInput("Cách thở đúng khi tập Bench Press")} className="w-full text-left text-xs font-semibold text-slate-300 hover:text-white transition-colors bg-white/[0.03] p-2.5 rounded-xl border border-white/[0.03]">
+                        <button onClick={() => handleSend("Cách thở đúng khi tập Bench Press")} className="w-full text-left text-xs font-semibold text-slate-300 hover:text-white transition-colors bg-white/[0.03] p-2.5 rounded-xl border border-white/[0.03]">
                           "Cách thở đúng khi tập Bench Press"
                         </button>
                       </div>
@@ -201,10 +201,10 @@ Hôm nay tôi có thể giúp gì cho bạn?`,
                         🍎 Dinh dưỡng & Thực đơn
                       </h4>
                       <div className="space-y-2">
-                        <button onClick={() => setInput("Thiết kế thực đơn tăng cơ 2500 calo")} className="w-full text-left text-xs font-semibold text-slate-300 hover:text-white transition-colors bg-white/[0.03] p-2.5 rounded-xl border border-white/[0.03]">
+                        <button onClick={() => handleSend("Thiết kế thực đơn tăng cơ 2500 calo")} className="w-full text-left text-xs font-semibold text-slate-300 hover:text-white transition-colors bg-white/[0.03] p-2.5 rounded-xl border border-white/[0.03]">
                           "Thiết kế thực đơn tăng cơ 2500 calo"
                         </button>
-                        <button onClick={() => setInput("Ăn gì trước tập để có nhiều năng lượng?")} className="w-full text-left text-xs font-semibold text-slate-300 hover:text-white transition-colors bg-white/[0.03] p-2.5 rounded-xl border border-white/[0.03]">
+                        <button onClick={() => handleSend("Ăn gì trước tập để có nhiều năng lượng?")} className="w-full text-left text-xs font-semibold text-slate-300 hover:text-white transition-colors bg-white/[0.03] p-2.5 rounded-xl border border-white/[0.03]">
                           "Ăn gì trước tập để có năng lượng?"
                         </button>
                       </div>
@@ -290,11 +290,11 @@ Hôm nay tôi có thể giúp gì cho bạn?`,
           </div>
 
           {/* ── INPUT AREA ── */}
-          <div className="border-t border-white/[0.05] bg-[#090a0f]/90 px-4 pb-6 pt-4 backdrop-blur-xl sm:px-6 lg:px-8 z-10">
+          <div className="border-t border-white/[0.05] bg-[#090a0f]/90 px-4 pb-20 lg:pb-6 pt-4 backdrop-blur-xl sm:px-6 lg:px-8 z-10">
             <div className="mx-auto w-full max-w-3xl">
               
               {/* Suggestion chips */}
-              {messages.length < 3 && messages.length > 1 && (
+              {messages.length < 5 && messages.length > 0 && (
                 <div className="mb-3 flex flex-wrap gap-2 justify-center">
                   {SUGGESTIONS.map((s, i) => (
                     <button

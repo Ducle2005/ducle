@@ -38,6 +38,7 @@ public class MvpDashboardController {
 	private final Map<String, List<Map<String, Object>>> workoutPlansByEmail = new ConcurrentHashMap<String, List<Map<String, Object>>>();
 	private final Map<String, List<Map<String, Object>>> bodyScansByEmail = new ConcurrentHashMap<String, List<Map<String, Object>>>();
 	private final Map<Long, Map<String, Object>> workoutSessionsById = new ConcurrentHashMap<Long, Map<String, Object>>();
+	private final Map<String, List<Map<String, Object>>> foodLogsByEmail = new ConcurrentHashMap<String, List<Map<String, Object>>>();
 	private final AtomicInteger planId = new AtomicInteger(100);
 	private final AtomicInteger workoutExerciseId = new AtomicInteger(1000);
 
@@ -82,14 +83,28 @@ public class MvpDashboardController {
 		Customer customer = currentUserService.getCurrentCustomer(authorizationHeader);
 		if (customer == null) return unauthorized();
 
+		List<Map<String, Object>> logs = foodLogsByEmail.getOrDefault(customer.getEmail(), new ArrayList<>());
+		String today = LocalDate.now().toString();
+		List<Map<String, Object>> todayLogs = new ArrayList<>();
+		int totalCalories = 0, totalProtein = 0, totalCarbs = 0, totalFat = 0;
+		for (Map<String, Object> log : logs) {
+			if (today.equals(log.get("date"))) {
+				todayLogs.add(log);
+				totalCalories += ((Number) log.getOrDefault("calories", 0)).intValue();
+				totalProtein += ((Number) log.getOrDefault("protein", 0)).intValue();
+				totalCarbs += ((Number) log.getOrDefault("carbs", 0)).intValue();
+				totalFat += ((Number) log.getOrDefault("fat", 0)).intValue();
+			}
+		}
+
 		Map<String, Object> totals = new LinkedHashMap<String, Object>();
-		totals.put("calories", 0);
-		totals.put("protein", 0);
-		totals.put("carbs", 0);
-		totals.put("fat", 0);
+		totals.put("calories", totalCalories);
+		totals.put("protein", totalProtein);
+		totals.put("carbs", totalCarbs);
+		totals.put("fat", totalFat);
 
 		Map<String, Object> response = new LinkedHashMap<String, Object>();
-		response.put("logs", Collections.emptyList());
+		response.put("logs", todayLogs);
 		response.put("totals", totals);
 		response.put("target", customer.getCalorieTarget() == null ? 2000 : customer.getCalorieTarget());
 		return ResponseEntity.ok(response);
@@ -99,10 +114,14 @@ public class MvpDashboardController {
 	public ResponseEntity<?> logFood(
 			@RequestHeader(value = "Authorization", required = false) String authorizationHeader,
 			@RequestBody Map<String, Object> payload) {
-		if (currentUserService.getCurrentCustomer(authorizationHeader) == null) return unauthorized();
+		Customer customer = currentUserService.getCurrentCustomer(authorizationHeader);
+		if (customer == null) return unauthorized();
 		Map<String, Object> response = new LinkedHashMap<String, Object>(payload);
 		response.put("id", System.currentTimeMillis());
 		if (!response.containsKey("date")) response.put("date", LocalDate.now().toString());
+		
+		foodLogsByEmail.computeIfAbsent(customer.getEmail(), k -> new ArrayList<>()).add(response);
+		
 		return ResponseEntity.ok(response);
 	}
 

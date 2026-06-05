@@ -62,7 +62,8 @@ export function Sidebar() {
     { icon: Settings, label: "Cài đặt", href: "/settings" },
   ];
 
-  const isSecondaryActive = secondaryMobileNavItems.some((item) => pathname === item.href);
+  const isPrimaryActive = primaryMobileNavItems.some((item) => pathname === item.href);
+  const isSecondaryActive = !isPrimaryActive && secondaryMobileNavItems.some((item) => pathname === item.href);
 
   const closeMobileMenu = () => setIsMobileMenuOpen(false);
 
@@ -238,6 +239,7 @@ export function Sidebar() {
             <Link
               key={item.href}
               href={item.href}
+              onClick={closeMobileMenu}
               className={cn(
                 "relative flex min-h-[54px] flex-col items-center justify-center gap-1 rounded-xl px-1 transition-colors",
                 isActive ? "bg-orange-500/10 text-orange-300" : "text-muted-foreground"

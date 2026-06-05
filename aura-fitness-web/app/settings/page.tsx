@@ -286,10 +286,10 @@ export default function SettingsPage() {
   };
 
   if (authLoading || (user && isLoading)) return null;
-  if (!user) return <AuthPage />;
+  if (!user) return <AuthPage mode="login-only" />;
 
   return (
-    <div className="flex min-h-screen overflow-hidden bg-background text-foreground">
+    <div className="flex min-h-screen bg-background text-foreground">
       <Sidebar />
       <main className="mobile-scroll-page">
         <header className="mb-7 sm:mb-10 lg:mb-12">

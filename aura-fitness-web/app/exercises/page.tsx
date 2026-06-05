@@ -151,7 +151,7 @@ export default function ExercisesPage() {
   };
 
   if (authLoading || (user && isLoading && !exercisePage)) return <AppLoading />;
-  if (!user) return <AuthPage />;
+  if (!user) return <AuthPage mode="login-only" />;
 
   const visibleCount = exercisePage?.content.length ?? 0;
   const totalCount = exercisePage?.totalElements ?? 0;

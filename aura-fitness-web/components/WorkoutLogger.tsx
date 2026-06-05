@@ -608,8 +608,8 @@ export function WorkoutLogger({ isOpen, onClose, onComplete, planId }: WorkoutLo
                                   <span>Loại</span>
                                   <span>Tạ</span>
                                   <span>Lần</span>
-                                  <span>RPE</span>
-                                  <span>RIR</span>
+                                  <span title="Mức độ nặng (1-10)">RPE</span>
+                                  <span title="Số lần còn làm được">RIR</span>
                                   <span>Nghi</span>
                                   <span>Xong</span>
                                   <span />
@@ -654,18 +654,18 @@ export function WorkoutLogger({ isOpen, onClose, onComplete, planId }: WorkoutLo
                                       min="0"
                                       max="10"
                                       step="0.5"
-                                      value={set.rpe}
-                                      onChange={(event) => updateSet(exerciseIndex, setIndex, { rpe: event.target.value })}
-                                      placeholder="RPE"
+                                      value={set.rpe || ""}
+                                      onChange={(event) => updateSet(exerciseIndex, setIndex, { rpe: event.target.value || undefined })}
+                                      placeholder="Nặng (1-10)"
                                       className="rounded-xl border border-white/10 bg-slate-950 px-2 py-2 text-center text-xs font-bold outline-none focus:border-primary/40"
                                     />
                                     <input
                                       type="number"
                                       min="0"
                                       max="10"
-                                      value={set.rir}
-                                      onChange={(event) => updateSet(exerciseIndex, setIndex, { rir: event.target.value })}
-                                      placeholder="RIR"
+                                      value={set.rir || ""}
+                                      onChange={(event) => updateSet(exerciseIndex, setIndex, { rir: event.target.value || undefined })}
+                                      placeholder="Còn lại"
                                       className="rounded-xl border border-white/10 bg-slate-950 px-2 py-2 text-center text-xs font-bold outline-none focus:border-primary/40"
                                     />
                                     <input
@@ -693,7 +693,7 @@ export function WorkoutLogger({ isOpen, onClose, onComplete, planId }: WorkoutLo
                                     <input
                                       value={set.notes}
                                       onChange={(event) => updateSet(exerciseIndex, setIndex, { notes: event.target.value })}
-                                      placeholder="Ghi chu set, form, dau moi, spotter..."
+                                      placeholder="Ghi chú set, form, dấu mối, spotter..."
                                       className="col-span-2 rounded-xl border border-white/10 bg-slate-950 px-3 py-2 text-xs outline-none focus:border-primary/40 lg:col-span-9"
                                     />
                                   </div>
@@ -735,7 +735,7 @@ export function WorkoutLogger({ isOpen, onClose, onComplete, planId }: WorkoutLo
                   <div className="rounded-3xl border border-amber-500/20 bg-amber-500/[0.04] p-5">
                     <h3 className="mb-3 flex items-center gap-2 text-sm font-black uppercase tracking-widest text-amber-300">
                       <AlertTriangle size={16} />
-                      Khi nao nen dung
+                      Khi nào nên dừng
                     </h3>
                     <div className="space-y-2 text-xs text-muted-foreground">
                       <p>Đau nhói ở khớp, mất thăng bằng, tê buốt hoặc choáng.</p>
@@ -781,7 +781,7 @@ export function WorkoutLogger({ isOpen, onClose, onComplete, planId }: WorkoutLo
           <motion.div
             initial={{ opacity: 0, scale: 0.9 }}
             animate={{ opacity: 1, scale: 1 }}
-            className="m-auto w-full max-w-lg space-y-8 overflow-hidden rounded-[2.5rem] border border-white/10 bg-slate-900/80 p-10 text-center backdrop-blur-3xl"
+            className="m-auto w-full max-w-lg space-y-8 overflow-y-auto max-h-[90vh] rounded-[2.5rem] border border-white/10 bg-slate-900/80 p-10 text-center backdrop-blur-3xl custom-scrollbar"
           >
             <div className="relative mx-auto w-fit">
               <div className="flex h-24 w-24 rotate-12 items-center justify-center rounded-3xl bg-primary text-background shadow-2xl shadow-primary/40">

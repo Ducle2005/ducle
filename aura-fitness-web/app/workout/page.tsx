@@ -138,10 +138,10 @@ export default function WorkoutPage() {
     try {
       const duplicated = await workoutApi.duplicatePlan(planId);
       setPlans((current) => [...current, duplicated]);
-      toast.success("Da nhan ban giao an.");
+      toast.success("Đã nhân bản giáo án.");
     } catch (error) {
       console.error("Failed to duplicate plan:", error);
-      toast.error("Khong the nhan ban giao an.");
+      toast.error("Không thể nhân bản giáo án.");
     }
   };
 
@@ -150,10 +150,10 @@ export default function WorkoutPage() {
       await workoutApi.archivePlan(planId);
       setPlans((current) => current.filter((p) => p.id !== planId));
       if (todaysPlan?.id === planId) setTodaysPlan(null);
-      toast.success("Da luu tru giao an.");
+      toast.success("Đã lưu trữ giáo án.");
     } catch (error) {
       console.error("Failed to archive plan:", error);
-      toast.error("Khong the luu tru giao an.");
+      toast.error("Không thể lưu trữ giáo án.");
     }
   };
 
@@ -189,7 +189,7 @@ export default function WorkoutPage() {
   }, [history.length, weeklyVolume]);
 
   if (authLoading) return <AppLoading />;
-  if (!user) return <AuthPage />;
+  if (!user) return <AuthPage mode="login-only" />;
 
   const xpPercentage = gamification ? (gamification.experience / gamification.nextLevelExp) * 100 : 0;
 
@@ -248,14 +248,14 @@ export default function WorkoutPage() {
                   className="glass flex items-center gap-2 rounded-xl border-orange-200/10 px-3 py-2.5 text-xs font-bold transition-all hover:border-orange-400/30 hover:text-orange-200 lg:px-4 lg:text-sm"
                 >
                   <Plus size={16} />
-                  <span className="hidden sm:inline">Tạo giáo án</span>
+                  <span>Tạo giáo án</span>
                 </button>
                 <button
                   onClick={startRecommendedWorkout}
                   className="flex items-center gap-2 rounded-xl bg-gradient-to-r from-orange-400 via-orange-500 to-amber-600 px-4 py-2.5 text-xs font-black text-slate-950 shadow-lg shadow-orange-500/25 transition-all hover:scale-[1.02] hover:shadow-orange-500/35 active:scale-95 lg:px-6 lg:text-sm"
                 >
                   <Play size={16} fill="currentColor" />
-                  <span className="hidden sm:inline">
+                  <span>
                     {plans.length > 0 ? "Bắt đầu tập" : "Tạo giáo án"}
                   </span>
                 </button>

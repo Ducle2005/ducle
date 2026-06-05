@@ -42,10 +42,10 @@ export function WorkoutInsights({ history, plans }: WorkoutInsightsProps) {
 
     const recoveryHint =
       thisWeek.length >= 5
-        ? "Tan suat cao: nen chen 1 ngay nhe hoac deload neu RPE trung binh cao."
+        ? "Tần suất cao: nên chèn 1 ngày nhẹ hoặc deload nếu RPE trung bình cao."
         : thisWeek.length <= 1
-          ? "Tan suat thap: them mot buoi full-body nhe de giu nhip."
-          : "Tan suat on dinh: tiep tuc uu tien form va tang tai nho.";
+          ? "Tần suất thấp: thêm một buổi full-body nhẹ để giữ nhịp."
+          : "Tần suất ổn định: tiếp tục ưu tiên form và tăng tải nhỏ.";
 
     return { weeklyVolume, adherence, muscleBalance, volumeDelta, recoveryHint };
   }, [history, plans]);
@@ -65,15 +65,15 @@ export function WorkoutInsights({ history, plans }: WorkoutInsightsProps) {
       <div className="grid grid-cols-1 gap-3 md:grid-cols-3">
         <InsightCard
           icon={CalendarCheck}
-          label="Adherence 7 ngay"
+          label="Adherence 7 ngày"
           value={`${Math.round(insights.adherence)}%`}
-          detail="So buoi da tap / so buoi da len lich"
+          detail="Số buổi đã tập / số buổi đã lên lịch"
         />
         <InsightCard
           icon={Activity}
           label="Khối lượng 7 ngày"
           value={`${(insights.weeklyVolume / 1000).toFixed(1)}k kg`}
-          detail={insights.volumeDelta == null ? "Can them lich su de so sanh" : `${insights.volumeDelta >= 0 ? "+" : ""}${insights.volumeDelta.toFixed(0)}% so voi buoi truoc`}
+          detail={insights.volumeDelta == null ? "Cần thêm lịch sử để so sánh" : `${insights.volumeDelta >= 0 ? "+" : ""}${insights.volumeDelta.toFixed(0)}% so với buổi trước`}
         />
         <InsightCard icon={Gauge} label="Phục hồi" value="Gợi ý huấn luyện" detail={insights.recoveryHint} />
       </div>
@@ -81,7 +81,7 @@ export function WorkoutInsights({ history, plans }: WorkoutInsightsProps) {
       {insights.muscleBalance.length > 0 && (
         <div className="mt-5">
           <div className="mb-3 text-[10px] font-black uppercase tracking-widest text-muted-foreground">
-            Can bang nhom co theo giao an
+            Cân bằng nhóm cơ theo giáo án
           </div>
           <div className="space-y-2">
             {insights.muscleBalance.map(([muscle, count]) => {

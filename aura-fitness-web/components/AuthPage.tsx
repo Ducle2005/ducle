@@ -471,9 +471,9 @@ function PlanChart({ goal }: { goal: string }) {
   );
 }
 
-export function AuthPage() {
+export function AuthPage({ mode = "onboarding" }: { mode?: "onboarding" | "login-only" }) {
   const router = useRouter();
-  const [step, setStep] = useState<OnboardingStep>("gender");
+  const [step, setStep] = useState<OnboardingStep>(mode === "login-only" ? "account" : "gender");
   const [isLogin, setIsLogin] = useState(true);
   const [selectedGender, setSelectedGender] = useState(genderOptions[0]);
   const [selectedBodyType, setSelectedBodyType] = useState(bodyTypes[1].label);
@@ -622,7 +622,7 @@ export function AuthPage() {
     setSuccess("Đang cá nhân hóa lộ trình tập cho bạn...");
     await completeOnboardingPlan(buildOnboardingSelections());
     setSuccess("Lộ trình tập của bạn đã sẵn sàng.");
-    router.push("/workout");
+    router.push("/");
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -1150,7 +1150,7 @@ export function AuthPage() {
           {step === "account" && (
             <Screen className="max-w-md">
               <div className="mb-5 rounded-[22px] border border-white/10 bg-white/[0.045] p-4 backdrop-blur-md">
-                <div className="text-[10px] font-black uppercase tracking-[0.24em] text-[#ff4b12]">Hồ sơ cá nhân</div>
+                <div className="text-[10px] font-black uppercase tracking-wider text-[#ff4b12]">Hồ sơ cá nhân</div>
                 <div className="mt-2 flex flex-wrap items-center justify-between gap-3 text-sm font-black">
                   <span>{selectedGender.label}</span>
                   <span>{selectedBodyType}</span>
@@ -1167,7 +1167,7 @@ export function AuthPage() {
               <div className="rounded-[22px] border border-white/10 bg-white/[0.045] p-5 shadow-2xl backdrop-blur-md sm:p-6">
                 <div className="mb-5 flex items-center justify-between gap-4">
                   <div>
-                    <div className="text-[10px] font-black uppercase tracking-[0.24em] text-[#ff4b12]">Aura Fitness</div>
+                    <div className="text-[10px] font-black uppercase tracking-wider text-[#ff4b12]">Aura Fitness</div>
                     <h2 className="mt-1 text-xl font-black uppercase tracking-tight">
                       {isLogin ? "Đăng nhập Aura" : "Tạo tài khoản Aura"}
                     </h2>

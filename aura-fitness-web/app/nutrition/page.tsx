@@ -43,10 +43,10 @@ export default function NutritionPage() {
   const meals = useMemo(() => mealSections.map((meal) => ({ ...meal, label: getMealTypeLabel(meal.type) })), []);
 
   if (authLoading || (user && isLoading)) return null;
-  if (!user) return <AuthPage />;
+  if (!user) return <AuthPage mode="login-only" />;
 
   return (
-    <div className="flex min-h-screen overflow-hidden bg-background text-foreground">
+    <div className="flex min-h-screen bg-background text-foreground">
       <Sidebar />
       <main className="mobile-scroll-page">
         <header className="mb-7 flex flex-col gap-4 sm:mb-10 lg:mb-12 lg:flex-row lg:items-center lg:justify-between">
