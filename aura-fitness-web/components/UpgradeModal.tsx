@@ -68,6 +68,18 @@ export function UpgradeModal({ isOpen, onClose, onUpgradeSuccess }: UpgradeModal
     return () => clearInterval(interval);
   }, [completeUpgrade, showQR, user?.email, success]);
 
+  // Lock body scroll when modal is open
+  useEffect(() => {
+    if (isOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "unset";
+    }
+    return () => {
+      document.body.style.overflow = "unset";
+    };
+  }, [isOpen]);
+
   const handleUpgrade = async () => {
     setLoading(true);
     try {
