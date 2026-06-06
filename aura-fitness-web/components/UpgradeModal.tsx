@@ -5,7 +5,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { X, Check, CreditCard, Sparkles, Crown, Zap, ShieldCheck, Diamond } from "lucide-react";
 import { useAuth } from "@/context/AuthContext";
 import { useToast } from "@/context/ToastContext";
-import { apiFetch } from "@/lib/api";
+import { API_BASE_URL } from "@/lib/api";
 
 interface UpgradeModalProps {
   isOpen: boolean;
@@ -58,7 +58,18 @@ export function UpgradeModal({ isOpen, onClose, onUpgradeSuccess }: UpgradeModal
     if (showQR && user?.email && !success) {
       interval = setInterval(async () => {
         try {
-          const res = await apiFetch<{ isPremium: boolean }>("/payment/check-status");
+          // Use direct fetch to avoid the global interceptor which removes
+          // the auth token on 401 and redirects to login during polling.
+          const token = typeof window !== "undefined" ? localStorage.getItem("auth-token") : null;
+          if (!token) return;
+          const response = await fetch(`${API_BASE_URL}/payment/check-status`, {
+            headers: {
+              "Content-Type": "application/json",
+              "Authorization": `Bearer ${token}`,
+            },
+          });
+          if (!response.ok) return; // Silently ignore errors during polling
+          const res = await response.json();
           if (res.isPremium) {
             await completeUpgrade();
           }
@@ -83,11 +94,34 @@ export function UpgradeModal({ isOpen, onClose, onUpgradeSuccess }: UpgradeModal
   const handleUpgrade = async () => {
     setLoading(true);
     try {
-      await apiFetch("/auth/upgrade", { method: "POST" });
+      // Call upgrade API directly with fetch to avoid the global interceptor
+      // which removes the auth token and redirects to login on 401/403 errors.
+      const token = typeof window !== "undefined" ? localStorage.getItem("auth-token") : null;
+      const headers: Record<string, string> = { "Content-Type": "application/json" };
+      if (token) {
+        headers["Authorization"] = `Bearer ${token}`;
+      }
+
+      const response = await fetch(`${API_BASE_URL}/auth/upgrade`, {
+        method: "POST",
+        headers,
+      });
+
+      if (!response.ok) {
+        const contentType = response.headers.get("content-type") || "";
+        let errorMessage = "Không thể nâng cấp gói cao cấp. Vui lòng thử lại.";
+        if (contentType.includes("application/json")) {
+          const body = await response.json().catch(() => null);
+          if (body?.message) errorMessage = body.message;
+        }
+        throw new Error(errorMessage);
+      }
+
       await completeUpgrade();
     } catch (err: unknown) {
       const message = err instanceof Error ? err.message : "Không thể nâng cấp gói cao cấp. Vui lòng thử lại.";
       toast.error(message);
+    } finally {
       setLoading(false);
     }
   };

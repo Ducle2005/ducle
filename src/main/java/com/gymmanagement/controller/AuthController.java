@@ -103,6 +103,17 @@ public class AuthController {
 		return ResponseEntity.ok(authUser(customer));
 	}
 
+	@PostMapping("downgrade")
+	public ResponseEntity<?> downgrade(@RequestHeader(value = "Authorization", required = false) String authorizationHeader) {
+		Customer customer = currentUserService.getCurrentCustomer(authorizationHeader);
+		if (customer == null) {
+			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(error("Unauthorized"));
+		}
+		customer.setPremium(false);
+		customerDao.save(customer);
+		return ResponseEntity.ok(authUser(customer));
+	}
+
 	@PutMapping("password")
 	public ResponseEntity<?> updatePassword(
 			@RequestHeader(value = "Authorization", required = false) String authorizationHeader,
