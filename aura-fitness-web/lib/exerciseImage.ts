@@ -2,14 +2,9 @@ import type { Exercise } from "./types";
 import { getYouTubeVideoId } from "./video";
 import { getFullImageUrl } from "./api";
 
-function isCustomExerciseImage(url: string) {
-  return url.startsWith("/") || url.startsWith("uploads/") || url.includes("/uploads/") || url.startsWith("data:");
-}
-
 function isExerciseImage(url: string) {
   if (url.includes("/onboarding/")) return false;
-  if (url.startsWith("http://") || url.startsWith("https://")) return true;
-  return isCustomExerciseImage(url);
+  return true;
 }
 
 function escapeSvgText(value: string) {
@@ -80,17 +75,13 @@ export function getExerciseImageSrc(exercise: Exercise): string {
   // Keep real exercise imagery from backend uploads or external catalog URLs.
   // Onboarding illustrations are intentionally ignored here because they crop badly in exercise cards.
   if (raw && raw.length > 0 && isExerciseImage(raw)) {
-    // If the image is a backend-relative path (e.g. /uploads/...),
-    // convert it to an absolute URL so Next/Image will fetch it directly from the backend.
-    if (raw.startsWith("/")) {
-      return getFullImageUrl(raw);
+    if (raw.startsWith("http://") || raw.startsWith("https://") || raw.startsWith("data:")) {
+      return normalizeRemoteImageUrl(raw);
     }
-
-    if (raw.startsWith("uploads/")) {
-      return getFullImageUrl(`/${raw}`);
-    }
-
-    return normalizeRemoteImageUrl(raw);
+    
+    // For relative paths (e.g., "uploads/...", "/uploads/...", "exercise.gif"),
+    // append the backend BASE_URL so it fetches correctly from the API server.
+    return getFullImageUrl(raw);
   }
 
   // Prefer the thumbnail of the actual tutorial video when no valid exercise image exists.
