@@ -9,6 +9,7 @@ import { AuthPage } from "@/components/AuthPage";
 import { AppLoading } from "@/components/AppLoading";
 import { useAuth } from "@/context/AuthContext";
 import { aiCoachApi } from "@/lib/aiCoachApi";
+import { formatChatLines } from "@/lib/chatFormatting";
 
 interface ChatMessage {
   id: string;
@@ -19,17 +20,12 @@ interface ChatMessage {
 }
 
 function formatMessageText(text: string): React.ReactNode {
-  const lines = text
-    .replace(/\*\*(.+?)\*\*/g, '<b>$1</b>')
-    .replace(/^\s*[\*\-]\s+/gm, '• ')
-    .replace(/\n{3,}/g, '\n\n')
-    .trim()
-    .split('\n');
-
-  return lines.map((line, i) => (
+  return formatChatLines(text).map((line, i) => (
     <span key={i}>
       {i > 0 && <br />}
-      <span dangerouslySetInnerHTML={{ __html: line }} />
+      {line.map((segment, j) => segment.bold
+        ? <strong key={j}>{segment.text}</strong>
+        : <span key={j}>{segment.text}</span>)}
     </span>
   ));
 }

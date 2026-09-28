@@ -47,6 +47,9 @@ public class AuthController {
 		if (email.isEmpty() || password.isEmpty()) {
 			return ResponseEntity.badRequest().body(error("Email and password are required"));
 		}
+		if (password.length() < 12) {
+			return ResponseEntity.badRequest().body(error("Password must be at least 12 characters"));
+		}
 		if (customerDao.findByEmailId(email) != null) {
 			return ResponseEntity.status(HttpStatus.CONFLICT).body(error("Email already registered"));
 		}
@@ -98,9 +101,9 @@ public class AuthController {
 		if (customer == null) {
 			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(error("Unauthorized"));
 		}
-		customer.setPremium(true);
-		customerDao.save(customer);
-		return ResponseEntity.ok(authUser(customer));
+		// This endpoint cannot confirm a bank transfer. Only a trusted, verified
+		// payment integration may grant premium access.
+		return ResponseEntity.status(HttpStatus.FORBIDDEN).body(error("Payment verification required"));
 	}
 
 	@PostMapping("downgrade")
@@ -128,8 +131,11 @@ public class AuthController {
 		if (newPassword.isEmpty()) {
 			return ResponseEntity.badRequest().body(error("New password is required"));
 		}
-		if (customer.getPassword() != null && !currentPassword.isEmpty()
-				&& !passwordEncoder.matches(currentPassword, customer.getPassword())) {
+		if (newPassword.length() < 12) {
+			return ResponseEntity.badRequest().body(error("New password must be at least 12 characters"));
+		}
+		if (currentPassword.isEmpty() || customer.getPassword() == null
+				|| !passwordEncoder.matches(currentPassword, customer.getPassword())) {
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error("Current password is incorrect"));
 		}
 

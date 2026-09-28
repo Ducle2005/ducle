@@ -261,8 +261,8 @@ export default function SettingsPage() {
       setCurrentPassword("");
       setNewPassword("");
       setConfirmPassword("");
-    } catch {
-      setPasswordError("Đổi mật khẩu thất bại. Vui lòng kiểm tra lại mật khẩu cũ.");
+    } catch (error) {
+      setPasswordError(error instanceof Error ? error.message : "Đổi mật khẩu thất bại.");
     } finally {
       setIsSaving(false);
     }

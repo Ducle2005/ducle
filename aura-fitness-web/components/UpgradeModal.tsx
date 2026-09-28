@@ -1,11 +1,12 @@
 "use client";
 
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { X, Check, CreditCard, Sparkles, Crown, Zap, ShieldCheck, Diamond } from "lucide-react";
 import { useAuth } from "@/context/AuthContext";
 import { useToast } from "@/context/ToastContext";
 import { API_BASE_URL } from "@/lib/api";
+import { checkPaymentStatus } from "@/lib/paymentStatus";
 
 interface UpgradeModalProps {
   isOpen: boolean;
@@ -36,6 +37,12 @@ export function UpgradeModal({ isOpen, onClose, onUpgradeSuccess }: UpgradeModal
   const [showQR, setShowQR] = useState(false);
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
+  const completingRef = useRef(false);
+  const openRef = useRef(isOpen);
+
+  useEffect(() => {
+    openRef.current = isOpen;
+  }, [isOpen]);
 
   const bankId = "MB";
   const accountNo = "0347548188";
@@ -45,39 +52,49 @@ export function UpgradeModal({ isOpen, onClose, onUpgradeSuccess }: UpgradeModal
   const qrUrl = `https://img.vietqr.io/image/${bankId}-${accountNo}-compact2.png?amount=${selectedPlan.price}&addInfo=${content}&accountName=${encodeURIComponent(accountName)}`;
 
   const completeUpgrade = useCallback(async () => {
-    await refreshUser();
-    setSuccess(true);
-    setShowQR(false);
-    toast.success("Đăng ký gói cao cấp thành công. Aura VIP đã được mở khóa.");
-    onUpgradeSuccess?.();
+    if (completingRef.current) return;
+    completingRef.current = true;
+    try {
+      const currentUser = await refreshUser();
+      if (!currentUser?.roles?.includes("ROLE_PREMIUM")) {
+        throw new Error("Chưa xác nhận được quyền VIP. Vui lòng thử lại sau.");
+      }
+      if (!openRef.current) return;
+      setSuccess(true);
+      setShowQR(false);
+      toast.success("Đăng ký gói cao cấp thành công. Aura VIP đã được mở khóa.");
+      onUpgradeSuccess?.();
+    } finally {
+      completingRef.current = false;
+    }
   }, [onUpgradeSuccess, refreshUser, toast]);
 
   // Polling logic for automatic payment detection
   useEffect(() => {
-    let interval: NodeJS.Timeout;
-    if (showQR && user?.email && !success) {
+    let interval: NodeJS.Timeout | undefined;
+    let active = true;
+    let inFlight = false;
+    if (isOpen && showQR && user?.email && !success) {
       interval = setInterval(async () => {
+        if (inFlight) return;
+        inFlight = true;
         try {
-          // Use direct fetch to avoid the global interceptor which removes
-          // the auth token on 401 and redirects to login during polling.
-          const token = typeof window !== "undefined" ? localStorage.getItem("auth-token") : null;
-          if (!token) return;
-          const response = await fetch(`${API_BASE_URL}/payment/check-status`, {
-            headers: {
-              "Content-Type": "application/json",
-              "Authorization": `Bearer ${token}`,
-            },
-          });
-          if (!response.ok) return; // Silently ignore errors during polling
-          const res = await response.json();
-          if (res.isPremium) {
+          const paid = await checkPaymentStatus(API_BASE_URL);
+          if (active && paid) {
             await completeUpgrade();
           }
-        } catch {}
+        } catch {
+          // Transient polling errors must not interrupt the payment screen.
+        } finally {
+          inFlight = false;
+        }
       }, 3000); // Check every 3 seconds
     }
-    return () => clearInterval(interval);
-  }, [completeUpgrade, showQR, user?.email, success]);
+    return () => {
+      active = false;
+      if (interval) clearInterval(interval);
+    };
+  }, [completeUpgrade, isOpen, showQR, user?.email, success]);
 
   // Lock body scroll when modal is open
   useEffect(() => {
@@ -91,35 +108,17 @@ export function UpgradeModal({ isOpen, onClose, onUpgradeSuccess }: UpgradeModal
     };
   }, [isOpen]);
 
-  const handleUpgrade = async () => {
+  const handleCheckPayment = async () => {
+    if (loading) return;
     setLoading(true);
     try {
-      // Call upgrade API directly with fetch to avoid the global interceptor
-      // which removes the auth token and redirects to login on 401/403 errors.
-      const token = typeof window !== "undefined" ? localStorage.getItem("auth-token") : null;
-      const headers: Record<string, string> = { "Content-Type": "application/json" };
-      if (token) {
-        headers["Authorization"] = `Bearer ${token}`;
+      if (await checkPaymentStatus(API_BASE_URL)) {
+        await completeUpgrade();
+      } else {
+        toast.error("Chưa ghi nhận thanh toán. Vui lòng kiểm tra lại sau.");
       }
-
-      const response = await fetch(`${API_BASE_URL}/auth/upgrade`, {
-        method: "POST",
-        headers,
-      });
-
-      if (!response.ok) {
-        const contentType = response.headers.get("content-type") || "";
-        let errorMessage = "Không thể nâng cấp gói cao cấp. Vui lòng thử lại.";
-        if (contentType.includes("application/json")) {
-          const body = await response.json().catch(() => null);
-          if (body?.message) errorMessage = body.message;
-        }
-        throw new Error(errorMessage);
-      }
-
-      await completeUpgrade();
     } catch (err: unknown) {
-      const message = err instanceof Error ? err.message : "Không thể nâng cấp gói cao cấp. Vui lòng thử lại.";
+      const message = err instanceof Error ? err.message : "Chưa thể kiểm tra giao dịch. Vui lòng thử lại sau.";
       toast.error(message);
     } finally {
       setLoading(false);
@@ -314,19 +313,20 @@ export function UpgradeModal({ isOpen, onClose, onUpgradeSuccess }: UpgradeModal
                       </div>
                       <h3 className="mb-3 text-2xl font-black text-white">Thanh toán an toàn</h3>
                       <p className="mb-10 text-sm font-medium text-slate-400 uppercase tracking-widest leading-relaxed">
-                        Hỗ trợ chuyển khoản <br/>QR chuẩn VietQR
+                        Đăng ký VIP tạm dừng trong khi hệ thống hoàn thiện xác minh thanh toán.
+                        Vui lòng không chuyển khoản theo mã QR cũ.
                       </p>
                       
                       <button 
-                        onClick={() => setShowQR(true)}
-                        className="group relative flex w-full items-center justify-center gap-3 overflow-hidden rounded-2xl bg-white py-5 text-sm font-black text-black transition-all hover:scale-[1.02] active:scale-95 shadow-[0_0_40px_rgba(255,255,255,0.2)]"
+                        disabled
+                        className="relative flex w-full items-center justify-center gap-3 overflow-hidden rounded-2xl bg-white/30 py-5 text-sm font-black text-black opacity-60 cursor-not-allowed"
                       >
                         <div className="absolute inset-0 bg-gradient-to-r from-transparent via-black/10 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000" />
-                        <Zap size={20} className="text-amber-500" fill="currentColor" /> XÁC NHẬN CHỌN GÓI
+                        <Zap size={20} className="text-amber-500" fill="currentColor" /> THANH TOÁN TẠM DỪNG
                       </button>
                       
                       <div className="mt-8 flex items-center gap-2 text-[10px] font-black text-slate-500 uppercase tracking-widest">
-                        <ShieldCheck size={14} /> Encrypted & Secure Payment
+                        <ShieldCheck size={14} /> Đang chờ tích hợp xác minh thanh toán
                       </div>
                     </motion.div>
                   ) : (
@@ -351,13 +351,13 @@ export function UpgradeModal({ isOpen, onClose, onUpgradeSuccess }: UpgradeModal
                       </div>
 
                       <button 
-                        onClick={handleUpgrade}
+                        onClick={handleCheckPayment}
                         disabled={loading}
                         className="group relative flex w-full items-center justify-center gap-2 overflow-hidden rounded-2xl bg-gradient-to-r from-emerald-400 to-emerald-600 py-4 text-sm font-black text-white transition-all hover:scale-[1.02] hover:shadow-[0_0_30px_rgba(16,185,129,0.4)] active:scale-95 disabled:opacity-50"
                       >
                         <div className="absolute inset-0 bg-white/20 translate-y-full group-hover:translate-y-0 transition-transform duration-300" />
                         <span className="relative z-10 flex items-center gap-2">
-                          {loading ? "ĐANG KIỂM TRA GIAO DỊCH..." : "TÔI ĐÃ CHUYỂN KHOẢN"}
+                          {loading ? "ĐANG KIỂM TRA GIAO DỊCH..." : "KIỂM TRA THANH TOÁN"}
                         </span>
                       </button>
                       

@@ -2,16 +2,21 @@ package com.aurafitness.service;
 
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.util.StringUtils;
 import java.io.IOException;
+import java.util.Iterator;
+import java.util.Locale;
+import javax.imageio.ImageIO;
+import javax.imageio.ImageReader;
+import javax.imageio.stream.ImageInputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.nio.file.StandardCopyOption;
 import java.util.UUID;
 
 @Service
 public class FileUploadService {
+
+    private static final long MAX_IMAGE_BYTES = 5L * 1024 * 1024;
 
     private final Path fileStorageLocation;
 
@@ -27,29 +32,42 @@ public class FileUploadService {
     }
 
     public String storeFile(MultipartFile file) {
-        String originalFileName = StringUtils.cleanPath(file.getOriginalFilename());
-        String fileExtension = "";
-
+        if (file == null || file.isEmpty() || file.getSize() > MAX_IMAGE_BYTES) {
+            throw new org.springframework.web.server.ResponseStatusException(
+                    org.springframework.http.HttpStatus.BAD_REQUEST, "Image must be between 1 byte and 5 MB");
+        }
         try {
-            if(originalFileName.contains(".")) {
-                fileExtension = originalFileName.substring(originalFileName.lastIndexOf("."));
+            String extension;
+            try (ImageInputStream image = ImageIO.createImageInputStream(file.getInputStream())) {
+                if (image == null) throw new IllegalArgumentException("Invalid image");
+                Iterator<ImageReader> readers = ImageIO.getImageReaders(image);
+                if (!readers.hasNext()) throw new IllegalArgumentException("Invalid image");
+                ImageReader reader = readers.next();
+                try {
+                    reader.setInput(image);
+                    String format = reader.getFormatName().toLowerCase(Locale.ROOT);
+                    if (!"jpeg".equals(format) && !"png".equals(format)) {
+                        throw new IllegalArgumentException("Only JPEG and PNG images are allowed");
+                    }
+                    if (reader.getWidth(0) > 4096 || reader.getHeight(0) > 4096) {
+                        throw new IllegalArgumentException("Image dimensions exceed 4096 pixels");
+                    }
+                    extension = "jpeg".equals(format) ? ".jpg" : ".png";
+                } finally {
+                    reader.dispose();
+                }
             }
-
-            // Generate a unique file name
-            String fileName = UUID.randomUUID().toString() + fileExtension;
-
-            // Check if the file's name contains invalid characters
-            if (fileName.contains("..")) {
-                throw new RuntimeException("Sorry! Filename contains invalid path sequence " + fileName);
-            }
-
-            // Copy file to the target location (Replacing existing file with the same name)
+            String fileName = UUID.randomUUID().toString() + extension;
             Path targetLocation = this.fileStorageLocation.resolve(fileName);
-            Files.copy(file.getInputStream(), targetLocation, StandardCopyOption.REPLACE_EXISTING);
+            Files.copy(file.getInputStream(), targetLocation);
 
             return fileName;
+        } catch (IllegalArgumentException ex) {
+            throw new org.springframework.web.server.ResponseStatusException(
+                    org.springframework.http.HttpStatus.BAD_REQUEST, ex.getMessage(), ex);
         } catch (IOException ex) {
-            throw new RuntimeException("Could not store file " + originalFileName + ". Please try again!", ex);
+            throw new org.springframework.web.server.ResponseStatusException(
+                    org.springframework.http.HttpStatus.BAD_REQUEST, "Invalid image", ex);
         }
     }
 }

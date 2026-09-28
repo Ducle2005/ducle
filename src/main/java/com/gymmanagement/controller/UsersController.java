@@ -61,7 +61,12 @@ public class UsersController {
 			return ResponseEntity.badRequest().body(error("Avatar file is required"));
 		}
 
-		String fileName = storageService.store(file);
+		String fileName;
+		try {
+			fileName = storageService.store(file);
+		} catch (IllegalArgumentException ex) {
+			return ResponseEntity.badRequest().body(error(ex.getMessage()));
+		}
 		customer.setPic(fileName);
 		customerDao.save(customer);
 

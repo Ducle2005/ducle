@@ -1333,6 +1333,7 @@ export function AuthPage({ mode = "onboarding" }: { mode?: "onboarding" | "login
                       value={password}
                       onChange={(e) => setPassword(e.target.value)}
                       required
+                      minLength={isLogin ? undefined : 12}
                       className="w-full rounded-xl border border-white/10 bg-[#191919] py-3 pl-10 pr-4 text-sm font-semibold placeholder:text-white/40 focus:border-[#ff4b12] focus:outline-none focus:ring-2 focus:ring-[#ff4b12]/20"
                     />
                   </div>

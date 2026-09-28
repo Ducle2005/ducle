@@ -76,8 +76,7 @@ public class CustomerController {
 	
 	@GetMapping(value="/{customerPic}", produces = "image/*")
 	public void fetchProductImage(@PathVariable("customerPic") String customerPic, HttpServletResponse resp) {
-		System.out.println("request came for fetching customer pic");
-		System.out.println("Loading file: " + customerPic);
+		resp.setContentType(imageContentType(customerPic));
 		Resource resource = storageService.load(customerPic);
 		if(resource != null) {
 			try(InputStream in = resource.getInputStream()) {
@@ -88,7 +87,14 @@ public class CustomerController {
 			}
 		}
 		
-		System.out.println("response sent!");
+	}
+
+	private String imageContentType(String name) {
+		String lower = name.toLowerCase(java.util.Locale.ROOT);
+		if (lower.endsWith(".png")) return "image/png";
+		if (lower.endsWith(".gif")) return "image/gif";
+		if (lower.endsWith(".webp")) return "image/webp";
+		return "image/jpeg";
 	}
 	
 	@PostMapping("update")

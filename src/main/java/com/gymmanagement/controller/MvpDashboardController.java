@@ -38,6 +38,7 @@ public class MvpDashboardController {
 	private final Map<String, List<Map<String, Object>>> workoutPlansByEmail = new ConcurrentHashMap<String, List<Map<String, Object>>>();
 	private final Map<String, List<Map<String, Object>>> bodyScansByEmail = new ConcurrentHashMap<String, List<Map<String, Object>>>();
 	private final Map<Long, Map<String, Object>> workoutSessionsById = new ConcurrentHashMap<Long, Map<String, Object>>();
+	private final Map<Long, Integer> workoutSessionOwnerById = new ConcurrentHashMap<Long, Integer>();
 	private final Map<String, List<Map<String, Object>>> foodLogsByEmail = new ConcurrentHashMap<String, List<Map<String, Object>>>();
 	private final AtomicInteger planId = new AtomicInteger(100);
 	private final AtomicInteger workoutExerciseId = new AtomicInteger(1000);
@@ -174,6 +175,7 @@ public class MvpDashboardController {
 			@RequestParam(value = "currentBpm", required = false) Integer currentBpm) {
 		Customer customer = currentUserService.getCurrentCustomer(authorizationHeader);
 		if (customer == null) return unauthorized();
+		if (!Boolean.TRUE.equals(customer.getPremium())) return ResponseEntity.status(HttpStatus.FORBIDDEN).body(error("VIP required"));
 
 		int age = customer.getAge() > 0 ? customer.getAge() : 25;
 		int hrMax = Math.max(160, 220 - age);
@@ -204,6 +206,7 @@ public class MvpDashboardController {
 	public ResponseEntity<?> bodyScanHistory(@RequestHeader(value = "Authorization", required = false) String authorizationHeader) {
 		Customer customer = currentUserService.getCurrentCustomer(authorizationHeader);
 		if (customer == null) return unauthorized();
+		if (!Boolean.TRUE.equals(customer.getPremium())) return ResponseEntity.status(HttpStatus.FORBIDDEN).body(error("VIP required"));
 		return ResponseEntity.ok(bodyScansFor(customer));
 	}
 
@@ -213,6 +216,7 @@ public class MvpDashboardController {
 			@RequestParam Map<String, String> payload) {
 		Customer customer = currentUserService.getCurrentCustomer(authorizationHeader);
 		if (customer == null) return unauthorized();
+		if (!Boolean.TRUE.equals(customer.getPremium())) return ResponseEntity.status(HttpStatus.FORBIDDEN).body(error("VIP required"));
 
 		Map<String, Object> scan = new LinkedHashMap<String, Object>();
 		scan.put("id", System.currentTimeMillis());
@@ -233,6 +237,7 @@ public class MvpDashboardController {
 			@RequestBody Map<String, Object> payload) {
 		Customer customer = currentUserService.getCurrentCustomer(authorizationHeader);
 		if (customer == null) return unauthorized();
+		if (!Boolean.TRUE.equals(customer.getPremium())) return ResponseEntity.status(HttpStatus.FORBIDDEN).body(error("VIP required"));
 		return ResponseEntity.ok(buildRoadmap(customer, payload));
 	}
 
@@ -315,8 +320,7 @@ public class MvpDashboardController {
 				return ResponseEntity.ok(updated);
 			}
 		}
-		plans.add(updated);
-		return ResponseEntity.ok(updated);
+		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(error("Workout plan not found"));
 	}
 
 	@PostMapping("workouts/sessions/start")
@@ -337,7 +341,7 @@ public class MvpDashboardController {
 			}
 		}
 
-		long id = System.currentTimeMillis();
+		long id = java.util.concurrent.ThreadLocalRandom.current().nextLong(1, Long.MAX_VALUE);
 		Map<String, Object> response = new LinkedHashMap<String, Object>();
 		response.put("id", id);
 		response.put("workoutPlan", workoutPlan);
@@ -345,7 +349,11 @@ public class MvpDashboardController {
 		response.put("endTime", null);
 		response.put("status", "IN_PROGRESS");
 		response.put("workoutSets", Collections.emptyList());
-		workoutSessionsById.put(id, response);
+		while (workoutSessionsById.putIfAbsent(id, response) != null) {
+			id = java.util.concurrent.ThreadLocalRandom.current().nextLong(1, Long.MAX_VALUE);
+			response.put("id", id);
+		}
+		workoutSessionOwnerById.put(id, customer.getId());
 		return ResponseEntity.ok(response);
 	}
 
@@ -354,18 +362,10 @@ public class MvpDashboardController {
 			@RequestHeader(value = "Authorization", required = false) String authorizationHeader,
 			@PathVariable("sessionId") long sessionId,
 			@RequestBody Map<String, Object> payload) {
-		if (currentUserService.getCurrentCustomer(authorizationHeader) == null) return unauthorized();
-
-		Map<String, Object> session = workoutSessionsById.computeIfAbsent(sessionId, key -> {
-			Map<String, Object> created = new LinkedHashMap<String, Object>();
-			created.put("id", sessionId);
-			created.put("workoutPlan", null);
-			created.put("startTime", java.time.Instant.now().toString());
-			created.put("endTime", null);
-			created.put("status", "IN_PROGRESS");
-			created.put("workoutSets", Collections.emptyList());
-			return created;
-		});
+		Customer customer = currentUserService.getCurrentCustomer(authorizationHeader);
+		if (customer == null) return unauthorized();
+		Map<String, Object> session = ownedSession(sessionId, customer);
+		if (session == null) return ResponseEntity.status(HttpStatus.NOT_FOUND).body(error("Workout session not found"));
 
 		Object sets = payload.get("sets");
 		session.put("workoutSets", sets instanceof List ? sets : Collections.emptyList());
@@ -376,20 +376,20 @@ public class MvpDashboardController {
 	public ResponseEntity<?> completeSession(
 			@RequestHeader(value = "Authorization", required = false) String authorizationHeader,
 			@PathVariable("sessionId") long sessionId) {
-		if (currentUserService.getCurrentCustomer(authorizationHeader) == null) return unauthorized();
-
-		Map<String, Object> session = workoutSessionsById.computeIfAbsent(sessionId, key -> {
-			Map<String, Object> created = new LinkedHashMap<String, Object>();
-			created.put("id", sessionId);
-			created.put("workoutPlan", null);
-			created.put("startTime", java.time.Instant.now().toString());
-			created.put("workoutSets", Collections.emptyList());
-			return created;
-		});
+		Customer customer = currentUserService.getCurrentCustomer(authorizationHeader);
+		if (customer == null) return unauthorized();
+		Map<String, Object> session = ownedSession(sessionId, customer);
+		if (session == null) return ResponseEntity.status(HttpStatus.NOT_FOUND).body(error("Workout session not found"));
 
 		session.put("endTime", java.time.Instant.now().toString());
 		session.put("status", "COMPLETED");
 		return ResponseEntity.ok(session);
+	}
+
+	private Map<String, Object> ownedSession(long sessionId, Customer customer) {
+		Integer ownerId = workoutSessionOwnerById.get(sessionId);
+		return ownerId != null && ownerId.intValue() == customer.getId()
+				? workoutSessionsById.get(sessionId) : null;
 	}
 
 	@GetMapping("workouts/sessions/history")

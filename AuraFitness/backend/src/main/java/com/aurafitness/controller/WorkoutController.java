@@ -117,7 +117,7 @@ public class WorkoutController {
 
     @PostMapping("/exercises/seed")
     public ResponseEntity<String> seedExercises() {
-        workoutService.seedExercises();
-        return ResponseEntity.ok("Exercises seeded successfully");
+        // Catalog seeding is an operator task, never a user-facing API.
+        return ResponseEntity.status(403).body("Catalog seeding is disabled");
     }
 }

@@ -9,7 +9,7 @@ interface AuthContextType {
   token: string | null;
   login: (token: string) => Promise<void>;
   logout: () => void;
-  refreshUser: () => Promise<void>;
+  refreshUser: () => Promise<AuthUser | null>;
   isLoading: boolean;
 }
 
@@ -86,8 +86,10 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     try {
       const currentUser = await apiFetch<AuthUser>("/auth/me");
       setUser(currentUser);
+      return currentUser;
     } catch (error) {
       console.error("Failed to refresh user:", error);
+      return null;
     }
   };
 
