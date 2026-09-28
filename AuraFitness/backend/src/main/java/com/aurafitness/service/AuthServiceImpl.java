@@ -58,6 +58,9 @@ public class AuthServiceImpl implements AuthService {
 
     @Override
     public String register(RegisterDto registerDto) {
+        if (registerDto.getPassword() == null || registerDto.getPassword().length() < 12) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Password must be at least 12 characters");
+        }
         // check if email already exists
         if(userRepository.findByEmail(registerDto.getEmail()).isPresent()){
             throw new ResponseStatusException(HttpStatus.CONFLICT, "Email already exists");

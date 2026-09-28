@@ -58,8 +58,9 @@ public class TrainerController {
 
 	@GetMapping(value="/{trainePic}", produces = "image/*")
 	public void fetchProductImage(@PathVariable("trainePic") String trainePic, HttpServletResponse resp) {
-		System.out.println("request came for fetching trainer pic");
-		System.out.println("Loading file: " + trainePic);
+		String lower = trainePic.toLowerCase(java.util.Locale.ROOT);
+		resp.setContentType(lower.endsWith(".png") ? "image/png" : lower.endsWith(".gif") ? "image/gif"
+				: lower.endsWith(".webp") ? "image/webp" : "image/jpeg");
 		Resource resource = storageService.load(trainePic);
 		if(resource != null) {
 			try(InputStream in = resource.getInputStream()) {
@@ -70,7 +71,6 @@ public class TrainerController {
 			}
 		}
 		
-		System.out.println("response sent!");
 	}
 	
 	@GetMapping("all")

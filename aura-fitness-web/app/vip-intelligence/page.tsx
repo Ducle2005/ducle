@@ -36,7 +36,7 @@ const SideBySideComparison = dynamic(
 
 interface BodyScanRecord {
   id: number;
-  imageUrl: string;
+  imageUrl: string | null;
   scanDate: string;
   bodyFatPercentage: number;
   chest: number;
@@ -123,8 +123,6 @@ export default function VIPIntelligence() {
 
   const handleScanComplete = async (metrics: BodyScanMetrics) => {
     const formData = new FormData();
-    const blob = await fetch("/onboarding/body-scan-demo.svg").then(r => r.blob());
-    formData.append("file", blob, "scan.jpg");
     formData.append("bodyFat", metrics.bodyFat.toString());
     formData.append("chest", metrics.chest.toString());
     formData.append("waist", metrics.waist.toString());

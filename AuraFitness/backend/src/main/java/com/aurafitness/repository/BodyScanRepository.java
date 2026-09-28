@@ -10,4 +10,5 @@ import java.util.List;
 @Repository
 public interface BodyScanRepository extends JpaRepository<BodyScan, Long> {
     List<BodyScan> findByUserOrderByScanDateDesc(User user);
+    boolean existsByImageUrl(String imageUrl);
 }

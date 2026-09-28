@@ -73,8 +73,8 @@ public class AuthController {
         String currentPassword = request.get("currentPassword");
         String newPassword = request.get("newPassword");
 
-        if (currentPassword == null || newPassword == null) {
-            return new ResponseEntity<>("Missing passwords", HttpStatus.BAD_REQUEST);
+        if (currentPassword == null || currentPassword.isEmpty() || newPassword == null || newPassword.length() < 12) {
+            return new ResponseEntity<>("Current password and a new password of at least 12 characters are required", HttpStatus.BAD_REQUEST);
         }
 
         authService.changePassword(email, currentPassword, newPassword);

@@ -8,6 +8,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;
 import java.security.Key;
 import java.util.Date;
+import jakarta.annotation.PostConstruct;
 
 @Component
 public class JwtTokenProvider {
@@ -17,6 +18,14 @@ public class JwtTokenProvider {
 
     @Value("${app.jwt.expiration-milliseconds}")
     private long jwtExpirationDate;
+
+    @PostConstruct
+    public void validateSecret() {
+        if (jwtSecret == null || jwtSecret.isBlank()) {
+            throw new IllegalStateException("APP_JWT_SECRET must be a private Base64-encoded signing key");
+        }
+        key(); // JJWT also rejects weak HMAC keys.
+    }
 
     // generate JWT token
     public String generateToken(Authentication authentication){
@@ -54,7 +63,7 @@ public class JwtTokenProvider {
                     .build()
                     .parseSignedClaims(token);
             return true;
-        } catch (MalformedJwtException | ExpiredJwtException | UnsupportedJwtException | IllegalArgumentException e) {
+        } catch (JwtException | IllegalArgumentException e) {
             return false;
         }
     }

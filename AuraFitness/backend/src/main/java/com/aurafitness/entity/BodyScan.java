@@ -33,7 +33,9 @@ public class BodyScan {
     public void setUser(User user) { this.user = user; }
     public LocalDateTime getScanDate() { return scanDate; }
     public void setScanDate(LocalDateTime scanDate) { this.scanDate = scanDate; }
-    public String getImageUrl() { return imageUrl; }
+    // Older versions saved scans in the publicly served avatar folder. Do not
+    // disclose those URLs in API responses; the upload filter blocks them.
+    public String getImageUrl() { return imageUrl != null && imageUrl.startsWith("/uploads/") ? null : imageUrl; }
     public void setImageUrl(String imageUrl) { this.imageUrl = imageUrl; }
     public Double getBodyFatPercentage() { return bodyFatPercentage; }
     public void setBodyFatPercentage(Double bodyFatPercentage) { this.bodyFatPercentage = bodyFatPercentage; }

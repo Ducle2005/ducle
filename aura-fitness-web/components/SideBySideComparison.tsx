@@ -8,7 +8,7 @@ import { BASE_URL, getFullImageUrl } from "@/lib/api";
 interface BodyScan {
   id: number;
   scanDate: string;
-  imageUrl: string;
+  imageUrl: string | null;
   bodyFatPercentage: number;
   chest: number;
   waist: number;
