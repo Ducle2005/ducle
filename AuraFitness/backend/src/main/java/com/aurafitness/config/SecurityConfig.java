@@ -71,7 +71,6 @@ public class SecurityConfig {
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests((authorize) ->
                         authorize.requestMatchers("/api/auth/login", "/api/auth/register", "/api/auth/signup", "/api/auth/signin").permitAll()
-                                .requestMatchers("/api/payment/webhook").permitAll()
                                 .requestMatchers("/api/vip/**").authenticated()
                                 .requestMatchers("/error").permitAll()
                                 .requestMatchers("/h2-console/**").permitAll()

@@ -83,23 +83,8 @@ public class AuthController {
 
     @PostMapping("/upgrade")
     public ResponseEntity<String> upgradeToPremium() {
-        System.out.println("--- UPGRADE REQUEST RECEIVED ---");
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        if (authentication == null) {
-            System.out.println("ERROR: Authentication is NULL");
-            return new ResponseEntity<>("Authentication required", HttpStatus.UNAUTHORIZED);
-        }
-        String email = authentication.getName();
-        System.out.println("Upgrading user: " + email);
-        try {
-            authService.upgradeToPremium(email);
-            System.out.println("Upgrade SUCCESS for " + email);
-            return ResponseEntity.ok("Successfully upgraded to Premium!");
-        } catch (Exception e) {
-            System.out.println("Upgrade FAILED for " + email + ": " + e.getMessage());
-            e.printStackTrace();
-            return new ResponseEntity<>("Upgrade failed: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+        // A user request is not evidence of payment.
+        return new ResponseEntity<>("Payment verification required", HttpStatus.FORBIDDEN);
     }
 
     @PostMapping("/downgrade")
@@ -111,7 +96,7 @@ public class AuthController {
         String email = authentication.getName();
         try {
             authService.downgradePremium(email);
-            return ResponseEntity.ok("Hủy gói VIP thành công. Hệ thống đã tiến hành hoàn tiền cho bạn!");
+            return ResponseEntity.ok("Hủy gói VIP thành công.");
         } catch (Exception e) {
             e.printStackTrace();
             return new ResponseEntity<>("Downgrade failed: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);

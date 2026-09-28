@@ -21,34 +21,12 @@ public class PaymentController {
         this.userRepository = userRepository;
     }
 
-    /**
-     * Webhook simulation for Casso/SePay (Popular VN payment bank sync services)
-     * URL: /api/payment/webhook
-     * MBBank transactions will hit this endpoint automatically via these services.
-     */
+    // Disabled until a payment provider is configured with authenticated
+    // delivery, transaction validation and replay protection. A public JSON
+    // body containing an email is not proof of a bank transfer.
     @PostMapping("/webhook")
     public ResponseEntity<String> handleBankWebhook(@RequestBody Map<String, Object> payload) {
-        System.out.println("--- RECEIVED BANK TRANSACTION WEBHOOK ---");
-        System.out.println(payload);
-
-        // Casso/SePay payload usually contains 'description' or 'content'
-        // Format of content: AuraVIP [Email/Name] [Plan]
-        String description = (String) payload.getOrDefault("content", payload.getOrDefault("description", ""));
-        
-        if (description != null && description.contains("AuraVIP")) {
-            // Find user email in the description
-            String[] parts = description.split(" ");
-            for (String part : parts) {
-                Optional<User> userOpt = userRepository.findByEmail(part);
-                if (userOpt.isPresent()) {
-                    authService.upgradeToPremium(userOpt.get().getEmail());
-                    System.out.println("SUCCESS: Automatic Upgrade for User: " + userOpt.get().getEmail());
-                    return ResponseEntity.ok("Successfully upgraded");
-                }
-            }
-        }
-        
-        return ResponseEntity.ok("Webhook received, but no matching user found in description.");
+        return ResponseEntity.status(503).body("Payment webhook is not configured");
     }
 
     // For Demo: Client can poll to check if they are already Premium

@@ -98,9 +98,9 @@ public class AuthController {
 		if (customer == null) {
 			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(error("Unauthorized"));
 		}
-		customer.setPremium(true);
-		customerDao.save(customer);
-		return ResponseEntity.ok(authUser(customer));
+		// This endpoint cannot confirm a bank transfer. Only a trusted, verified
+		// payment integration may grant premium access.
+		return ResponseEntity.status(HttpStatus.FORBIDDEN).body(error("Payment verification required"));
 	}
 
 	@PostMapping("downgrade")
